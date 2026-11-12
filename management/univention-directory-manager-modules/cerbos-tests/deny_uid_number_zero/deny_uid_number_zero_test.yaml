@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+name: DenyUidNumberZero
+description: >-
+  The global deny-uid-number-zero rule of users/user denies every action
+  on users with uidNumber 0, and every change that sets uidNumber to 0,
+  even for roles that are otherwise allowed to manage the user.
+
+tests:
+  - name: OU admin can manage a regular user in its OU
+    input:
+      principals: [ou_admin_bremen]
+      resources: [user_in_bremen, user_in_bremen_without_properties]
+      actions: [udm:object:read, udm:object:modify, udm:object:remove, udm:property:username:read]
+    expected:
+      - principal: ou_admin_bremen
+        resource: user_in_bremen
+        actions:
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:property:username:read: EFFECT_ALLOW
+      - principal: ou_admin_bremen
+        resource: user_in_bremen_without_properties
+        actions:
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:property:username:read: EFFECT_ALLOW
+
+  - name: OU admin cannot touch a user with uidNumber 0 in its OU
+    input:
+      principals: [ou_admin_bremen]
+      resources: [user_in_bremen_uid_number_zero]
+      actions: [udm:object:search, udm:object:read, udm:object:create, udm:object:modify, udm:object:remove, udm:property:username:read, udm:property:username:write]
+    expected:
+      - principal: ou_admin_bremen
+        resource: user_in_bremen_uid_number_zero
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:property:username:read: EFFECT_DENY
+          udm:property:username:write: EFFECT_DENY
+
+  - name: OU admin can change the uidNumber of a user in its OU
+    input:
+      principals: [ou_admin_bremen]
+      resources: [user_in_bremen_modified]
+      actions: [udm:object:modify]
+    expected:
+      - principal: ou_admin_bremen
+        resource: user_in_bremen_modified
+        actions:
+          udm:object:modify: EFFECT_ALLOW
+
+  - name: OU admin cannot set uidNumber 0 on a user in its OU
+    input:
+      principals: [ou_admin_bremen]
+      resources: [user_in_bremen_modified_to_uid_number_zero]
+      actions: [udm:object:modify]
+    expected:
+      - principal: ou_admin_bremen
+        resource: user_in_bremen_modified_to_uid_number_zero
+        actions:
+          udm:object:modify: EFFECT_DENY

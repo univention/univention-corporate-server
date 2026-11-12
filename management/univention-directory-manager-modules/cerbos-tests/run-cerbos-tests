@@ -1,0 +1,78 @@
+#!/bin/bash
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+set -euo pipefail
+
+FIXTURE_BASE='dc=ucs,dc=test'
+IMAGE='gitregistry.knut.univention.de/univention/dev/projects/authorization-engine/cerbos/cerbos:branch-fbotner-1-ldap-dn'
+TEST_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+usage () {
+	cat <<EOF
+Usage: $(basename "$0") [-- cerbos compile options]
+
+Generate the UDM Cerbos policies with univention-configure-udm-authorization
+into a temporary directory and run the test suites from $TEST_DIR
+against them, using the Docker image $IMAGE.
+The installed policy tree is not changed.
+
+Everything after -- is passed to "cerbos compile", for example:
+  $(basename "$0") -- --strict-evaluation --test-filter='test=Reads*'
+EOF
+}
+
+while [ $# -gt 0 ]; do
+	case "$1" in
+		-h|--help) usage; exit 0 ;;
+		--) shift; break ;;
+		*) usage >&2; exit 2 ;;
+	esac
+done
+
+command -v docker >/dev/null || { echo "error: docker not found" >&2; exit 2; }
+ldap_base="$(ucr get ldap/base)"
+
+work="$(mktemp -d)"
+trap 'rm -rf "$work"' EXIT
+
+# Run the suites in the policy tree generated from the installed DSL files,
+# and every suite with its own *.policy files in a tree generated from those only.
+run_suites () {
+	local tree="$work/$1"
+	shift
+	/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --output-dir "$tree" generate "${generate_args[@]}"
+	mkdir "$tree/_tests"
+	for suite in "$@"; do
+		cp -r "$suite" "$tree/_tests/"
+	done
+	find "$tree/_tests" -name '*.policy' -delete
+	if [ "$ldap_base" != "$FIXTURE_BASE" ]; then
+		replacement="$(printf '%s' "$ldap_base" | sed -e 's/[\\|&]/\\&/g')"
+		find "$tree/_tests" -name '*.yaml' -exec sed -i "s|$FIXTURE_BASE|$replacement|g" {} +
+	fi
+	docker run --rm --volume "$tree:/policies:ro" --entrypoint /cerbos "$IMAGE" compile "${compile_args[@]}" /policies
+}
+
+compile_args=("$@")
+installed=()
+own=()
+for suite in "$TEST_DIR"/*/; do
+	suite="${suite%/}"
+	if compgen -G "$suite/*.policy" >/dev/null; then
+		own+=("$suite")
+	else
+		installed+=("$suite")
+	fi
+done
+
+rc=0
+if [ ${#installed[@]} -gt 0 ]; then
+	generate_args=()
+	run_suites installed "${installed[@]}" || rc=$?
+fi
+for suite in "${own[@]}"; do
+	echo "== $(basename "$suite") (policies from $suite/*.policy)"
+	generate_args=(--config-dir "$suite")
+	run_suites "own-$(basename "$suite")" "$suite" || rc=$?
+done
+exit "$rc"

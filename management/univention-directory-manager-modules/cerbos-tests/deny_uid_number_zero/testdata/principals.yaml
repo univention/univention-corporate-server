@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+principals:
+  ou_admin_bremen:
+    id: uid=ouadmin,cn=users,dc=ucs,dc=test
+    roles: ["udm:default-roles:organizational-unit-admin"]
+    attr:
+      context_roles:
+        - {role: "udm:default-roles:organizational-unit-admin", position: "ou=bremen,dc=ucs,dc=test"}

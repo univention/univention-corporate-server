@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+# Test role: may change guardianMemberRoles of groups in its OU,
+# but may not add udm:default-roles:domain-administrator, with or without context.
+access by role="udm:test-roles:values-group-manager"
+  to objecttype="groups/group" position.subtree="context=udm:contexts:position"
+    name="allow-context-ou-groups-member-roles"
+    grant actions="search,read,modify"
+    grant properties="name" permission="read"
+    grant properties="guardianMemberRoles" values="$newValue$.all(r, !(r == 'udm:default-roles:domain-administrator' || r.startsWith('udm:default-roles:domain-administrator&')) || r in $oldValue$)" permission="write"

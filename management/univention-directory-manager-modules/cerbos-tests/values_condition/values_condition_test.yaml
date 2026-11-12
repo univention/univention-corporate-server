@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+name: ValuesCondition
+description: >-
+  A grant with a values condition (values.policy) restricts only writing that property,
+  not the other grants of the same "to" clause and not reading.
+  The condition denies adding domain-administrator to guardianMemberRoles.
+
+tests:
+  - name: Reads groups in its OU, including the restricted property
+    input:
+      principals: [group_manager_bremen]
+      resources: [group_bremen]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:property:name:read
+        - udm:property:guardianMemberRoles:read
+    expected:
+      - principal: group_manager_bremen
+        resource: group_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:property:name:read: EFFECT_ALLOW
+          udm:property:guardianMemberRoles:read: EFFECT_ALLOW
+
+  - name: Adds roles other than domain-administrator
+    input:
+      principals: [group_manager_bremen]
+      resources: [group_bremen_add_domain_user, group_bremen_add_helpdesk_operator]
+      actions:
+        - udm:object:modify
+        - udm:property:guardianMemberRoles:write
+        - udm:property:name:write
+    expected:
+      - principal: group_manager_bremen
+        resource: group_bremen_add_domain_user
+        actions:
+          udm:object:modify: EFFECT_ALLOW
+          udm:property:guardianMemberRoles:write: EFFECT_ALLOW
+          udm:property:name:write: EFFECT_DENY
+      - principal: group_manager_bremen
+        resource: group_bremen_add_helpdesk_operator
+        actions:
+          udm:object:modify: EFFECT_ALLOW
+          udm:property:guardianMemberRoles:write: EFFECT_ALLOW
+          udm:property:name:write: EFFECT_DENY
+
+  - name: Cannot add domain-administrator, with or without context, but can still modify the group
+    input:
+      principals: [group_manager_bremen]
+      resources: [group_bremen_add_domain_admin, group_bremen_add_domain_admin_with_context]
+      actions:
+        - udm:object:modify
+        - udm:property:guardianMemberRoles:write
+    expected:
+      - principal: group_manager_bremen
+        resource: group_bremen_add_domain_admin
+        actions:
+          udm:object:modify: EFFECT_ALLOW
+          udm:property:guardianMemberRoles:write: EFFECT_DENY
+      - principal: group_manager_bremen
+        resource: group_bremen_add_domain_admin_with_context
+        actions:
+          udm:object:modify: EFFECT_ALLOW
+          udm:property:guardianMemberRoles:write: EFFECT_DENY
+
+  - name: Can keep or remove an existing domain-administrator
+    input:
+      principals: [group_manager_bremen]
+      resources: [group_bremen_admin_kept, group_bremen_admin_removed]
+      actions:
+        - udm:object:modify
+        - udm:property:guardianMemberRoles:write
+    expected:
+      - principal: group_manager_bremen
+        resource: group_bremen_admin_kept
+        actions:
+          udm:object:modify: EFFECT_ALLOW
+          udm:property:guardianMemberRoles:write: EFFECT_ALLOW
+      - principal: group_manager_bremen
+        resource: group_bremen_admin_removed
+        actions:
+          udm:object:modify: EFFECT_ALLOW
+          udm:property:guardianMemberRoles:write: EFFECT_ALLOW
+
+  - name: Cannot access groups outside its OU
+    input:
+      principals: [group_manager_bremen]
+      resources: [group_berlin_add_domain_user]
+      actions:
+        - udm:object:read
+        - udm:object:modify
+        - udm:property:guardianMemberRoles:write
+    expected:
+      - principal: group_manager_bremen
+        resource: group_berlin_add_domain_user
+        actions:
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:property:guardianMemberRoles:write: EFFECT_DENY

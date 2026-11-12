@@ -1,0 +1,659 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+name: OrganizationalUnitAdmin
+description: Permissions of udm:default-roles:organizational-unit-admin with the default DSL.
+
+tests:
+  - name: Reads the LDAP base but cannot change it
+    input:
+      principals: [ou_admin_bremen, ou_admin_no_context]
+      resources: [ldap_base]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:rename
+        - udm:object:remove
+        - udm:object:move
+    expected:
+      - principal: ou_admin_bremen
+        resource: ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+      - principal: ou_admin_no_context
+        resource: ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+
+  - name: Reads its OU, the OUs below it and the OUs above it
+    input:
+      principals: [ou_admin_team_bremen]
+      resources: [ou_bremen, ou_team_bremen]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: ou_admin_team_bremen
+        resource: ou_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+      - principal: ou_admin_team_bremen
+        resource: ou_team_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+
+  - name: Cannot read sibling OUs or other OUs
+    input:
+      principals: [ou_admin_team_bremen]
+      resources: [ou_other_bremen, ou_berlin]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: ou_admin_team_bremen
+        resource: ou_other_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: ou_admin_team_bremen
+        resource: ou_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+
+  - name: With a nested context it sees its OU and the parent, but not the OU of the same name in another branch
+    input:
+      principals: [ou_admin_de_bremen]
+      resources: [ou_de_bremen, ou_bremen, ou_de_berlin, ou_berlin]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: ou_admin_de_bremen
+        resource: ou_de_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+      - principal: ou_admin_de_bremen
+        resource: ou_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+      - principal: ou_admin_de_bremen
+        resource: ou_de_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: ou_admin_de_bremen
+        resource: ou_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+
+  - name: With a nested context it manages users in its OU, but not in the OU of the same name in another branch
+    input:
+      principals: [ou_admin_de_bremen]
+      resources: [user_de_bremen, user_de_berlin, user_bremen]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:rename
+        - udm:object:remove
+        - udm:object:move
+    expected:
+      - principal: ou_admin_de_bremen
+        resource: user_de_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:rename: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:object:move: EFFECT_ALLOW
+      - principal: ou_admin_de_bremen
+        resource: user_de_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+      - principal: ou_admin_de_bremen
+        resource: user_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+
+  - name: Cannot create, change or remove OUs, not even its own
+    input:
+      principals: [ou_admin_bremen]
+      resources: [ou_bremen, ou_team_bremen]
+      actions:
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:rename
+        - udm:object:remove
+        - udm:object:move
+    expected:
+      - principal: ou_admin_bremen
+        resource: ou_bremen
+        actions:
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+      - principal: ou_admin_bremen
+        resource: ou_team_bremen
+        actions:
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+
+  - name: Reads containers in its OU only
+    input:
+      principals: [ou_admin_bremen]
+      resources: [cn_users_bremen, cn_users_base]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:rename
+        - udm:object:remove
+        - udm:object:move
+    expected:
+      - principal: ou_admin_bremen
+        resource: cn_users_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+      - principal: ou_admin_bremen
+        resource: cn_users_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+
+  - name: Manages users in its OU and below
+    input:
+      principals: [ou_admin_bremen]
+      resources: [user_bremen, user_team_bremen]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:rename
+        - udm:object:remove
+        - udm:object:move
+    expected:
+      - principal: ou_admin_bremen
+        resource: user_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:rename: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:object:move: EFFECT_ALLOW
+      - principal: ou_admin_bremen
+        resource: user_team_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:rename: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:object:move: EFFECT_ALLOW
+
+  - name: Cannot manage users outside its OU
+    input:
+      principals: [ou_admin_bremen]
+      resources: [user_berlin, user_base, user_bremen_lookalike]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:rename
+        - udm:object:remove
+        - udm:object:move
+    expected:
+      - principal: ou_admin_bremen
+        resource: user_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+      - principal: ou_admin_bremen
+        resource: user_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+      - principal: ou_admin_bremen
+        resource: user_bremen_lookalike
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+
+  - name: Sees and writes user properties, sets passwords and hides the guardian roles
+    input:
+      principals: [ou_admin_bremen]
+      resources: [user_bremen]
+      actions:
+        - udm:property:firstname:read
+        - udm:property:firstname:write
+        - udm:property:firstname:readonly
+        - udm:property:firstname:writeonly
+        - udm:property:firstname:none
+        - udm:property:password:writeonly
+        - udm:property:guardianRoles:none
+        - udm:property:guardianInheritedRoles:none
+    expected:
+      - principal: ou_admin_bremen
+        resource: user_bremen
+        actions:
+          udm:property:firstname:read: EFFECT_ALLOW
+          udm:property:firstname:write: EFFECT_ALLOW
+          udm:property:firstname:readonly: EFFECT_DENY
+          udm:property:firstname:writeonly: EFFECT_DENY
+          udm:property:firstname:none: EFFECT_DENY
+          udm:property:password:writeonly: EFFECT_ALLOW
+          udm:property:guardianRoles:none: EFFECT_ALLOW
+          udm:property:guardianInheritedRoles:none: EFFECT_ALLOW
+
+  - name: Manages groups in its OU only
+    input:
+      principals: [ou_admin_bremen]
+      resources: [group_bremen, group_berlin, group_domain_admins]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:rename
+        - udm:object:remove
+        - udm:object:move
+    expected:
+      - principal: ou_admin_bremen
+        resource: group_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:rename: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:object:move: EFFECT_ALLOW
+      - principal: ou_admin_bremen
+        resource: group_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+      - principal: ou_admin_bremen
+        resource: group_domain_admins
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+
+  - name: Sees group properties and hides the guardian member roles
+    input:
+      principals: [ou_admin_bremen]
+      resources: [group_bremen]
+      actions:
+        - udm:property:name:read
+        - udm:property:name:write
+        - udm:property:name:none
+        - udm:property:guardianMemberRoles:none
+    expected:
+      - principal: ou_admin_bremen
+        resource: group_bremen
+        actions:
+          udm:property:name:read: EFFECT_ALLOW
+          udm:property:name:write: EFFECT_ALLOW
+          udm:property:name:none: EFFECT_DENY
+          udm:property:guardianMemberRoles:none: EFFECT_ALLOW
+
+  - name: Creates user reports for every user
+    input:
+      principals: [ou_admin_bremen, ou_admin_no_context]
+      resources: [user_bremen, user_berlin, user_base]
+      actions:
+        - udm:object:report-create
+    expected:
+      - principal: ou_admin_bremen
+        resource: user_bremen
+        actions:
+          udm:object:report-create: EFFECT_ALLOW
+      - principal: ou_admin_bremen
+        resource: user_berlin
+        actions:
+          udm:object:report-create: EFFECT_ALLOW
+      - principal: ou_admin_bremen
+        resource: user_base
+        actions:
+          udm:object:report-create: EFFECT_ALLOW
+      - principal: ou_admin_no_context
+        resource: user_bremen
+        actions:
+          udm:object:report-create: EFFECT_ALLOW
+      - principal: ou_admin_no_context
+        resource: user_berlin
+        actions:
+          udm:object:report-create: EFFECT_ALLOW
+      - principal: ou_admin_no_context
+        resource: user_base
+        actions:
+          udm:object:report-create: EFFECT_ALLOW
+
+  - name: Reads desktop, password history and UMC policies but cannot change them
+    input:
+      principals: [ou_admin_bremen, ou_admin_no_context]
+      resources: [policy_desktop, policy_pwhistory, policy_umc]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:rename
+        - udm:object:remove
+        - udm:object:move
+    expected:
+      - principal: ou_admin_bremen
+        resource: policy_desktop
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+      - principal: ou_admin_bremen
+        resource: policy_pwhistory
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+      - principal: ou_admin_bremen
+        resource: policy_umc
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+      - principal: ou_admin_no_context
+        resource: policy_desktop
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+      - principal: ou_admin_no_context
+        resource: policy_pwhistory
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+      - principal: ou_admin_no_context
+        resource: policy_umc
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+
+  - name: Cannot read other policy types
+    input:
+      principals: [ou_admin_bremen]
+      resources: [policy_registry]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: ou_admin_bremen
+        resource: policy_registry
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+
+  - name: Reads mail domains in the global mail domain container only
+    input:
+      principals: [ou_admin_bremen]
+      resources: [mail_domain_global, mail_domain_in_bremen]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:rename
+        - udm:object:remove
+        - udm:object:move
+    expected:
+      - principal: ou_admin_bremen
+        resource: mail_domain_global
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+      - principal: ou_admin_bremen
+        resource: mail_domain_in_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+
+  - name: Cannot access other object types in its OU
+    input:
+      principals: [ou_admin_bremen]
+      resources: [windows_computer_bremen]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:rename
+        - udm:object:remove
+        - udm:object:move
+    expected:
+      - principal: ou_admin_bremen
+        resource: windows_computer_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+
+  - name: A second context adds its OU
+    input:
+      principals: [ou_admin_bremen_berlin]
+      resources: [user_bremen, user_berlin, user_base]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:rename
+        - udm:object:remove
+        - udm:object:move
+    expected:
+      - principal: ou_admin_bremen_berlin
+        resource: user_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:rename: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:object:move: EFFECT_ALLOW
+      - principal: ou_admin_bremen_berlin
+        resource: user_berlin
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:rename: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:object:move: EFFECT_ALLOW
+      - principal: ou_admin_bremen_berlin
+        resource: user_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+
+  - name: Without a context it cannot access users, groups, containers or OUs
+    input:
+      principals: [ou_admin_no_context]
+      resources: [user_bremen, group_bremen, cn_users_bremen, ou_bremen]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: ou_admin_no_context
+        resource: user_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: ou_admin_no_context
+        resource: group_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: ou_admin_no_context
+        resource: cn_users_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: ou_admin_no_context
+        resource: ou_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+
+  - name: A context assigned to another role grants nothing
+    input:
+      principals: [ou_admin_context_of_other_role]
+      resources: [user_bremen, group_bremen, cn_users_bremen, ou_bremen]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: ou_admin_context_of_other_role
+        resource: user_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: ou_admin_context_of_other_role
+        resource: group_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: ou_admin_context_of_other_role
+        resource: cn_users_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: ou_admin_context_of_other_role
+        resource: ou_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY

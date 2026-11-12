@@ -1,0 +1,125 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+resources:
+  group_bremen:
+    kind: udm:module:groups/group
+    id: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+      objectType: groups/group
+      position: cn=groups,ou=bremen,dc=ucs,dc=test
+      properties: {name: staff, guardianMemberRoles: ["udm:default-roles:domain-user"]}
+      options: {}
+
+  group_bremen_add_domain_user:
+    kind: udm:module:groups/group
+    id: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+      objectType: groups/group
+      position: cn=groups,ou=bremen,dc=ucs,dc=test
+      properties: {name: staff, guardianMemberRoles: []}
+      options: {}
+      new:
+        dn: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+        objectType: groups/group
+        position: cn=groups,ou=bremen,dc=ucs,dc=test
+        properties: {name: staff, guardianMemberRoles: ["udm:default-roles:domain-user"]}
+        options: {}
+
+  group_bremen_add_helpdesk_operator:
+    kind: udm:module:groups/group
+    id: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+      objectType: groups/group
+      position: cn=groups,ou=bremen,dc=ucs,dc=test
+      properties: {name: staff, guardianMemberRoles: ["udm:default-roles:domain-user"]}
+      options: {}
+      new:
+        dn: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+        objectType: groups/group
+        position: cn=groups,ou=bremen,dc=ucs,dc=test
+        properties: {name: staff, guardianMemberRoles: ["udm:default-roles:domain-user", "udm:default-roles:helpdesk-operator"]}
+        options: {}
+
+  group_bremen_add_domain_admin:
+    kind: udm:module:groups/group
+    id: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+      objectType: groups/group
+      position: cn=groups,ou=bremen,dc=ucs,dc=test
+      properties: {name: staff, guardianMemberRoles: ["udm:default-roles:domain-user"]}
+      options: {}
+      new:
+        dn: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+        objectType: groups/group
+        position: cn=groups,ou=bremen,dc=ucs,dc=test
+        properties: {name: staff, guardianMemberRoles: ["udm:default-roles:domain-user", "udm:default-roles:domain-administrator"]}
+        options: {}
+
+  group_bremen_add_domain_admin_with_context:
+    kind: udm:module:groups/group
+    id: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+      objectType: groups/group
+      position: cn=groups,ou=bremen,dc=ucs,dc=test
+      properties: {name: staff, guardianMemberRoles: ["udm:default-roles:domain-user"]}
+      options: {}
+      new:
+        dn: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+        objectType: groups/group
+        position: cn=groups,ou=bremen,dc=ucs,dc=test
+        properties: {name: staff, guardianMemberRoles: ["udm:default-roles:domain-user", "udm:default-roles:domain-administrator&udm:contexts:position=ou=bremen,dc=ucs,dc=test"]}
+        options: {}
+
+  group_bremen_admin_kept:
+    kind: udm:module:groups/group
+    id: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+      objectType: groups/group
+      position: cn=groups,ou=bremen,dc=ucs,dc=test
+      properties: {name: staff, guardianMemberRoles: ["udm:default-roles:domain-administrator"]}
+      options: {}
+      new:
+        dn: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+        objectType: groups/group
+        position: cn=groups,ou=bremen,dc=ucs,dc=test
+        properties: {name: staff, guardianMemberRoles: ["udm:default-roles:domain-administrator", "udm:default-roles:domain-user"]}
+        options: {}
+
+  group_bremen_admin_removed:
+    kind: udm:module:groups/group
+    id: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+      objectType: groups/group
+      position: cn=groups,ou=bremen,dc=ucs,dc=test
+      properties: {name: staff, guardianMemberRoles: ["udm:default-roles:domain-administrator", "udm:default-roles:domain-user"]}
+      options: {}
+      new:
+        dn: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+        objectType: groups/group
+        position: cn=groups,ou=bremen,dc=ucs,dc=test
+        properties: {name: staff, guardianMemberRoles: ["udm:default-roles:domain-user"]}
+        options: {}
+
+  group_berlin_add_domain_user:
+    kind: udm:module:groups/group
+    id: cn=staff,cn=groups,ou=berlin,dc=ucs,dc=test
+    attr:
+      dn: cn=staff,cn=groups,ou=berlin,dc=ucs,dc=test
+      objectType: groups/group
+      position: cn=groups,ou=berlin,dc=ucs,dc=test
+      properties: {name: staff, guardianMemberRoles: []}
+      options: {}
+      new:
+        dn: cn=staff,cn=groups,ou=berlin,dc=ucs,dc=test
+        objectType: groups/group
+        position: cn=groups,ou=berlin,dc=ucs,dc=test
+        properties: {name: staff, guardianMemberRoles: ["udm:default-roles:domain-user"]}
+        options: {}

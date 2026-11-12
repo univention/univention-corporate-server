@@ -1,0 +1,263 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+resources:
+  ldap_base:
+    kind: udm:module:container/dc
+    id: dc=ucs,dc=test
+    attr:
+      dn: dc=ucs,dc=test
+      objectType: container/dc
+      position: dc=ucs,dc=test
+      properties: {name: ucs}
+      options: {}
+
+  ou_bremen:
+    kind: udm:module:container/ou
+    id: ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: ou=bremen,dc=ucs,dc=test
+      objectType: container/ou
+      position: dc=ucs,dc=test
+      properties: {name: bremen}
+      options: {}
+
+  ou_team_bremen:
+    kind: udm:module:container/ou
+    id: ou=team,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: ou=team,ou=bremen,dc=ucs,dc=test
+      objectType: container/ou
+      position: ou=bremen,dc=ucs,dc=test
+      properties: {name: team}
+      options: {}
+
+  ou_other_bremen:
+    kind: udm:module:container/ou
+    id: ou=other,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: ou=other,ou=bremen,dc=ucs,dc=test
+      objectType: container/ou
+      position: ou=bremen,dc=ucs,dc=test
+      properties: {name: other}
+      options: {}
+
+  ou_berlin:
+    kind: udm:module:container/ou
+    id: ou=berlin,dc=ucs,dc=test
+    attr:
+      dn: ou=berlin,dc=ucs,dc=test
+      objectType: container/ou
+      position: dc=ucs,dc=test
+      properties: {name: berlin}
+      options: {}
+
+  cn_users_bremen:
+    kind: udm:module:container/cn
+    id: cn=users,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=users,ou=bremen,dc=ucs,dc=test
+      objectType: container/cn
+      position: ou=bremen,dc=ucs,dc=test
+      properties: {name: users}
+      options: {}
+
+  cn_users_base:
+    kind: udm:module:container/cn
+    id: cn=users,dc=ucs,dc=test
+    attr:
+      dn: cn=users,dc=ucs,dc=test
+      objectType: container/cn
+      position: dc=ucs,dc=test
+      properties: {name: users}
+      options: {}
+
+  user_bremen:
+    kind: udm:module:users/user
+    id: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+      objectType: users/user
+      position: cn=users,ou=bremen,dc=ucs,dc=test
+      properties: {username: alice}
+      options: {}
+
+  user_team_bremen:
+    kind: udm:module:users/user
+    id: uid=bob,cn=users,ou=team,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: uid=bob,cn=users,ou=team,ou=bremen,dc=ucs,dc=test
+      objectType: users/user
+      position: cn=users,ou=team,ou=bremen,dc=ucs,dc=test
+      properties: {username: bob}
+      options: {}
+
+  user_berlin:
+    kind: udm:module:users/user
+    id: uid=carol,cn=users,ou=berlin,dc=ucs,dc=test
+    attr:
+      dn: uid=carol,cn=users,ou=berlin,dc=ucs,dc=test
+      objectType: users/user
+      position: cn=users,ou=berlin,dc=ucs,dc=test
+      properties: {username: carol}
+      options: {}
+
+  user_base:
+    kind: udm:module:users/user
+    id: uid=dave,cn=users,dc=ucs,dc=test
+    attr:
+      dn: uid=dave,cn=users,dc=ucs,dc=test
+      objectType: users/user
+      position: cn=users,dc=ucs,dc=test
+      properties: {username: dave}
+      options: {}
+
+  user_bremen_lookalike:
+    kind: udm:module:users/user
+    id: uid=eve,cn=users,ou=bremen2,dc=ucs,dc=test
+    attr:
+      dn: uid=eve,cn=users,ou=bremen2,dc=ucs,dc=test
+      objectType: users/user
+      position: cn=users,ou=bremen2,dc=ucs,dc=test
+      properties: {username: eve}
+      options: {}
+
+  group_bremen:
+    kind: udm:module:groups/group
+    id: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test
+      objectType: groups/group
+      position: cn=groups,ou=bremen,dc=ucs,dc=test
+      properties: {name: staff}
+      options: {}
+
+  group_berlin:
+    kind: udm:module:groups/group
+    id: cn=staff,cn=groups,ou=berlin,dc=ucs,dc=test
+    attr:
+      dn: cn=staff,cn=groups,ou=berlin,dc=ucs,dc=test
+      objectType: groups/group
+      position: cn=groups,ou=berlin,dc=ucs,dc=test
+      properties: {name: staff}
+      options: {}
+
+  group_domain_admins:
+    kind: udm:module:groups/group
+    id: cn=Domain Admins,cn=groups,dc=ucs,dc=test
+    attr:
+      dn: cn=Domain Admins,cn=groups,dc=ucs,dc=test
+      objectType: groups/group
+      position: cn=groups,dc=ucs,dc=test
+      properties: {name: "Domain Admins"}
+      options: {}
+
+  policy_desktop:
+    kind: udm:module:policies/desktop
+    id: cn=default,cn=desktop,cn=policies,dc=ucs,dc=test
+    attr:
+      dn: cn=default,cn=desktop,cn=policies,dc=ucs,dc=test
+      objectType: policies/desktop
+      position: cn=desktop,cn=policies,dc=ucs,dc=test
+      properties: {name: default}
+      options: {}
+
+  policy_pwhistory:
+    kind: udm:module:policies/pwhistory
+    id: cn=default,cn=pwhistory,cn=policies,dc=ucs,dc=test
+    attr:
+      dn: cn=default,cn=pwhistory,cn=policies,dc=ucs,dc=test
+      objectType: policies/pwhistory
+      position: cn=pwhistory,cn=policies,dc=ucs,dc=test
+      properties: {name: default}
+      options: {}
+
+  policy_umc:
+    kind: udm:module:policies/umc
+    id: cn=default,cn=umc,cn=policies,dc=ucs,dc=test
+    attr:
+      dn: cn=default,cn=umc,cn=policies,dc=ucs,dc=test
+      objectType: policies/umc
+      position: cn=umc,cn=policies,dc=ucs,dc=test
+      properties: {name: default}
+      options: {}
+
+  policy_registry:
+    kind: udm:module:policies/registry
+    id: cn=default,cn=registry,cn=policies,dc=ucs,dc=test
+    attr:
+      dn: cn=default,cn=registry,cn=policies,dc=ucs,dc=test
+      objectType: policies/registry
+      position: cn=registry,cn=policies,dc=ucs,dc=test
+      properties: {name: default}
+      options: {}
+
+  mail_domain_global:
+    kind: udm:module:mail/domain
+    id: cn=example.org,cn=domain,cn=mail,dc=ucs,dc=test
+    attr:
+      dn: cn=example.org,cn=domain,cn=mail,dc=ucs,dc=test
+      objectType: mail/domain
+      position: cn=domain,cn=mail,dc=ucs,dc=test
+      properties: {name: example.org}
+      options: {}
+
+  mail_domain_in_bremen:
+    kind: udm:module:mail/domain
+    id: cn=example.org,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=example.org,ou=bremen,dc=ucs,dc=test
+      objectType: mail/domain
+      position: ou=bremen,dc=ucs,dc=test
+      properties: {name: example.org}
+      options: {}
+
+  windows_computer_bremen:
+    kind: udm:module:computers/windows
+    id: cn=pc1,cn=computers,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=pc1,cn=computers,ou=bremen,dc=ucs,dc=test
+      objectType: computers/windows
+      position: cn=computers,ou=bremen,dc=ucs,dc=test
+      properties: {name: pc1}
+      options: {}
+
+  ou_de_bremen:
+    kind: udm:module:container/ou
+    id: ou=de,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: ou=de,ou=bremen,dc=ucs,dc=test
+      objectType: container/ou
+      position: ou=bremen,dc=ucs,dc=test
+      properties: {name: de}
+      options: {}
+
+  ou_de_berlin:
+    kind: udm:module:container/ou
+    id: ou=de,ou=berlin,dc=ucs,dc=test
+    attr:
+      dn: ou=de,ou=berlin,dc=ucs,dc=test
+      objectType: container/ou
+      position: ou=berlin,dc=ucs,dc=test
+      properties: {name: de}
+      options: {}
+
+  user_de_bremen:
+    kind: udm:module:users/user
+    id: uid=frank,cn=users,ou=de,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: uid=frank,cn=users,ou=de,ou=bremen,dc=ucs,dc=test
+      objectType: users/user
+      position: cn=users,ou=de,ou=bremen,dc=ucs,dc=test
+      properties: {username: frank}
+      options: {}
+
+  user_de_berlin:
+    kind: udm:module:users/user
+    id: uid=grace,cn=users,ou=de,ou=berlin,dc=ucs,dc=test
+    attr:
+      dn: uid=grace,cn=users,ou=de,ou=berlin,dc=ucs,dc=test
+      objectType: users/user
+      position: cn=users,ou=de,ou=berlin,dc=ucs,dc=test
+      properties: {username: grace}
+      options: {}
