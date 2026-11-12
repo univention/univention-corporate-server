@@ -1,0 +1,1 @@
+:command:`ucr commit` and :command:`ucr set` now report an error and exit with a non-zero exit code when a configuration file can't be written, for example because a directory exists at its path. Previously, they reported success.
