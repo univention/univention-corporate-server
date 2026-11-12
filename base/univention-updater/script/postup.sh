@@ -58,6 +58,10 @@ memberserver) apt_install univention-server-member ;;
 *) die "The server role '$server_role' is not supported!" ;;
 esac
 
+if is_installed univention-ldap-overlay-memberof; then
+	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages purge univention-ldap-overlay-memberof >&3 2>&3
+fi
+
 is_ucr_true update53/skip/autoremove ||
 	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove >&3 2>&3
 
