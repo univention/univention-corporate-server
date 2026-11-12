@@ -65,7 +65,6 @@
 /management/univention-dojo/ @fbest
 /management/univention-join/ @fbest
 /management/univention-ldap/ @arequate
-/management/univention-ldap-overlay-memberof/ @arequate
 /management/univention-management-console/ @fbest
 /management/univention-management-console-module-adtakeover/ @arequate @fbest
 /management/univention-management-console-module-diagnostic/ @arequate @fbest
