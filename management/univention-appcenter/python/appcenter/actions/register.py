@@ -442,28 +442,17 @@ class AppListener(AppListener):
         updates = {}
         if app.docker and not app.plugin_of:
             try:
-                from univention.appcenter.actions.service import ORIGINAL_INIT_SCRIPT, Service
+                from univention.appcenter.actions.service import get_unit_path, install_systemd_unit
             except ImportError:
                 # univention-appcenter-docker is not installed
                 pass
             else:
                 if not app.uses_docker_compose():
                     try:
-                        init_script = Service.get_init(app)
-                        self.log('Creating %s' % init_script)
-                        with open(ORIGINAL_INIT_SCRIPT) as source:
-                            lines = source.readlines()
-                        with open(init_script, 'w') as target:
-                            target.writelines(re.sub(r'@%@APPID@%@', app.id, line) for line in lines)
-                        os.chmod(init_script, 0o755)
-                        self._call_script('/usr/sbin/update-rc.d', os.path.basename(init_script), 'defaults', '41', '14')
-                        self._call_script('/bin/systemctl', 'daemon-reload')
+                        self.log('Creating %s' % get_unit_path(app.id))
+                        install_systemd_unit(app.id)
                     except OSError as exc:
-                        msg = str(exc)
-                        if exc.errno == 17:
-                            self.log(msg)
-                        else:
-                            self.warn(msg)
+                        self.warn(str(exc))
                 updates[app.ucr_image_key] = app.get_docker_image_name()
         return updates
 
@@ -610,17 +599,12 @@ class AppListener(AppListener):
                 updates[key] = None
         if app.docker and not app.plugin_of:
             try:
-                from univention.appcenter.actions.service import Service
+                from univention.appcenter.actions.service import remove_systemd_unit
             except ImportError:
                 # univention-appcenter-docker is not installed
                 pass
             else:
-                try:
-                    init_script = Service.get_init(app)
-                    os.unlink(init_script)
-                    self._call_script('/usr/sbin/update-rc.d', os.path.basename(init_script), 'remove')
-                except OSError:
-                    pass
+                remove_systemd_unit(app.id)
         ldap_object = get_app_ldap_object(app, lo, pos)
         if ldap_object:
             self.log('Removing localhost from LDAP object')
