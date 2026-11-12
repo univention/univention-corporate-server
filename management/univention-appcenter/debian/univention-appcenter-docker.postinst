@@ -11,18 +11,18 @@
 ucr set appcenter/docker?enabled
 ucr set appcenter/docker/compose/network?172.16.1.1/16
 
-#######
-## This code can be used for further updates if
-## scripts/docker-app-container-init-script will be changed
-##
-## if dpkg --compare-versions "$2" lt-nl 6.0.2-4; then
-## 	for initscript in /etc/init.d/docker-app-*; do
-## 		test -e "$initscript" || continue
-## 		app_id="$(basename $initscript)"
-## 		app_id=${app_id#docker-app-}
-## 		cat /usr/share/docker-app-container-init-script | sed -e "s|@%@APPID@%@|$app_id|g" >"/etc/init.d/docker-app-$app_id"
-## 	done
-## fi
-
+# Bug #59674: replace the SysV init scripts of Docker apps by systemd units
+if [ "$1" = configure ]; then
+	for initscript in /etc/init.d/docker-app-*; do
+		[ -f "$initscript" ] || continue
+		# skip the wrappers that already forward to the systemd unit
+		grep -q 'controlled by the systemd unit' "$initscript" && continue
+		app_id="${initscript#/etc/init.d/docker-app-}"
+		running="$(/usr/lib/univention-appcenter/docker-app-container "$app_id" status 2>/dev/null || true)"
+		python3 -c 'import sys; from univention.appcenter.actions.service import install_systemd_unit; install_systemd_unit(sys.argv[1])' "$app_id" || continue
+		# let systemd know that the container is running, so that it is stopped before Docker on shutdown
+		[ "$running" = running ] && systemctl start "docker-app-$app_id.service" || true
+	done
+fi
 
 exit 0
