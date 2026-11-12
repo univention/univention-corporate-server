@@ -631,8 +631,11 @@ class UDMAuthorizationConfig:
         base = f'ldapDN({position_expr})'
         target = f'ldapDN({RESOURCE_DN})'
 
-        if scope in {'base', 'one'}:
+        if scope == 'base':
             return f'{base} == {target}'
+
+        if scope == 'one':
+            return f'{base}.scopeOneLevel({target})'
 
         if scope == 'subtree':
             return f'{base}.scopeSubtree({target})'
