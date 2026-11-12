@@ -16,6 +16,7 @@ The script writes Cerbos policy files below /usr/share/univention-guardian-serve
 import argparse
 import logging
 import shutil
+import tarfile
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -76,11 +77,23 @@ class UniventionDirectoryManagerPolicies:
             if output_dir.exists():
                 shutil.rmtree(output_dir)
             shutil.move(self.output_root, output_dir)
+        if self.args.archive:
+            archive = Path(self.args.archive)
+            archive.parent.mkdir(parents=True, exist_ok=True)
+            with tarfile.open(archive, mode='w:gz') as tar:
+                for path in sorted(output_dir.rglob('*')):
+                    tar.add(path, arcname=path.relative_to(output_dir))
 
     def parse_args(self, args=None):
         parser = argparse.ArgumentParser(description=__doc__)
-        parser.add_argument("--binddn", help="username", default=ucr['ldap/hostdn'])
+        parser.add_argument("--binddn", help="unused with machine connections", default=ucr['ldap/hostdn'])
         parser.add_argument("--bindpwdfile", help="password file")
+        parser.add_argument(
+            '--ldap-connection',
+            choices=('machine', 'admin'),
+            default='machine',
+            help='LDAP account used for module introspection (default: machine)',
+        )
 
         parser.add_argument('--output-dir', default=str(POLICY_ROOT), help='Root directory for Cerbos UDM policies')
         subparsers = parser.add_subparsers(dest='action', title='actions', required=True)
@@ -88,6 +101,7 @@ class UniventionDirectoryManagerPolicies:
         subparser = subparsers.add_parser('generate')
         subparser.set_defaults(func=self.generate_all)
         subparser.add_argument('--config-dir', default='/usr/share/univention-directory-manager-modules/policies/')
+        subparser.add_argument('--archive', help='Also write the generated policy tree as a gzip-compressed tar archive')
         subparser.add_argument('--strict', action='store_true')
 
         subparser = subparsers.add_parser('prune')
@@ -209,7 +223,20 @@ class UniventionDirectoryManagerPolicies:
         for dirname in ('derived_roles', 'role_policies', 'variables'):
             (self.output_root / dirname).mkdir(parents=True, exist_ok=True)
 
-        lo, po = univention.admin.uldap.getAdminConnection()
+        if self.args.ldap_connection == 'machine':
+            lo, po = univention.admin.uldap.getMachineConnection(ldap_master=True)
+        else:
+            password = None
+            if self.args.bindpwdfile:
+                password = Path(self.args.bindpwdfile).read_text().strip()
+            lo = univention.admin.uldap.access(
+                host=ucr['ldap/master'],
+                port=int(ucr.get('ldap/master/port', '7389')),
+                base=ucr['ldap/base'],
+                binddn=self.args.binddn,
+                bindpw=password,
+            )
+            po = univention.admin.uldap.position(lo.base)
         written = []
         for modname, module in sorted(univention.admin.modules.modules.items()):
             univention.admin.modules.init(lo, po, module)

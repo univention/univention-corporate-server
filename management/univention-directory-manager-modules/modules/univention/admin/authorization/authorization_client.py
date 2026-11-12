@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # SPDX-FileCopyrightText: 2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
-"""Cerbos authorization adapter."""
+"""Cerbos authorization client."""
 
 from __future__ import annotations
 
