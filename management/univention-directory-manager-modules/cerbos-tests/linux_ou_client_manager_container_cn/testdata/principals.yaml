@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+principals:
+  lcm_bremen:
+    id: uid=lcm,cn=users,dc=ucs,dc=test
+    roles: ["udm:default-roles:linux-ou-client-manager"]
+    attr:
+      context_roles:
+        - {role: "udm:default-roles:linux-ou-client-manager", position: "ou=bremen,dc=ucs,dc=test"}
+
+  lcm_bremen_berlin:
+    id: uid=lcm,cn=users,dc=ucs,dc=test
+    roles: ["udm:default-roles:linux-ou-client-manager"]
+    attr:
+      context_roles:
+        - {role: "udm:default-roles:linux-ou-client-manager", position: "ou=bremen,dc=ucs,dc=test"}
+        - {role: "udm:default-roles:linux-ou-client-manager", position: "ou=berlin,dc=ucs,dc=test"}
+
+  lcm_no_context:
+    id: uid=lcm,cn=users,dc=ucs,dc=test
+    roles: ["udm:default-roles:linux-ou-client-manager"]
+    attr: {}
+
+  lcm_context_of_other_role:
+    id: uid=lcm,cn=users,dc=ucs,dc=test
+    roles: ["udm:default-roles:linux-ou-client-manager"]
+    attr:
+      context_roles:
+        - {role: "udm:default-roles:helpdesk-operator", position: "ou=bremen,dc=ucs,dc=test"}
+
+  domain_user_bremen:
+    id: uid=lcm,cn=users,dc=ucs,dc=test
+    roles: ["udm:default-roles:domain-user"]
+    attr:
+      context_roles:
+        - {role: "udm:default-roles:linux-ou-client-manager", position: "ou=bremen,dc=ucs,dc=test"}

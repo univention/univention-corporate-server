@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+principals:
+  group_manager_bremen:
+    id: uid=groupmanager,cn=users,dc=ucs,dc=test
+    roles: ["udm:test-roles:values-group-manager"]
+    attr:
+      context_roles:
+        - {role: "udm:test-roles:values-group-manager", position: "ou=bremen,dc=ucs,dc=test"}
