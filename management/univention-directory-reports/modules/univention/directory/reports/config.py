@@ -25,8 +25,9 @@ class Config(ConfigParser):
         self._reports = {}
 
         # get the language, defaults to English if nothing is set
+        # newer Python versions return "C" for the C.UTF-8 locale; there are no templates for it
         self._lang = locale.getlocale(locale.LC_MESSAGES)[0]
-        if not self._lang:
+        if not self._lang or self._lang in ('C', 'POSIX'):
             self._lang = "en_US"
 
         for _key, value in self.items('reports'):
