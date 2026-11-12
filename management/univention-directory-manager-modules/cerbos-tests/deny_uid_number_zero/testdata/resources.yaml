@@ -1,0 +1,65 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+resources:
+  user_in_bremen:
+    kind: udm:module:users/user
+    id: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+      objectType: users/user
+      position: cn=users,ou=bremen,dc=ucs,dc=test
+      properties: {username: alice, uidNumber: 2001}
+      options: {}
+
+  user_in_bremen_without_properties:
+    kind: udm:module:users/user
+    id: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+      objectType: users/user
+      position: cn=users,ou=bremen,dc=ucs,dc=test
+      properties: {}
+      options: {}
+
+  user_in_bremen_uid_number_zero:
+    kind: udm:module:users/user
+    id: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+      objectType: users/user
+      position: cn=users,ou=bremen,dc=ucs,dc=test
+      properties: {username: alice, uidNumber: 0}
+      options: {}
+
+  user_in_bremen_modified_to_uid_number_zero:
+    kind: udm:module:users/user
+    id: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+      objectType: users/user
+      position: cn=users,ou=bremen,dc=ucs,dc=test
+      properties: {username: alice, uidNumber: 2001}
+      options: {}
+      new:
+        dn: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+        objectType: users/user
+        position: cn=users,ou=bremen,dc=ucs,dc=test
+        properties: {username: alice, uidNumber: 0}
+        options: {}
+
+  user_in_bremen_modified:
+    kind: udm:module:users/user
+    id: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+      objectType: users/user
+      position: cn=users,ou=bremen,dc=ucs,dc=test
+      properties: {username: alice, uidNumber: 2001}
+      options: {}
+      new:
+        dn: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+        objectType: users/user
+        position: cn=users,ou=bremen,dc=ucs,dc=test
+        properties: {username: alice, uidNumber: 2002}
+        options: {}

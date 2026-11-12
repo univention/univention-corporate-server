@@ -1,0 +1,101 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+name: LinuxOuClientManagerContainerCn
+description: >
+  linux-ou-client-manager reads container/cn below its context OU and below
+  cn=networks, cn=dns and cn=dhcp, and nothing else.
+tests:
+  - name: Reads containers in every granted position
+    input:
+      principals: [lcm_bremen]
+      resources: [cn_networks, cn_networks_child, cn_networks_other_spelling, cn_dns, cn_dhcp, cn_in_bremen, cn_deep_in_bremen]
+      actions: &read ["udm:object:search", "udm:object:read", "udm:property:name:search", "udm:property:name:read"]
+    expected:
+      - principal: lcm_bremen
+        resources: [cn_networks, cn_networks_child, cn_networks_other_spelling, cn_dns, cn_dhcp, cn_in_bremen, cn_deep_in_bremen]
+        actions:
+          "udm:object:search": EFFECT_ALLOW
+          "udm:object:read": EFFECT_ALLOW
+          "udm:property:name:search": EFFECT_ALLOW
+          "udm:property:name:read": EFFECT_ALLOW
+
+  - name: Cannot change or hide containers it can read
+    input:
+      principals: [lcm_bremen]
+      resources: [cn_networks, cn_dns, cn_dhcp, cn_in_bremen]
+      actions: &write ["udm:object:create", "udm:object:modify", "udm:object:remove", "udm:object:move", "udm:property:name:write", "udm:property:name:none", "udm:property:name:writeonly"]
+    expected:
+      - principal: lcm_bremen
+        resources: [cn_networks, cn_dns, cn_dhcp, cn_in_bremen]
+        actions:
+          "udm:object:create": EFFECT_DENY
+          "udm:object:modify": EFFECT_DENY
+          "udm:object:remove": EFFECT_DENY
+          "udm:object:move": EFFECT_DENY
+          "udm:property:name:write": EFFECT_DENY
+          "udm:property:name:none": EFFECT_DENY
+          "udm:property:name:writeonly": EFFECT_DENY
+
+  - name: Cannot read containers outside its positions
+    input:
+      principals: [lcm_bremen]
+      resources: [cn_networks_lookalike, cn_in_berlin, cn_users]
+      actions: *read
+    expected:
+      - principal: lcm_bremen
+        resources: [cn_networks_lookalike, cn_in_berlin, cn_users]
+        actions:
+          "udm:object:search": EFFECT_DENY
+          "udm:object:read": EFFECT_DENY
+          "udm:property:name:search": EFFECT_DENY
+          "udm:property:name:read": EFFECT_DENY
+
+  - name: A second context adds its OU
+    input:
+      principals: [lcm_bremen_berlin]
+      resources: [cn_in_bremen, cn_in_berlin, cn_users]
+      actions: ["udm:object:read"]
+    expected:
+      - principal: lcm_bremen_berlin
+        resources: [cn_in_bremen, cn_in_berlin]
+        actions: {"udm:object:read": EFFECT_ALLOW}
+      - principal: lcm_bremen_berlin
+        resource: cn_users
+        actions: {"udm:object:read": EFFECT_DENY}
+
+  - name: Without a context only the fixed positions are readable
+    input:
+      principals: [lcm_no_context]
+      resources: [cn_networks, cn_dns, cn_dhcp, cn_in_bremen]
+      actions: ["udm:object:read"]
+    expected:
+      - principal: lcm_no_context
+        resources: [cn_networks, cn_dns, cn_dhcp]
+        actions: {"udm:object:read": EFFECT_ALLOW}
+      - principal: lcm_no_context
+        resource: cn_in_bremen
+        actions: {"udm:object:read": EFFECT_DENY}
+
+  - name: A context assigned to another role grants nothing
+    input:
+      principals: [lcm_context_of_other_role]
+      resources: [cn_networks, cn_in_bremen]
+      actions: ["udm:object:read"]
+    expected:
+      - principal: lcm_context_of_other_role
+        resource: cn_networks
+        actions: {"udm:object:read": EFFECT_ALLOW}
+      - principal: lcm_context_of_other_role
+        resource: cn_in_bremen
+        actions: {"udm:object:read": EFFECT_DENY}
+
+  - name: Other roles cannot read, even with a matching context entry
+    input:
+      principals: [domain_user_bremen]
+      resources: [cn_networks, cn_in_bremen]
+      actions: ["udm:object:read"]
+    expected:
+      - principal: domain_user_bremen
+        resources: [cn_networks, cn_in_bremen]
+        actions: {"udm:object:read": EFFECT_DENY}

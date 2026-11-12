@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+resources:
+  cn_networks:
+    kind: udm:module:container/cn
+    id: cn=networks,dc=ucs,dc=test
+    attr:
+      dn: cn=networks,dc=ucs,dc=test
+      objectType: container/cn
+      position: dc=ucs,dc=test
+      properties: {name: networks}
+      options: {}
+
+  cn_networks_child:
+    kind: udm:module:container/cn
+    id: cn=sub,cn=networks,dc=ucs,dc=test
+    attr:
+      dn: cn=sub,cn=networks,dc=ucs,dc=test
+      objectType: container/cn
+      position: cn=networks,dc=ucs,dc=test
+      properties: {name: sub}
+      options: {}
+
+  cn_networks_other_spelling:
+    kind: udm:module:container/cn
+    id: CN=Networks,dc=ucs,dc=test
+    attr:
+      dn: CN=Networks,dc=ucs,dc=test
+      objectType: container/cn
+      position: dc=ucs,dc=test
+      properties: {name: Networks}
+      options: {}
+
+  cn_networks_lookalike:
+    kind: udm:module:container/cn
+    id: cn=networks2,dc=ucs,dc=test
+    attr:
+      dn: cn=networks2,dc=ucs,dc=test
+      objectType: container/cn
+      position: dc=ucs,dc=test
+      properties: {name: networks2}
+      options: {}
+
+  cn_dns:
+    kind: udm:module:container/cn
+    id: cn=dns,dc=ucs,dc=test
+    attr:
+      dn: cn=dns,dc=ucs,dc=test
+      objectType: container/cn
+      position: dc=ucs,dc=test
+      properties: {name: dns}
+      options: {}
+
+  cn_dhcp:
+    kind: udm:module:container/cn
+    id: cn=dhcp,dc=ucs,dc=test
+    attr:
+      dn: cn=dhcp,dc=ucs,dc=test
+      objectType: container/cn
+      position: dc=ucs,dc=test
+      properties: {name: dhcp}
+      options: {}
+
+  cn_in_bremen:
+    kind: udm:module:container/cn
+    id: cn=computers,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=computers,ou=bremen,dc=ucs,dc=test
+      objectType: container/cn
+      position: ou=bremen,dc=ucs,dc=test
+      properties: {name: computers}
+      options: {}
+
+  cn_deep_in_bremen:
+    kind: udm:module:container/cn
+    id: cn=sub,cn=computers,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=sub,cn=computers,ou=bremen,dc=ucs,dc=test
+      objectType: container/cn
+      position: cn=computers,ou=bremen,dc=ucs,dc=test
+      properties: {name: sub}
+      options: {}
+
+  cn_in_berlin:
+    kind: udm:module:container/cn
+    id: cn=computers,ou=berlin,dc=ucs,dc=test
+    attr:
+      dn: cn=computers,ou=berlin,dc=ucs,dc=test
+      objectType: container/cn
+      position: ou=berlin,dc=ucs,dc=test
+      properties: {name: computers}
+      options: {}
+
+  cn_users:
+    kind: udm:module:container/cn
+    id: cn=users,dc=ucs,dc=test
+    attr:
+      dn: cn=users,dc=ucs,dc=test
+      objectType: container/cn
+      position: dc=ucs,dc=test
+      properties: {name: users}
+      options: {}
