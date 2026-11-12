@@ -33,6 +33,7 @@ import univention.connector
 import univention.connector.ad.mapping
 import univention.uldap
 from univention.config_registry import ConfigRegistry
+from univention.dn import DN
 from univention.logging import Structured
 
 
@@ -1640,13 +1641,14 @@ class ad(univention.connector.ucs):
         log.debug("group_members_sync_to_ucs: ucs_members: %s", ucs_members)
 
         # map members from AD to UCS and check if they exist
-        ucs_members_from_ad = {'user': [], 'group': [], 'windowscomputer': [], 'unknown': []}
+        # sets, not lists: the membership checks below are then O(1), not O(group size)
+        ucs_members_from_ad = {'user': set(), 'group': set(), 'windowscomputer': set(), 'unknown': set()}
         dn_mapping_ucs_member_to_ad = {}
         for member_dn in ad_members:
             ucs_dn = self.group_member_mapping_cache_con.get(member_dn.lower())
             if ucs_dn:
                 log.debug("Found %s in AD group member cache: DN: %s", member_dn, ucs_dn)
-                ucs_members_from_ad['unknown'].append(ucs_dn.lower())
+                ucs_members_from_ad['unknown'].add(DN(ucs_dn))
                 dn_mapping_ucs_member_to_ad[ucs_dn.lower()] = member_dn
                 self.__group_cache_con_append_member(ad_object_dn, member_dn)
             else:
@@ -1668,7 +1670,7 @@ class ad(univention.connector.ucs):
 
                     try:
                         if self.lo.get(ucs_dn):
-                            ucs_members_from_ad['unknown'].append(ucs_dn.lower())
+                            ucs_members_from_ad['unknown'].add(DN(ucs_dn))
                             self.group_member_mapping_cache_con[member_dn.lower()] = ucs_dn
                             self.__group_cache_con_append_member(ad_object_dn, member_dn)
                         else:
@@ -1684,11 +1686,12 @@ class ad(univention.connector.ucs):
         # check if members in UCS don't exist in AD, if true they need to be added in UCS
         for member_dn in ucs_members:
             member_dn_lower = member_dn.lower()
+            member_dn_obj = DN(member_dn)
             if not (
-                member_dn_lower in ucs_members_from_ad['user']
-                or member_dn_lower in ucs_members_from_ad['group']
-                or member_dn_lower in ucs_members_from_ad['unknown']
-                or member_dn_lower in ucs_members_from_ad['windowscomputer']
+                member_dn_obj in ucs_members_from_ad['user']
+                or member_dn_obj in ucs_members_from_ad['group']
+                or member_dn_obj in ucs_members_from_ad['unknown']
+                or member_dn_obj in ucs_members_from_ad['windowscomputer']
             ):
                 try:
                     cache[member_dn] = self.lo.get(member_dn)
@@ -1709,29 +1712,32 @@ class ad(univention.connector.ucs):
                         if not self.lo_ad.get(ad_dn, attr=['cn']):
                             # member does not exist in AD but should
                             # stay a member in UCS
-                            ucs_members_from_ad[k].append(member_dn_lower)
+                            ucs_members_from_ad[k].add(member_dn_obj)
                 except ldap.SERVER_DOWN:
                     raise
                 except Exception:  # FIXME: which exception is to be caught?
                     log.process("group_members_sync_to_ucs: failed to get AD dn for UCS group member %s", member_dn, exc_info=True)
 
         log.debug("group_members_sync_to_ucs: dn_mapping_ucs_member_to_ad=%s", dn_mapping_ucs_member_to_ad)
-        add_members = copy.deepcopy(ucs_members_from_ad)
+        # DN is immutable, so a shallow copy of each set is enough, no deepcopy needed
+        add_members = {k: set(v) for k, v in ucs_members_from_ad.items()}
         del_members = {'user': [], 'group': [], 'windowscomputer': []}
 
         log.debug("group_members_sync_to_ucs: members to add initialized: %s", add_members)
 
         for member_dn in ucs_members:
             member_dn_lower = member_dn.lower()
-            if self.__compare_lowercase_dn(member_dn_lower, ucs_members_from_ad['user']):
-                add_members['user'] = [x for x in add_members['user'] if not self.lo.compare_dn(x, member_dn_lower)]
-            elif self.__compare_lowercase_dn(member_dn_lower, ucs_members_from_ad['group']):
-                add_members['group'] = [x for x in add_members['group'] if not self.lo.compare_dn(x, member_dn_lower)]
-            elif self.__compare_lowercase_dn(member_dn_lower, ucs_members_from_ad['unknown']):
-                add_members['unknown'] = [x for x in add_members['unknown'] if not self.lo.compare_dn(x, member_dn_lower)]
-            elif self.__compare_lowercase_dn(member_dn_lower, ucs_members_from_ad['windowscomputer']):
-                add_members['windowscomputer'] = [x for x in add_members['windowscomputer'] if not self.lo.compare_dn(x, member_dn_lower)]
-            else:
+            member_dn_obj = DN(member_dn)
+
+            # DN equality is hashed/cached, so this is O(1) per category, not O(group size)
+            matched_category = None
+            for k in ('user', 'group', 'unknown', 'windowscomputer'):
+                if member_dn_obj in ucs_members_from_ad[k]:
+                    add_members[k].discard(member_dn_obj)
+                    matched_category = k
+                    break
+
+            if matched_category is None:
                 # remove member only if he was in the cache
                 # otherwise it is possible that the user was just created on UCS
 
@@ -1769,15 +1775,16 @@ class ad(univention.connector.ucs):
             ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
             ucs_admin_object.open()
 
-            uniqueMember_add = add_members['user'] + add_members['group'] + add_members['unknown'] + add_members['windowscomputer']
+            # add_members[k] are now sets of DN objects - back to plain strings here
+            uniqueMember_add = list(DN.values(add_members['user'] | add_members['group'] | add_members['unknown'] | add_members['windowscomputer']))
             uniqueMember_del = del_members['user'] + del_members['group'] + del_members['windowscomputer']
             memberUid_add = []
             memberUid_del = []
             for member in add_members['user']:
-                (_rdn_attribute, uid, _flags) = str2dn(member)[0][0]
+                _rdn_attribute, uid = member.rdn
                 memberUid_add.append(uid)
-            for member in add_members['unknown'] + add_members['windowscomputer']:  # user or group?
-                ucs_object_attr = self.lo.get(member)
+            for member in add_members['unknown'] | add_members['windowscomputer']:  # user or group?
+                ucs_object_attr = self.lo.get(str(member))
                 uid = ucs_object_attr.get('uid')
                 if uid:
                     memberUid_add.append(uid[0].decode('UTF-8'))
@@ -1789,10 +1796,14 @@ class ad(univention.connector.ucs):
                 uid = ucs_object_attr.get('uid')
                 if uid:
                     memberUid_del.append(uid[0])
+            # keep group_members_cache_ucs in sync with what we actually wrote
+            group_member_cache = self.group_members_cache_ucs.setdefault(object['dn'].lower(), set())
             if uniqueMember_del or memberUid_del:
                 ucs_admin_object.fast_member_remove(uniqueMember_del, memberUid_del, ignore_license=True)
+                group_member_cache.difference_update(x.lower() for x in uniqueMember_del)
             if uniqueMember_add or memberUid_del:
                 ucs_admin_object.fast_member_add(uniqueMember_add, memberUid_add)
+                group_member_cache.update(x.lower() for x in uniqueMember_add)
 
     def set_userPrincipalName_from_ucr(self, key, object):
         object_key = key
