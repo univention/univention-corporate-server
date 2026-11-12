@@ -1,0 +1,1 @@
+The containers of Docker Apps are now started and stopped by native systemd units ``docker-app-<app>.service`` instead of legacy SysV init scripts. ``/etc/init.d/docker-app-<app>`` remains as a wrapper that forwards to :command:`systemctl`. With ``<app>/autostart=manually`` the container is no longer started at boot.

@@ -2,16 +2,10 @@
 # SPDX-FileCopyrightText: 2015-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-### BEGIN INIT INFO
-# Provides:          @%@APPID@%@_Container
-# Required-Start:    $remote_fs $syslog docker
-# Required-Stop:     $remote_fs $syslog docker
-# Default-Start:     2 3 4 5
-# Default-Stop:      0 1 6
-# Short-Description: Start the Container for @%@APPID@%@
-# Description:       Start the Docker container
-#                    for @%@APPID@%@
-### END INIT INFO
+# Starts and stops the Docker container of an app of the Univention App Center.
+# It is called by the systemd unit docker-app-<APP_ID>.service and by univention-app.
+#
+# Usage: docker-app-container <APP_ID> {start|stop|restart|reload|crestart|kill|status}
 
 set -e
 
@@ -23,28 +17,20 @@ set -e
 
 AUTOSTART_LIB_PATH=/usr/share/univention-config-registry/init-autostart.lib
 
-app_container_init_script_name=$(basename "$0")
-
-if [ "${app_container_init_script_name:0:1}" = "S" ] || [ "${app_container_init_script_name:0:1}" = "K" ]; then
-	# started by init switching runlevel, strip first 3 characters
-	app_container_init_script_name="${app_container_init_script_name:3}"
-fi
-app_name="${app_container_init_script_name#docker-app-}"	## cut away the prefix
-app_name="${app_name#container-init-script}"	## cut away the extended prefix
-
+app_name="${1:-}"
 if [ -z "$app_name" ]; then
-	echo "This is a generic SysV init script for docker app containers."
-	echo "To do anything useful it needs to be copied to a file named"
-	echo "according to this scheme:"
-	echo -e "\tdocker-app-<APP_AME>"
-	echo "or"
-	echo -e "\tdocker-app-container-init-script-<APP_NAME>"
+	echo "Usage: $(basename "$0") <APP_ID> {start|stop|restart|reload|crestart|kill|status}"
 	exit 1
 fi
-app_name="${app_name#-}"	## cut away the remaining leading dash
+shift
+app_container_init_script_name="docker-app-$app_name"
 
 ## Early check for sane usage:
 case "$1" in
+	reload)
+		# nothing to reload yet
+		exit 0
+		;;
 	start|stop|restart|crestart|kill|status)
 		if ! docker_is_running; then
 			log_failure_msg "Docker not running"
@@ -54,7 +40,7 @@ case "$1" in
 		fi
 		;;
 	*)
-		log_success_msg "Usage: init_script_name {start|stop|restart|crestart|kill|status}"
+		log_success_msg "Usage: $(basename "$0") <APP_ID> {start|stop|restart|reload|crestart|kill|status}"
 		exit 1
 esac
 
@@ -237,6 +223,6 @@ case "$requested_action" in
 		container_run_state "$container_uuid"
 		;;
 	*)
-		log_success_msg "Usage: init_script_name {start|stop|restart|crestart|kill|status}"
+		log_success_msg "Usage: $(basename "$0") <APP_ID> {start|stop|restart|reload|crestart|kill|status}"
 		exit 1
 esac
