@@ -89,7 +89,6 @@ mapping = {
     'univention-l10n': 'l10n',
     'univention-l10n-fr': 'l10n-fr',
     'univention-ldap': 'ldap',
-    'univention-ldap-overlay-memberof': 'ldap-overlay-memberof',
     'univention-ldb-modules': 'ldb-modules',
     'univention-lib': 'lib',
     'univention-licence': 'licence',
