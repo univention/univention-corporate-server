@@ -129,9 +129,10 @@ class Service(UniventionAppAction):
         if not os.path.exists(self.get_init(app)):
             self.fatal('%s is not supported' % app.id)
             return False
-        if command in ('start', 'stop', 'restart', 'reload'):
+        if command in ('start', 'stop', 'restart', 'reload', 'crestart'):
             # through systemd, so that it knows whether the container has to be stopped on shutdown
-            return self._call_script('/bin/systemctl', command, get_unit_name(app.id))
+            verb = 'try-restart' if command == 'crestart' else command
+            return self._call_script('/bin/systemctl', verb, get_unit_name(app.id))
         return self._call_script(CONTAINER_SCRIPT, app.id, command)
 
 
