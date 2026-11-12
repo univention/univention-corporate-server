@@ -24,7 +24,7 @@ SYSTEMD_UNIT = """\
 # Created by the Univention App Center. Do not edit, it is overwritten when the app is registered.
 # Use a drop-in in /etc/systemd/system/{unit}.d/ for local changes.
 [Unit]
-Description=Docker container of the app {app_id}
+Description=Docker container of the UCS App Center app {app_id}
 Wants=docker.service
 After=docker.service remote-fs.target
 
@@ -33,6 +33,7 @@ Type=oneshot
 RemainAfterExit=yes
 ExecStart={script} {app_id} start
 ExecStop={script} {app_id} stop
+ExecReload={script} {app_id} reload
 TimeoutSec=5min
 
 [Install]
@@ -51,13 +52,13 @@ INIT_WRAPPER = """\
 # Required-Stop:     $remote_fs $syslog docker
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Docker container of the app {app_id}
+# Short-Description: Docker container of the UCS App Center app {app_id}
 ### END INIT INFO
 case "$1" in
-    start|stop|restart) exec systemctl "$1" {unit} ;;
+    start|stop|restart|reload) exec systemctl "$1" {unit} ;;
     crestart) exec systemctl try-restart {unit} ;;
     kill|status) exec {script} {app_id} "$1" ;;
-    *) echo "Usage: $0 {{start|stop|restart|crestart|kill|status}}" >&2; exit 1 ;;
+    *) echo "Usage: $0 {{start|stop|restart|reload|crestart|kill|status}}" >&2; exit 1 ;;
 esac
 """
 
@@ -128,7 +129,7 @@ class Service(UniventionAppAction):
         if not os.path.exists(self.get_init(app)):
             self.fatal('%s is not supported' % app.id)
             return False
-        if command in ('start', 'stop', 'restart'):
+        if command in ('start', 'stop', 'restart', 'reload'):
             # through systemd, so that it knows whether the container has to be stopped on shutdown
             return self._call_script('/bin/systemctl', command, get_unit_name(app.id))
         return self._call_script(CONTAINER_SCRIPT, app.id, command)
