@@ -32,10 +32,12 @@ with `ucr get ldap/base`
 and runs `cerbos compile` on the policies together with the suites.
 
 Options after `--` go to `cerbos compile`,
-for example to evaluate strictly
+for example to list every check with its result, not only the failed ones,
+to evaluate strictly,
 or to run a single suite:
 
 ```bash
+/opt/cerbos-tests/run-cerbos-tests -- --verbose
 /opt/cerbos-tests/run-cerbos-tests -- --strict-evaluation
 /opt/cerbos-tests/run-cerbos-tests -- --test-filter='suite=DenyUidNumberZero'
 ```
