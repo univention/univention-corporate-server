@@ -1,0 +1,1 @@
+The package ``univention-base-packages`` now depends on ``console-setup`` instead of the unmaintained ``console-data``. The keyboard layout of the console was already configured through ``console-setup`` with the UCR variables ``xorg/keyboard/options/*``. On updated systems, ``console-data`` remains installed until it is removed with ``apt autoremove``.
