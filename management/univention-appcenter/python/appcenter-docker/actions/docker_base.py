@@ -10,6 +10,7 @@
 import os.path
 import re
 import shutil
+import tempfile
 import time
 
 from ldap.dn import explode_dn
@@ -242,6 +243,15 @@ docker inspect:
         logfile_logger = get_logfile_logger('docker.base')
         docker.execute('rm', '-f', '/etc/timezone', '/etc/localtime', _logger=logfile_logger)
         docker.cp_to_container('/etc/localtime', '/etc/localtime', _logger=logfile_logger)
+        localtime = os.path.realpath('/etc/localtime')
+        zoneinfo_prefix = '/usr/share/zoneinfo/'
+        if localtime.startswith(zoneinfo_prefix):
+            with tempfile.NamedTemporaryFile(mode='w', delete=False) as timezone_file:
+                timezone_file.write(localtime[len(zoneinfo_prefix):] + '\n')
+            try:
+                docker.cp_to_container(timezone_file.name, '/etc/timezone', _logger=logfile_logger)
+            finally:
+                os.unlink(timezone_file.name)
         # configure app
         after_image_configuration.update(set_vars)
         configure.call(app=app, autostart=autostart, run_script='no', set_vars=after_image_configuration)

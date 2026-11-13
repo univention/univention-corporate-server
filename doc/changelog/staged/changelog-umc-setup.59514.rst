@@ -1,1 +1,1 @@
-The system setup timezone handling has been adapted to Debian Trixie by using :file:`/etc/localtime` instead of relying on the deprecated :file:`/etc/timezone` file.
+The system setup timezone handling has been adapted to Debian Trixie by using :file:`/etc/localtime` instead of relying on the deprecated :file:`/etc/timezone` file. Application containers additionally receive a synchronized compatibility file at :file:`/etc/timezone` for older applications that read it directly.
