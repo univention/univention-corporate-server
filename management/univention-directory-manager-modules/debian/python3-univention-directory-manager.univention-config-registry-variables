@@ -212,3 +212,10 @@ Description[en]=Log output target for the license cache update script.
 Type=str
 Default=/var/log/univention/directory-manager-cmd.log
 Categories=management-udm
+
+[directory/manager/delegative-administration/cerbos/url]
+Description[de]=URL des Cerbos-Servers, bei dem UDM die delegierte Administration prüft.
+Description[en]=URL of the Cerbos server that UDM asks to check delegated administration.
+Type=url_http
+Default=http://localhost:3592
+Categories=management-udm

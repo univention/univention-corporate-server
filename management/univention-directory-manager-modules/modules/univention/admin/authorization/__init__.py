@@ -106,7 +106,9 @@ class Authorization:
     def __init__(self):
         self.enabled = False
         if self.engine is None:
-            self.__class__.engine = CerbosAuthorizationClient()
+            self.__class__.engine = CerbosAuthorizationClient(
+                configRegistry.get('directory/manager/delegative-administration/cerbos/url', 'http://localhost:3592'),
+            )
 
     @classmethod
     def clear_caches(cls):
