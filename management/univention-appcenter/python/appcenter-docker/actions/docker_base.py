@@ -241,7 +241,6 @@ docker inspect:
         # update timezone in container
         logfile_logger = get_logfile_logger('docker.base')
         docker.execute('rm', '-f', '/etc/timezone', '/etc/localtime', _logger=logfile_logger)
-        docker.cp_to_container('/etc/timezone', '/etc/timezone', _logger=logfile_logger)
         docker.cp_to_container('/etc/localtime', '/etc/localtime', _logger=logfile_logger)
         # configure app
         after_image_configuration.update(set_vars)

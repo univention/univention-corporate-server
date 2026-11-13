@@ -19,16 +19,20 @@ timezone="$(get_profile_var timezone)" ||
 [ -n "$timezone" ] ||
 	exit 0
 
-# current_timezone="$(timedatectl show --property=Timezone --value 2>/dev/null)"
-current_timezone="$(readlink -f /etc/localtime 2>/dev/null)" ||
-    current_timezone=""
+current_timezone="$(readlink -f /etc/localtime 2>/dev/null)" || current_timezone=""
 current_timezone="${current_timezone#/usr/share/zoneinfo/}"
+requested_timezone="$(readlink -f "/usr/share/zoneinfo/$timezone" 2>/dev/null)" || requested_timezone=""
+requested_timezone="${requested_timezone#/usr/share/zoneinfo/}"
 
-[ "$current_timezone" = "$timezone" ] &&
-    exit 0
+[ -n "$requested_timezone" ] && [ "$current_timezone" = "$requested_timezone" ] && {
+	rm -f /etc/timezone
+	exit 0
+}
 
-ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime
+rm -f /etc/timezone /etc/localtime
+ln -s "/usr/share/zoneinfo/$timezone" /etc/localtime
 timedatectl set-timezone "$timezone" || true
+rm -f /etc/timezone
 
 service stop ntpsec
 # shellcheck disable=SC2015
