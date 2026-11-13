@@ -343,7 +343,8 @@ class UniventionDirectoryManagerPolicies:
     def _global_deny_rules(self, modname):
         global_rules = [{
             'name': 'domain-admin-allow-everything',
-            'actions': ['*'],
+            # '*' would also allow the restricting none/writeonly/readonly permissions, which hide every property
+            'actions': ['udm:object:*', *(udm_property_action_wildcards('*', perm) for perm in PROPERTY_PERMISSIONS_WO_DENY)],
             'roles': ['udm:default-roles:domain-administrator'],
             'effect': 'EFFECT_ALLOW',
         }]
