@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 13. Nov 2026
+     - :ref:`references-ucr-variables`
+     - Add :envvar:`domainname` and :envvar:`hostname` to the UCR variable reference.
+
    * - 05. Nov 2026
      - :ref:`domain-infrastructure-dns`
      - Add section about DNS.
