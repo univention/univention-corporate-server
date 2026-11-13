@@ -1,3 +1,10 @@
+ucs-test (12.7.18) unstable; urgency=medium
+
+  * Issue univention/dev/ucs#3845: Add 55_adconnector tests for the AD->UCS
+    group membership sync changes
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 13 Nov 2026 12:27:52 +0100
+
 ucs-test (12.7.17) unstable; urgency=medium
 
   * Bug #58543: Test explicit versions in "univention-app upgrade"
