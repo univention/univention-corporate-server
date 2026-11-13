@@ -1198,7 +1198,11 @@ class Instance(Base):
             MODULE.info("Token not found in DB for user '%s'.", username)
             raise TokenNotFound()
 
-        if (dt.datetime.now(dt.UTC) - token_from_db["timestamp"]).total_seconds() >= self.token_validity_period:
+        token_timestamp = token_from_db["timestamp"]
+        if token_timestamp.tzinfo is None:
+            # treat legacy TIMESTAMP values as UTC if the database migration is pending.
+            token_timestamp = token_timestamp.replace(tzinfo=dt.UTC)
+        if (dt.datetime.now(dt.UTC) - token_timestamp).total_seconds() >= self.token_validity_period:
             # token is correct but expired
             MODULE.info("Receive correct but expired token for '%s'.", username)
             self.db.delete_tokens(token=token, username=username)

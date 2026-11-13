@@ -101,8 +101,28 @@ token VARCHAR(255) NOT NULL);""")
 
     def migrate_timestamp_to_timestamptz(self):
         """UCS 5.3 migration"""
+        if not self.table_exists():
+            self.logger.info("Table 'tokens' does not exist; nothing to migrate.")
+            return
+
         self.logger.info("Migrating tokens.timestamp to TIMESTAMP WITH TIME ZONE...")
         with self.cursor() as cur:
+            cur.execute("""
+                SELECT data_type
+                FROM information_schema.columns
+                WHERE table_schema = current_schema()
+                  AND table_name = 'tokens'
+                  AND column_name = 'timestamp';
+            """)
+            column = cur.fetchone()
+            if column is None:
+                self.logger.info("Column 'tokens.timestamp' does not exist; nothing to migrate.")
+                return
+            if column[0] == 'timestamp with time zone':
+                self.logger.info("Column 'tokens.timestamp' already uses a timezone-aware type.")
+                return
+            if column[0] != 'timestamp without time zone':
+                raise RuntimeError(f"Unexpected type for tokens.timestamp: {column[0]}")
             cur.execute("""
                 ALTER TABLE tokens
                 ALTER COLUMN timestamp
