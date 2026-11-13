@@ -344,7 +344,7 @@ class UniventionDirectoryManagerPolicies:
         global_rules = [{
             'name': 'domain-admin-allow-everything',
             'actions': ['*'],
-            'roles': ['domain-administrator'],
+            'roles': ['udm:default-roles:domain-administrator'],
             'effect': 'EFFECT_ALLOW',
         }]
         if modname == 'users/user':
