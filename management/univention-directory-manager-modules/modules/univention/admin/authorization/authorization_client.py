@@ -48,7 +48,8 @@ class CerbosAuthorizationClient:
     def check_actions(self, principal: Principal, resource: Resource, actions: Iterable[str]) -> list[CerbosCheckResult]:
         """Check ``actions`` for ``principal`` on each UDM resource."""
         actions = sorted(set(actions))
-        if not actions:
+        # Cerbos rejects a principal without roles; without a role policy nothing is allowed anyway.
+        if not actions or not principal.roles:
             return CerbosCheckResult(resource.id, frozenset())
 
         batch_resources = ResourceList()
@@ -64,7 +65,7 @@ class CerbosAuthorizationClient:
         """Check ``actions`` for ``principal`` on each UDM resource."""
         actions = sorted(set(actions))
         resources = list(resources)
-        if not resources or not actions:
+        if not resources or not actions or not principal.roles:
             return [CerbosCheckResult(resource.id, frozenset()) for resource in resources]
 
         batch_resources = ResourceList()
