@@ -57,6 +57,13 @@ cerbos-tests/<name>/
 ```
 
 Cerbos loads the fixtures from the `testdata` directory next to the suite.
+
+A suite tests the policies generated from the installed DSL files by default.
+To test DSL features the default roles don't use,
+put a `*.policy` file into the suite directory;
+the suite then runs against policies generated from its own DSL files only.
+They can't be generated together with the installed ones,
+because the generator keeps only the position variables of the last DSL file.
 Write DNs below `dc=ucs,dc=test`;
 the script replaces it with the LDAP base of the system.
 See the [Cerbos documentation on testing policies](https://docs.cerbos.dev/cerbos/latest/policies/compile.html#testing)
