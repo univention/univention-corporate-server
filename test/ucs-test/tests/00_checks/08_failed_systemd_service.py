@@ -10,7 +10,6 @@ import pytest
 
 IGNORE_UNITS = {
     # 'some-known-broken.service',
-    'console-setup.service',  # Bug #59596
     # fetchmail's sysv init script exits non-zero whenever no mail retrieval is
     # configured (empty /etc/fetchmailrc), which is an expected state on any
     # system where the app is installed but unconfigured -- not a failure.
