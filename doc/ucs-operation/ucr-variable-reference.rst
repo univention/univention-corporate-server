@@ -624,6 +624,26 @@ This section provides a reference for UCR variables.
    :Type: string
 
 
+.. envvar:: domainname
+
+   Contains the DNS domain name of the Nubus for UCS system,
+   for example ``example.com``.
+   The domain name doesn't have to match the external DNS domain name,
+   for example the domain name used for a website.
+
+   The system combines this value with the hostname
+   to form the fully qualified domain name,
+   for example ``server.example.com``.
+   The setup process also uses the value for domain-related settings,
+   including LDAP and Kerberos settings.
+
+   The setup process sets this variable during system setup or domain join.
+   The variable is read-only in the UCR module of the management interface.
+
+   :Default value: no fixed default; set during system setup or domain join
+   :Type: string
+
+
 .. envvar:: gateway
 
    You need a gateway to send traffic to networks outside your local subnet.
