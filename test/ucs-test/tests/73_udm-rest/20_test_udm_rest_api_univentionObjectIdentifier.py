@@ -184,7 +184,7 @@ class TestUniventionObjectIdentifier:
         for component, schema in openapi_schema["components"]["schemas"].items():
             props = schema.get("properties", {}).get("properties", {}).get("properties", {})
             with subtests.test(msg=component, i=component):
-                if component.endswith("request-patch") and component not in ("users-passwd.request-patch", "blocklists-entry.request-patch", "blocklists-list.request-patch"):
+                if component.endswith("request-patch") and component not in ("users-passwd.request-patch",):
                     assert "univentionObjectIdentifier" in props.keys()
                 else:
                     assert "univentionObjectIdentifier" not in props.keys()
