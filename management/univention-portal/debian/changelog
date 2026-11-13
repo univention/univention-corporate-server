@@ -1,3 +1,9 @@
+univention-portal (6.7.1) unstable; urgency=medium
+
+  * Bug #60132: allow blob: URLs in the frame-src of the portal
+
+ -- Johannes Königer <koeniger@univention.de>  Fri, 13 Nov 2026 10:03:49 +0000
+
 univention-portal (6.7.0) unstable; urgency=medium
 
   [ Rehema Owino ]

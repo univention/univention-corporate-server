@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-portal
+fix: 6.7.1
+desc: |
+ This update addresses the following issue:
+ * Pages embedded in the portal can now download files that they create in
+   the browser. Previously, the Content Security Policy of the portal blocked
+   these `blob:` URLs in Firefox.
+bug: [60132]
