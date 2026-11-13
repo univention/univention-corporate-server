@@ -392,6 +392,8 @@ Identity provider with non-standard FQDN
 
 By default,
 the FQDN for the :program:`Keycloak` identity provider is :samp:`ucs-sso-ng.{$domainname}`.
+The placeholder :samp:`{$domainname}` represents the DNS domain name;
+see the UCR variable :envvar:`domainname`.
 However, you can configure a different FQDN for the identity provider.
 For more information,
 see :external+uv-keycloak-app:ref:`use-case-custom-fqdn-idp` in :cite:t:`ucs-keycloak-doc`.
@@ -420,6 +422,8 @@ Non-standard FQDN for the Univention Portal and Management UI
 
 By default, the *Management UI* is available under the FQDN
 :samp:`{$hostname}.{$domainname}`.
+The placeholder :samp:`{$domainname}` represents the DNS domain name;
+see the UCR variable :envvar:`domainname`.
 If you have a setup with a different FQDN for the *Management UI*,
 you have to change the UCR variable
 :envvar:`umc/oidc/rp/server`

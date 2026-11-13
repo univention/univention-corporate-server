@@ -252,6 +252,8 @@ you need to process the following steps:
       of the UCS Primary Directory Node
       by asking the DNS server
       for the service record ``_domaincontroller_master._tcp.$domainname``.
+      The placeholder ``$domainname`` represents the DNS domain name;
+      see the UCR variable :envvar:`domainname`.
       The automatic lookup only works,
       if you provided the Primary Directory Node as DNS server during
       :ref:`deployment-initial-system-configuration-network-setup`.

@@ -631,7 +631,7 @@ This section provides a reference for UCR variables.
    The domain name doesn't have to match the external DNS domain name,
    for example the domain name used for a website.
 
-   The system combines this value with the hostname
+   The system combines this value with the :envvar:`hostname`
    to form the fully qualified domain name,
    for example ``server.example.com``.
    The setup process also uses the value for domain-related settings,
@@ -760,6 +760,24 @@ This section provides a reference for UCR variables.
 
    :Default value: ``WARN``
    :Possible values: ``DEBUG``, ``INFO``, ``WARN``, ``ERROR``
+   :Type: string
+
+.. envvar:: hostname
+
+   Contains the name of the Nubus for UCS system without the DNS domain name,
+   for example ``server``.
+
+   The system combines this value with :envvar:`domainname`
+   to form the fully qualified domain name,
+   for example ``server.example.com``.
+   The system also uses the hostname in configuration files,
+   including :file:`/etc/hostname` and :file:`/etc/hosts`.
+
+   The setup process sets this variable during system setup.
+   The hostname can't be changed after the system has joined the domain.
+   The variable is read-only in the UCR module of the management interface.
+
+   :Default value: no fixed default
    :Type: string
 
 .. envvar:: interfaces/*/address
