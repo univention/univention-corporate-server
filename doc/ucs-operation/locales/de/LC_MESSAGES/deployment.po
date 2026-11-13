@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Betriebshandbuch 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-29 10:26+0000\n"
-"PO-Revision-Date: 2026-04-16 12:50+0200\n"
+"POT-Creation-Date: 2026-11-13 12:13+0000\n"
+"PO-Revision-Date: 2026-11-13 13:16+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -404,7 +404,7 @@ msgstr ""
 " verwenden. Das Nubus für UCS System tritt der Active Directory Domäne "
 "mit dem angegebenen Rechnernamen bei."
 
-#: ../../deployment/domain-setup.rst:196 ../../deployment/domain-setup.rst:279
+#: ../../deployment/domain-setup.rst:196 ../../deployment/domain-setup.rst:281
 msgid "After the configuration is complete, you **can't** change the domain."
 msgstr "Nach Abschluss der Konfiguration können Sie die Domäne **nicht** ändern."
 
@@ -518,19 +518,21 @@ msgstr "Primary Directory Node im DNS suchen"
 msgid ""
 "System setup automatically determines the fully qualified domain name of "
 "the UCS Primary Directory Node by asking the DNS server for the service "
-"record ``_domaincontroller_master._tcp.$domainname``. The automatic "
-"lookup only works, if you provided the Primary Directory Node as DNS "
-"server during :ref:`deployment-initial-system-configuration-network-"
-"setup`."
+"record ``_domaincontroller_master._tcp.$domainname``. The placeholder "
+"``$domainname`` represents the DNS domain name; see the UCR variable "
+":envvar:`domainname`. The automatic lookup only works, if you provided "
+"the Primary Directory Node as DNS server during :ref:`deployment-initial-"
+"system-configuration-network-setup`."
 msgstr ""
 "Die Systemeinrichtung bestimmt automatisch den voll qualifizierten "
 "Domänennamen des UCS Primary Directory Node, indem sie im DNS-Server den "
 "Service-Eintrag ``_domaincontroller_master._tcp.$domainname`` abfragt. "
-"Die automatische Suche funktioniert nur, wenn Sie den Primary Directory "
-"Node als DNS-Server während :ref:`deployment-initial-system-"
-"configuration-network-setup` angegeben haben."
+"Der Platzhalter ``$domainname`` steht für den DNS-Domänennamen; siehe die "
+"UCR-Variable :envvar:`domainname`. Die automatische Suche funktioniert "
+"nur, wenn Sie den Primary Directory Node während :ref:`deployment-initial-"
+"system-configuration-network-setup` als DNS-Server angegeben haben."
 
-#: ../../deployment/domain-setup.rst:259
+#: ../../deployment/domain-setup.rst:261
 msgid ""
 "If you decide to join another Nubus for UCS domain, you can deactivate "
 "*Search Primary Directory Node in DNS* and provide the fully qualified "
@@ -541,11 +543,11 @@ msgstr ""
 "deaktivieren und den :spelling:word:`Fully Qualified Domain Name` des "
 "bevorzugten UCS Primary Directory Node angeben."
 
-#: ../../deployment/domain-setup.rst:265
+#: ../../deployment/domain-setup.rst:267
 msgid "Credentials for domain administrator"
 msgstr "Anmeldedaten für Domänenadministrator"
 
-#: ../../deployment/domain-setup.rst:266
+#: ../../deployment/domain-setup.rst:268
 msgid ""
 "The domain join process needs to access information about the domain. To "
 "grant system setup the appropriate permission, you need to provide the "
@@ -556,7 +558,7 @@ msgstr ""
 "zu erteilen, müssen Sie die Anmeldedaten für ein *Administrator*-Konto "
 "der Domäne angeben."
 
-#: ../../deployment/domain-setup.rst:270
+#: ../../deployment/domain-setup.rst:272
 msgid ""
 "Finally, provide a hostname for the Nubus for UCS system. You can adopt "
 "the suggested hostname or change it. For the naming convention of the "
@@ -573,15 +575,15 @@ msgstr ""
 "wie etwa einem öffentlichen Mailserver, kann es erforderlich sein, einen "
 "bestimmten :spelling:word:`Fully Qualified Domain Name` zu verwenden."
 
-#: ../../deployment/domain-setup.rst:283 ../../deployment/domain-setup.rst:286
+#: ../../deployment/domain-setup.rst:285 ../../deployment/domain-setup.rst:288
 msgid "Information on the domain join"
 msgstr "Informationen zum Domänenbeitritt"
 
-#: ../../deployment/domain-setup.rst:291
+#: ../../deployment/domain-setup.rst:293
 msgid "Confirm the installation settings"
 msgstr "Installationseinstellungen bestätigen"
 
-#: ../../deployment/domain-setup.rst:293
+#: ../../deployment/domain-setup.rst:295
 msgid ""
 "*Confirm configuration settings* shows a summary of your settings, see "
 ":numref:`deployment-installation-physical-confirm-settings-summary-"
@@ -591,11 +593,11 @@ msgstr ""
 " Einstellungen, siehe :numref:`deployment-installation-physical-confirm-"
 "settings-summary-figure`."
 
-#: ../../deployment/domain-setup.rst:296
+#: ../../deployment/domain-setup.rst:298
 msgid "Update system after installation"
 msgstr "System nach der Installation aktualisieren"
 
-#: ../../deployment/domain-setup.rst:297
+#: ../../deployment/domain-setup.rst:299
 msgid ""
 "The *Update system after installation* option instructs system setup to "
 "install updates after the installation. The behavior depends on the "
@@ -605,11 +607,11 @@ msgstr ""
 "Systemeinrichtung, nach der Installation Updates zu installieren. Das "
 "Verhalten hängt von der Systemrolle ab, die Sie einrichten möchten."
 
-#: ../../deployment/domain-setup.rst:301
+#: ../../deployment/domain-setup.rst:303
 msgid "Setting up a Primary Directory Node"
 msgstr "Einrichten eines Primary Directory Node"
 
-#: ../../deployment/domain-setup.rst:302
+#: ../../deployment/domain-setup.rst:304
 msgid ""
 "System setup installs all available patch level updates and errata "
 "updates on the Primary Directory Node itself, up to the latest available "
@@ -619,11 +621,11 @@ msgstr ""
 "und Errata-Updates auf dem Primary Directory Node selbst, bis zum "
 "neuesten verfügbaren Patch-Level innerhalb des aktuellen Release."
 
-#: ../../deployment/domain-setup.rst:306
+#: ../../deployment/domain-setup.rst:308
 msgid "Joining an existing UCS domain"
 msgstr "Beitritt zu einer bestehenden UCS-Domäne"
 
-#: ../../deployment/domain-setup.rst:307
+#: ../../deployment/domain-setup.rst:309
 msgid ""
 "When a non-Primary system role joins an existing domain, system setup "
 "connects to the :term:`UCS Primary Directory Node` to read its current "
@@ -639,7 +641,7 @@ msgstr ""
 "Updates. Der Primary Directory Node und alle anderen bestehenden "
 "Domänenmitglieder sind davon nicht betroffen."
 
-#: ../../deployment/domain-setup.rst:317
+#: ../../deployment/domain-setup.rst:319
 msgid ""
 "To verify the installation status, sign in to the :term:`UCS Primary "
 "Directory Node` using the administrator credentials from :ref"
@@ -650,7 +652,7 @@ msgstr ""
 ":spelling:word:`Administratorkontos` aus :ref:`deployment-domain-setup-"
 "join-ucs-credentials` an."
 
-#: ../../deployment/domain-setup.rst:322
+#: ../../deployment/domain-setup.rst:324
 msgid ""
 "If the settings match your intention, click :guilabel:`Configure System` "
 "to start the configuration of the Nubus for UCS system."
@@ -659,7 +661,7 @@ msgstr ""
 ":guilabel:`System konfigurieren`, um die Konfiguration des Nubus für UCS "
 "Systems zu starten."
 
-#: ../../deployment/domain-setup.rst:326
+#: ../../deployment/domain-setup.rst:328
 msgid ""
 "System setup shows the progress during the system configuration. It saves"
 " the installation protocol in the following files:"
@@ -668,15 +670,15 @@ msgstr ""
 "Systemkonfiguration an. Sie speichert das Installationsprotokoll in den "
 "folgenden Dateien:"
 
-#: ../../deployment/domain-setup.rst:329
+#: ../../deployment/domain-setup.rst:331
 msgid ":file:`/var/log/installer/syslog`"
 msgstr ":file:`/var/log/installer/syslog`"
 
-#: ../../deployment/domain-setup.rst:330
+#: ../../deployment/domain-setup.rst:332
 msgid ":file:`/var/log/univention/management-console-module-setup.log`"
 msgstr ":file:`/var/log/univention/management-console-module-setup.log`"
 
-#: ../../deployment/domain-setup.rst:332
+#: ../../deployment/domain-setup.rst:334
 msgid ""
 "After you confirm the completion of the system setup, your Nubus for UCS "
 "system is ready for the first full boot procedure. You can restart it. "
@@ -689,7 +691,7 @@ msgstr ""
 "Abschluss des Bootvorgangs fahren Sie mit :ref:`deployment-after-"
 "installation` fort."
 
-#: ../../deployment/domain-setup.rst:341 ../../deployment/domain-setup.rst:344
+#: ../../deployment/domain-setup.rst:343 ../../deployment/domain-setup.rst:346
 msgid "Installation overview"
 msgstr "Installationsübersicht"
 

@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-06 21:52+0000\n"
-"PO-Revision-Date: 2026-11-06 22:52+0100\n"
+"POT-Creation-Date: 2026-11-13 12:13+0000\n"
+"PO-Revision-Date: 2026-11-13 13:16+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -773,18 +773,21 @@ msgstr "Identitätsanbieter mit nicht standardmäßigem FQDN"
 #, python-brace-format
 msgid ""
 "By default, the FQDN for the :program:`Keycloak` identity provider is "
-":samp:`ucs-sso-ng.{$domainname}`. However, you can configure a different "
-"FQDN for the identity provider. For more information, see :external+uv-"
-"keycloak-app:ref:`use-case-custom-fqdn-idp` in :cite:t:`ucs-keycloak-"
-"doc`."
+":samp:`ucs-sso-ng.{$domainname}`. The placeholder :samp:`{$domainname}` "
+"represents the DNS domain name; see the UCR variable "
+":envvar:`domainname`. However, you can configure a different FQDN for the"
+" identity provider. For more information, see :external+uv-keycloak-"
+"app:ref:`use-case-custom-fqdn-idp` in :cite:t:`ucs-keycloak-doc`."
 msgstr ""
 "Standardmäßig lautet der FQDN für den Identitätsanbieter "
-":program:`Keycloak` :samp:`ucs-sso-ng.{$domainname}`. Sie können jedoch "
-"einen anderen FQDN für den Identitätsanbieter konfigurieren. Weitere "
-"Informationen finden Sie unter :external+uv-keycloak-app:ref:`use-case-"
-"custom-fqdn-idp` in :cite:t:`ucs-keycloak-doc`."
+":program:`Keycloak` :samp:`ucs-sso-ng.{$domainname}`. Der Platzhalter "
+":samp:`{$domainname}` steht für den DNS-Domänennamen; siehe die UCR-Variable "
+":envvar:`domainname`. Sie können jedoch einen anderen FQDN für den "
+"Identitätsanbieter konfigurieren. Weitere Informationen finden Sie unter "
+":external+uv-keycloak-app:ref:`use-case-custom-fqdn-idp` in "
+":cite:t:`ucs-keycloak-doc`."
 
-#: ../../management-interface/auth.rst:399
+#: ../../management-interface/auth.rst:401
 msgid ""
 "If you have such a setup, you have to configure the identity provider for"
 " the OpenID Connect authentication in UMC on each UCS system. Change the "
@@ -800,13 +803,13 @@ msgstr ""
 " Join-Skript des UMC Webservers erneut aus, wie in :numref:`management-"
 "interface-auth-sso-oidc-non-standard-fqdn-listing` gezeigt."
 
-#: ../../management-interface/auth.rst:407
+#: ../../management-interface/auth.rst:409
 msgid "Set non-standard FQDN for identity provider :program:`Keycloak`"
 msgstr ""
 "Setzen Sie einen nicht standardmäßigen FQDN für den Identitätsanbieter "
 ":program:`Keycloak`"
 
-#: ../../management-interface/auth.rst:407
+#: ../../management-interface/auth.rst:409
 msgid ""
 "$ IDP=\"auth.extern.test\"\n"
 "$ ucr set umc/oidc/issuer=\"https://$IDP/realms/ucs\"\n"
@@ -818,35 +821,39 @@ msgstr ""
 "$ univention-run-join-scripts --force \\\n"
 "   --run-scripts 92univention-management-console-web-server"
 
-#: ../../management-interface/auth.rst:419
+#: ../../management-interface/auth.rst:421
 msgid "Non-standard FQDN for the Univention Portal and Management UI"
 msgstr "Nicht standardmäßiger FQDN für das Univention Portal und die Management UI"
 
-#: ../../management-interface/auth.rst:421
+#: ../../management-interface/auth.rst:423
 #, python-brace-format
 msgid ""
 "By default, the *Management UI* is available under the FQDN "
-":samp:`{$hostname}.{$domainname}`. If you have a setup with a different "
-"FQDN for the *Management UI*, you have to change the UCR variable "
+":samp:`{$hostname}.{$domainname}`. The placeholder :samp:`{$domainname}` "
+"represents the DNS domain name; see the UCR variable "
+":envvar:`domainname`. If you have a setup with a different FQDN for the "
+"*Management UI*, you have to change the UCR variable "
 ":envvar:`umc/oidc/rp/server` to the FQDN of the *Management UI*, and run "
 "the join script of the UMC web server again, as shown in :numref"
 ":`management-interface-auth-sso-oidc-non-standard-fqdn-portal-listing`."
 msgstr ""
 "Standardmäßig ist die *Management UI* unter dem FQDN "
-":samp:`{$hostname}.{$domainname}` verfügbar. Wenn Sie ein Setup mit einem"
-" anderen FQDN für die *Management UI* haben, müssen Sie die UCR-Variable "
+":samp:`{$hostname}.{$domainname}` verfügbar. Der Platzhalter "
+":samp:`{$domainname}` steht für den DNS-Domänennamen; siehe die UCR-Variable "
+":envvar:`domainname`. Wenn Sie ein Setup mit einem anderen FQDN für die "
+"*Management UI* haben, müssen Sie die UCR-Variable "
 ":envvar:`umc/oidc/rp/server` auf den FQDN der *Management UI* ändern und "
 "das Join-Skript des UMC Webservers erneut ausführen, wie in :numref"
 ":`management-interface-auth-sso-oidc-non-standard-fqdn-portal-listing` "
 "gezeigt."
 
-#: ../../management-interface/auth.rst:430
+#: ../../management-interface/auth.rst:434
 msgid "Set non-standard FQDN for the *Portal* and *Management UI*"
 msgstr ""
 "Setzen Sie einen nicht standardmäßigen FQDN für das *Portal* und die "
 "*Management UI*"
 
-#: ../../management-interface/auth.rst:430
+#: ../../management-interface/auth.rst:434
 msgid ""
 "$ ucr set umc/oidc/rp/server=\"portal.extern.test\"\n"
 "$ univention-run-join-scripts --force \\\n"
@@ -858,7 +865,7 @@ msgstr ""
 "   --run-scripts 92univention-management-console-web-server\n"
 "$ systemctl restart slapd.service"
 
-#: ../../management-interface/auth.rst:441
+#: ../../management-interface/auth.rst:445
 msgid ""
 "If you want to run multiple *Portal Server*\\ s or *UMC Server*\\ s "
 "behind a load balancer, you need to run these commands on all Nubus for "
@@ -868,7 +875,7 @@ msgstr ""
 "Lastverteiler betreiben möchten, müssen Sie diese Befehle auf allen Nubus"
 " für UCS Knoten ausführen."
 
-#: ../../management-interface/auth.rst:444
+#: ../../management-interface/auth.rst:448
 msgid ""
 "Since all the nodes use the same OIDC client in this setup, make sure "
 "that the file :file:`/etc/umc-oidc.secret` has the same contents on each "
@@ -880,11 +887,11 @@ msgstr ""
 "denselben Inhalt hat und mit dem Client :spelling:word:`Secrect` in "
 ":program:`Keycloak` für diesen Client übereinstimmt."
 
-#: ../../management-interface/auth.rst:451
+#: ../../management-interface/auth.rst:455
 msgid "Back-channel sign-out"
 msgstr ":spelling:word:`Back-Channel` Abmeldung"
 
-#: ../../management-interface/auth.rst:453
+#: ../../management-interface/auth.rst:457
 msgid ""
 "If you use OIDC back-channel sign-out together with multiprocessing of "
 "the *Management UI*, the *Management UI* needs a database for session "
@@ -899,7 +906,7 @@ msgstr ""
 "*Management UI* aktiviert, wenn die UCR-Variable "
 ":envvar:`umc/http/processes` einen Wert größer als eins (``> 1``) hat."
 
-#: ../../management-interface/auth.rst:458
+#: ../../management-interface/auth.rst:462
 msgid ""
 "If you have only one *UMC Server* without UMC multiprocessing, you you "
 "can keep the configuration."
@@ -907,7 +914,7 @@ msgstr ""
 "Wenn Sie nur einen *UMC Server* ohne UMC Multiprocessing haben, können "
 "Sie die Konfiguration beibehalten."
 
-#: ../../management-interface/auth.rst:461
+#: ../../management-interface/auth.rst:465
 msgid ""
 "To keep track of the sessions in the database for the *Management UI*, "
 "you need to configure the database connection string with the :program"
@@ -921,7 +928,7 @@ msgstr ""
 ":numref:`management-interface-auth-sso-oidc-back-channel-sign-out-sql-"
 "connection-optional-listing` gezeigt."
 
-#: ../../management-interface/auth.rst:466
+#: ../../management-interface/auth.rst:470
 msgid ""
 "However, if the *Portal* or the *Management UI* use multiple Nubus for "
 "UCS nodes for load balancing, or if the *Management UI* has a "
@@ -936,11 +943,11 @@ msgstr ""
 "Knoten zugreifen können. In diesen Fällen müssen Sie folgende Aspekte "
 "berücksichtigen:"
 
-#: ../../management-interface/auth.rst:473
+#: ../../management-interface/auth.rst:477
 msgid "PostgreSQL database server:"
 msgstr "PostgreSQL-Datenbankserver:"
 
-#: ../../management-interface/auth.rst:475
+#: ../../management-interface/auth.rst:479
 msgid ""
 "You either need to provide a :program:`PostgreSQL` database yourself that"
 " all the *UMC Server*\\ s have access to."
@@ -948,7 +955,7 @@ msgstr ""
 "Sie stellen selbst eine :program:`PostgreSQL` Datenbank bereit, auf die "
 "alle *UMC Server* zugreifen können."
 
-#: ../../management-interface/auth.rst:478
+#: ../../management-interface/auth.rst:482
 msgid ""
 "Alternatively, you can install and configure :program:`PostgreSQL` on one"
 " of the Nubus for UCS nodes. As shown in the example in :numref"
@@ -964,11 +971,11 @@ msgstr ""
 "``db_name`` und ``db_password`` frei wählen. ``db_host`` ist ein Nubus "
 "für UCS Knoten, auf dem :program:`PostgreSQL` ausgeführt wird."
 
-#: ../../management-interface/auth.rst:486
+#: ../../management-interface/auth.rst:490
 msgid "Example for installation of :program:`PostgreSQL`"
 msgstr "Beispiel für die Installation von :program:`PostgreSQL`"
 
-#: ../../management-interface/auth.rst:486
+#: ../../management-interface/auth.rst:490
 msgid ""
 "$ univention-install univention-postgresql\n"
 "$ su postgres -c \"createdb db_name\"\n"
@@ -990,7 +997,7 @@ msgstr ""
 "$ ucr set postgres15/pg_hba/config/host=\"umc umc 1x.2xx.0.0/16 md5\"\n"
 "$ systemctl restart postgresql"
 
-#: ../../management-interface/auth.rst:498
+#: ../../management-interface/auth.rst:502
 msgid ""
 "Set the SQL connection URI on the :term:`UCS Primary Directory Node`, as "
 "shown in :numref:`management-interface-auth-sso-oidc-back-channel-sign-"
@@ -1000,11 +1007,11 @@ msgstr ""
 "Directory Node` fest, wie in :numref:`management-interface-auth-sso-oidc-"
 "back-channel-sign-out-sql-connection-listing` gezeigt."
 
-#: ../../management-interface/auth.rst:502
+#: ../../management-interface/auth.rst:506
 msgid "Set SQL connection URI"
 msgstr "URI für die SQL-Verbindung festlegen"
 
-#: ../../management-interface/auth.rst:502
+#: ../../management-interface/auth.rst:506
 msgid ""
 "$ univention-management-console-settings set \\\n"
 "   -u 'postgresql+psycopg2://db_user:db_password@db_host:5432/db_name'"
@@ -1012,7 +1019,7 @@ msgstr ""
 "$ univention-management-console-settings set \\\n"
 "   -u 'postgresql+psycopg2://db_user:db_password@db_host:5432/db_name'"
 
-#: ../../management-interface/auth.rst:509
+#: ../../management-interface/auth.rst:513
 msgid "Optional parameters for the database connection pool:"
 msgstr "Optionale Parameter für den Datenbankverbindungspool:"
 
@@ -1020,7 +1027,7 @@ msgstr "Optionale Parameter für den Datenbankverbindungspool:"
 msgid "``Pool Size``"
 msgstr "``Pool Size``"
 
-#: ../../management-interface/auth.rst:511
+#: ../../management-interface/auth.rst:515
 msgid "The number of connections to the database. Default value: ``5``."
 msgstr "Die Anzahl der Verbindungen zur Datenbank. Standardwert: ``5``."
 
@@ -1028,7 +1035,7 @@ msgstr "Die Anzahl der Verbindungen zur Datenbank. Standardwert: ``5``."
 msgid "``Max Overflow``"
 msgstr "``Max Overflow``"
 
-#: ../../management-interface/auth.rst:514
+#: ../../management-interface/auth.rst:518
 msgid "The maximum number of temporary connections. Default value: ``10``."
 msgstr "Die maximale Anzahl temporärer Verbindungen. Standardwert: ``10``."
 
@@ -1036,7 +1043,7 @@ msgstr "Die maximale Anzahl temporärer Verbindungen. Standardwert: ``10``."
 msgid "``Pool Timeout``"
 msgstr "``Pool Timeout``"
 
-#: ../../management-interface/auth.rst:517
+#: ../../management-interface/auth.rst:521
 msgid ""
 "The number of seconds to wait for a connection to be available. Default "
 "value: ``30``."
@@ -1048,7 +1055,7 @@ msgstr ""
 msgid "``Pool Recycle``"
 msgstr "``Pool Recycle``"
 
-#: ../../management-interface/auth.rst:520
+#: ../../management-interface/auth.rst:524
 msgid ""
 "The number of seconds after which a connection is recycled. Default "
 "value: ``-1``."
@@ -1056,7 +1063,7 @@ msgstr ""
 "Die Anzahl der Sekunden, nach denen eine Verbindung recycelt wird. "
 "Standardwert: ``-1``."
 
-#: ../../management-interface/auth.rst:523
+#: ../../management-interface/auth.rst:527
 msgid ""
 "With these default values, each UMC process can have up to 15 connections"
 " to the database. The total number of connections is: "
@@ -1068,7 +1075,7 @@ msgstr ""
 ":math:`NumberOfServers \\cdot NumberOfProcesses \\cdot (PoolSize + "
 "MaxOverflow)`."
 
-#: ../../management-interface/auth.rst:526
+#: ../../management-interface/auth.rst:530
 msgid ""
 "Make sure that the database can handle the number of connections. You can"
 " adjust these parameters as shown in :numref:`management-interface-auth-"
@@ -1079,11 +1086,11 @@ msgstr ""
 ":`management-interface-auth-sso-oidc-back-channel-sign-out-sql-"
 "connection-optional-listing` gezeigt."
 
-#: ../../management-interface/auth.rst:530
+#: ../../management-interface/auth.rst:534
 msgid "Set optional parameters for the database connection pool"
 msgstr "Optionale Parameter für den Datenbankverbindungspool festlegen"
 
-#: ../../management-interface/auth.rst:530
+#: ../../management-interface/auth.rst:534
 msgid ""
 "$ univention-management-console-settings set \\\n"
 "     -s 5 \\\n"
@@ -1097,7 +1104,7 @@ msgstr ""
 "     -t 30 \\\n"
 "     -r 3600"
 
-#: ../../management-interface/auth.rst:540
+#: ../../management-interface/auth.rst:544
 msgid ""
 "Restart the *UMC Server* on all Nubus for UCS nodes with the command in "
 ":numref:`management-interface-auth-sso-oidc-back-channel-sign-out-"
@@ -1107,15 +1114,15 @@ msgstr ""
 "Befehl in :numref:`management-interface-auth-sso-oidc-back-channel-sign-"
 "out-restart-umc-listing` neu."
 
-#: ../../management-interface/auth.rst:543
+#: ../../management-interface/auth.rst:547
 msgid "Restart UMC server"
 msgstr "UMC-Server neu starten"
 
-#: ../../management-interface/auth.rst:543
+#: ../../management-interface/auth.rst:547
 msgid "$ systemctl restart univention-management-console-server"
 msgstr "$ systemctl restart univention-management-console-server"
 
-#: ../../management-interface/auth.rst:551
+#: ../../management-interface/auth.rst:555
 msgid ""
 "If Nubus for UCS involves more than one *UMC Server* instance, the "
 "feature for the refresh of the portal tabs on sign-out or session timeout"
@@ -4216,11 +4223,11 @@ msgstr ""
 "Eintrag zu konfigurieren. Weitere Informationen über DNS finden Sie unter"
 " :ref:`domain-infrastructure-dns`."
 
-#: ../../management-interface/udm-command.rst:789
+#: ../../management-interface/udm-command.rst:787
 msgid "Create a DNS host record"
 msgstr "Einen DNS Rechner-Eintrag erstellen"
 
-#: ../../management-interface/udm-command.rst:789
+#: ../../management-interface/udm-command.rst:787
 msgid ""
 "$ univention-directory-manager dns/host_record create \\\n"
 "  --superordinate \"zoneName=example.com,cn=dns,dc=example,dc=com\" \\\n"
@@ -4232,11 +4239,11 @@ msgstr ""
 "  --set name=\"Client222\" \\\n"
 "  --set a=\"192.0.2.110\""
 
-#: ../../management-interface/udm-command.rst:798
+#: ../../management-interface/udm-command.rst:796
 msgid "Create a DNS PTR record"
 msgstr "Einen DNS Pointer Eintrag erstellen"
 
-#: ../../management-interface/udm-command.rst:798
+#: ../../management-interface/udm-command.rst:796
 msgid ""
 "$ univention-directory-manager dns/ptr_record create \\\n"
 "  --superordinate \"zoneName=0.168.192.in-"
@@ -4250,11 +4257,11 @@ msgstr ""
 "  --set address=\"110\" \\\n"
 "  --set ptr_record=\"Client222.example.com.\""
 
-#: ../../management-interface/udm-command.rst:809
+#: ../../management-interface/udm-command.rst:807
 msgid ":external+uv-nubus-manual:ref:`nubus-domain-dhcp`"
 msgstr ":external+uv-nubus-manual:ref:`nubus-domain-dhcp`"
 
-#: ../../management-interface/udm-command.rst:810
+#: ../../management-interface/udm-command.rst:808
 msgid ""
 "in :cite:t:`uv-nubus-manual` for information about the *DHCP* management "
 "module."
@@ -4262,11 +4269,11 @@ msgstr ""
 "im :cite:t:`uv-nubus-manual` für Informationen über das Verwaltungsmodul "
 "*DHCP*."
 
-#: ../../management-interface/udm-command.rst:813
+#: ../../management-interface/udm-command.rst:811
 msgid ":external+uv-nubus-manual:ref:`nubus-domain-dns`"
 msgstr ":external+uv-nubus-manual:ref:`nubus-domain-dns`"
 
-#: ../../management-interface/udm-command.rst:814
+#: ../../management-interface/udm-command.rst:812
 msgid ""
 "in :cite:t:`uv-nubus-manual` for information about the *DNS* management "
 "module."
@@ -4274,11 +4281,11 @@ msgstr ""
 "im :cite:t:`uv-nubus-manual` für Informationen über das Verwaltungsmodul "
 "*DNS*."
 
-#: ../../management-interface/udm-command.rst:820
+#: ../../management-interface/udm-command.rst:818
 msgid "Extended attributes"
 msgstr "Erweiterte Attribute"
 
-#: ../../management-interface/udm-command.rst:822
+#: ../../management-interface/udm-command.rst:820
 msgid ""
 "Use extended attributes to add fields to management modules in the "
 "*Management UI*. For more information, see :external+uv-nubus-manual:ref"
@@ -4296,11 +4303,11 @@ msgstr ""
 "für jeden Benutzer das Kennzeichen eines Firmenwagens speichert. Die "
 "Objektklasse ``univentionFreeAttributes`` speichert diese Werte."
 
-#: ../../management-interface/udm-command.rst:828
+#: ../../management-interface/udm-command.rst:826
 msgid "Create an extended attribute"
 msgstr "Ein erweitertes Attribut erstellen"
 
-#: ../../management-interface/udm-command.rst:828
+#: ../../management-interface/udm-command.rst:826
 msgid ""
 "$ univention-directory-manager settings/extended_attribute create \\\n"
 "  --position \"cn=custom attributes,cn=univention,dc=example,dc=com\" \\\n"
@@ -4326,11 +4333,11 @@ msgstr ""
 "  --set syntax=\"string\" \\\n"
 "  --set shortDescription=\"Car license\""
 
-#: ../../management-interface/udm-command.rst:846
+#: ../../management-interface/udm-command.rst:844
 msgid ":external+uv-nubus-manual:ref:`nubus-domain-extended-attributes`"
 msgstr ":external+uv-nubus-manual:ref:`nubus-domain-extended-attributes`"
 
-#: ../../management-interface/udm-command.rst:847
+#: ../../management-interface/udm-command.rst:845
 msgid ""
 "in :cite:t:`uv-nubus-manual` for information about how to expand "
 "management modules."
