@@ -7,7 +7,7 @@
 
 from argparse import ArgumentParser, Namespace
 from collections.abc import Iterator
-from sys import exit, stderr
+from sys import exit, stderr, stdin
 
 from ldap.filter import filter_format
 
@@ -44,8 +44,14 @@ def parse_args() -> Namespace:
     opt = parser.parse_args()
 
     if opt.bindpwdfile:
-        with open(opt.bindpwdfile) as fd:
-            opt.bindpwd = fd.read()
+        if opt.bindpwdfile == '-':
+            opt.bindpwd = stdin.read()
+        else:
+            try:
+                with open(opt.bindpwdfile) as fd:
+                    opt.bindpwd = fd.read()
+            except OSError as exc:
+                parser.error("can't open %r: %s" % (opt.bindpwdfile, exc))
 
     return opt
 

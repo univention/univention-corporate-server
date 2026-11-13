@@ -108,8 +108,14 @@ def parse() -> Namespace:
 
     options = parser.parse_args()
     if options.bindpwdfile:
-        with open(options.bindpwdfile) as fd:
-            options.bindpwd = fd.read().strip()
+        if options.bindpwdfile == '-':
+            options.bindpwd = sys.stdin.read().strip()
+        else:
+            try:
+                with open(options.bindpwdfile) as fd:
+                    options.bindpwd = fd.read().strip()
+            except OSError as exc:
+                parser.error("can't open %r: %s" % (options.bindpwdfile, exc))
     if options.binddn and not options.bindpwd:
         parser.error('authentication error: missing any of --bindpwdfile or --bindpwd')
 

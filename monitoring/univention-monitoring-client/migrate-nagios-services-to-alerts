@@ -7,6 +7,7 @@
 """Migrate Nagios services which are assigned to this host to corresponding monitoring alerts."""
 
 import argparse
+import sys
 
 from ldap.filter import filter_format
 
@@ -55,9 +56,17 @@ def main() -> None:
     parser.add_argument('--bindpwdfile', metavar="PWFILE", help="LDAP simple BIND password file")
     args = parser.parse_args()
 
+    if args.bindpwdfile:
+        if args.bindpwdfile == '-':
+            bindpwd = sys.stdin.read().strip()
+        else:
+            try:
+                with open(args.bindpwdfile) as fd:
+                    bindpwd = fd.read().strip()
+            except OSError as exc:
+                parser.error("can't open %r: %s" % (args.bindpwdfile, exc))
+
     if args.binddn and args.bindpwdfile:
-        with open(args.bindpwdfile) as fd:
-            bindpwd = fd.read().strip()
         udm = UDM.credentials(args.binddn, bindpwd, server=ucr['ldap/master'], port=ucr.get_int('ldap/master/port', 7389)).version(2)
     elif ucr['server/role'] == 'domaincontroller_master':
         udm = UDM.admin().version(2)

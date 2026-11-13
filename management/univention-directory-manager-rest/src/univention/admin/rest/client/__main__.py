@@ -24,6 +24,16 @@ from univention.admin.rest.client import (
 )
 
 
+def read_file(parser, filename):
+    if filename == '-':
+        return sys.stdin.read()
+    try:
+        with open(filename) as fd:
+            return fd.read()
+    except OSError as exc:
+        parser.error("can't open %r: %s" % (filename, exc))
+
+
 def _binddn_to_username(binddn):
     try:
         dn = ldap.dn.str2dn(binddn)[0][0]
@@ -65,8 +75,7 @@ class CLIClient:
                 username = args.username or DEFAULT_USERNAME
 
             if args.bindpwdfile:
-                with open(args.bindpwdfile) as fd:
-                    password = fd.read().strip()
+                password = read_file(self.parser, args.bindpwdfile).strip()
             else:
                 password = args.bindpwd
             if not password:
@@ -356,8 +365,11 @@ class CLIClient:
         if args.output == '-':
             sys.stdout.write(report)
         else:
-            with open(args.output, 'w') as fd:
-                fd.write(report)
+            try:
+                with open(args.output, 'w') as fd:
+                    fd.write(report)
+            except OSError as exc:
+                self.parser.error("can't open %r: %s" % (args.output, exc))
 
     def print_line(self, key, value='', prefix='', stream=sys.stdout):
         # prints and makes sure that no ANSI escape sequences or binary data is printed
