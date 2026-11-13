@@ -1,3 +1,10 @@
+univention-ad-connector (16.8.2) unstable; urgency=medium
+
+  * Issue univention/dev/ucs#3845: Speed up the AD->UCS group membership sync
+    for large groups
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 13 Nov 2026 12:27:52 +0100
+
 univention-ad-connector (16.8.1) unstable; urgency=medium
 
   * Bug #60016: Skip redundant AD existence checks for cached group members
