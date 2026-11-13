@@ -82,7 +82,7 @@ class UniventionDirectoryManagerPolicies:
             archive.parent.mkdir(parents=True, exist_ok=True)
             with tarfile.open(archive, mode='w:gz') as tar:
                 for path in sorted(output_dir.rglob('*')):
-                    tar.add(path, arcname=path.relative_to(output_dir))
+                    tar.add(path, arcname=path.relative_to(output_dir), recursive=False)
 
     def parse_args(self, args=None):
         parser = argparse.ArgumentParser(description=__doc__)
