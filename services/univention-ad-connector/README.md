@@ -63,6 +63,16 @@ Updates need special attention when extending ADC to synchronize additional attr
 * See e.g. `git log -p --grep "remove msGPOWQLFilter.py"` in S4-Connector for an example how we handled this in the
   past.
 
+## Performance
+
+Group synchronization AD -> UCS, measured on UCS 5.2-7 with
+`connector/ad/mapping/syncmode=read`:
+
+| Group size | Initial sync of the whole group | Adding one member |
+|---|---|---|
+| 2000 | 3 s | 3 s |
+| 10000 | 19 s | 16 s |
+
 Check list for DEV and QA:
 ==========================
 * `scripts/prepare-new-instance` must work (Regression Bug #50713)
