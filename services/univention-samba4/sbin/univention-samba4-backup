@@ -97,5 +97,5 @@ install -o root -g root -m 700 -d "$WHERE"
 
 umask 0026 # samba-tool updates private/sam.ldb.d/metadata.tdb
 samba-tool domain backup offline --targetdir="$WHERE" || die "ERROR: samba-tool domain backup failed"
-chmod 600 "$WHERE"/samba-backup-*.bz2
+find "$WHERE" -name samba-backup-\*.bz2 -a ! -perm 600 -print0 | xargs -0 chmod 600
 clean_old_backups 'samba/samba-backup-.*.bz2' "$DAYS"
