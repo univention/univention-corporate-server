@@ -1,0 +1,1 @@
+The temporary link-local address offered by the installer on networks without DHCP is now derived from the MAC address of the network interface. Before, every system got the address ``169.254.130.198``.
