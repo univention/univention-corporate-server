@@ -5,6 +5,7 @@
 ## bugs: [38663, 38712, 41641]
 
 import subprocess
+import uuid
 
 import pytest
 
@@ -117,6 +118,7 @@ objectClass: univentionPolicy
 objectClass: univentionPolicyDhcpRouting
 objectClass: univentionObject
 univentionObjectType: policies/dhcp_routing
+univentionObjectIdentifier: {uuid.uuid4()}
 cn: p1
 univentionDhcpRouters: 192.168.0.1
 
@@ -126,6 +128,7 @@ objectClass: univentionPolicyDhcpRouting
 objectClass: univentionPolicy
 objectClass: univentionObject
 univentionObjectType: policies/dhcp_routing
+univentionObjectIdentifier: {uuid.uuid4()}
 cn: p2
 univentionDhcpRouters: 192.168.0.1
 '''.encode())
