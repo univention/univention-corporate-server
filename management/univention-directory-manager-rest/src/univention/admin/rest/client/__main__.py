@@ -24,14 +24,11 @@ from univention.admin.rest.client import (
 )
 
 
-def read_file(parser, filename):
+def read_file(filename):
     if filename == '-':
         return sys.stdin.read()
-    try:
-        with open(filename) as fd:
-            return fd.read()
-    except OSError as exc:
-        parser.error("can't open %r: %s" % (filename, exc))
+    with open(filename) as fd:
+        return fd.read()
 
 
 def _binddn_to_username(binddn):
@@ -74,10 +71,7 @@ class CLIClient:
             if not username:
                 username = args.username or DEFAULT_USERNAME
 
-            if args.bindpwdfile:
-                password = read_file(self.parser, args.bindpwdfile).strip()
-            else:
-                password = args.bindpwd
+            password = args.bindpwd
             if not password:
                 password = DEFAULT_PASSWORD
 
@@ -551,6 +545,11 @@ Use "univention-directory-manager modules" for a list of available modules.''',
     parse_known_args(parser, client, known_args, subparsers)
 
     args = parser.parse_args()
+    if args.bindpwdfile:
+        try:
+            args.bindpwd = read_file(args.bindpwdfile).strip()
+        except OSError as exc:
+            parser.error("can't open %r: %s" % (args.bindpwdfile, exc))
     try:
         client.init(parser, args)
         args.func(args)
