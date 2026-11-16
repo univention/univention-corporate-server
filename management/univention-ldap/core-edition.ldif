@@ -22,3 +22,7 @@ univentionLicenseSignature: ZjofoUmITUqpyF5q+AfE1i6EwsKXGWYnkh3JLJH3/bXqvD26nG
  IZBbxxDFD+hMO/7yOHwaFZM3xb1I2ToJ1D2+xvOxrZe2SCZd4KJIXpupnmJnAC/D4Y9iqHPytVPU3
  QlI6zXnGU5q47RN/tdXLTpV7mHoiXRWh282TNOlnEiiQxwiQ4u2ghWE1x/EWY/CXvZm0PQcsFqGyB
  v72WdEUOex1Yuf3BgZ7QfLOQ2XIv6KPKCyYqZqlSNp8Xk+IpKjDqL+aq0oyeg==
+@!@
+import uuid
+print(f'univentionObjectIdentifier: {uuid.uuid4()}')
+@!@
