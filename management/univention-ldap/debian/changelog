@@ -1,3 +1,10 @@
+univention-ldap (18.7.4) unstable; urgency=medium
+
+  * Bug #60153: assign `univentionObjectIdentifier` to initial core
+    license
+
+ -- Florian Best <best@univention.de>  Tue, 24 Nov 2026 17:09:40 +0100
+
 univention-ldap (18.7.3) unstable; urgency=medium
 
   * Bug #60001: improve performance of LDAP ACLs
