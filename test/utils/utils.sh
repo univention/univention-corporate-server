@@ -216,6 +216,10 @@ prepare_domain_for_ucs52_preup_checks() {
 }
 
 prepare_domain_for_ucs53_preup_checks() {
+	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
+		/usr/share/univention-ldap/univention-update-univention-object-identifier
+	fi
+
 	return  # enable in UCS 5.3-1
 	postgres_update '15' '17'
 }
