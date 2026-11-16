@@ -17,6 +17,7 @@ slugify () {
 install_upgrade_keycloak () {
 
 	local app="keycloak"
+	local upgrade_args=()
 
 	if [[ -n "$KEYCLOAK_BRANCH" ]]; then
 		branch="$(echo "$KEYCLOAK_BRANCH" | slugify)"
@@ -33,19 +34,23 @@ __PREF__
 		# the keycloak-app pipeline names the test app version after the branch,
 		# just like the package repository above
 		app="keycloak=0.0.0-$branch"
+		# 0.0.0-<branch> sorts lower than any released version, so upgrading
+		# a released installation to it needs the internal --force option
+		upgrade_args+=(--force)
 	fi
 
 	echo "univention" > /tmp/pwdfile
 	# an explicit app version wins, e.g. to test a released version with branch packages
 	if [ -n "$KEYCLOAK_APPVERSION" ]; then
 		app="keycloak=$KEYCLOAK_APPVERSION"
+		upgrade_args=()
 	fi
 	if [ -z "$(ucr get "appcenter/apps/keycloak/status")" ]; then
 		# installation
 		univention-app install "$app" --username=Administrator --pwdfile=/tmp/pwdfile --skip --noninteractive "$@" || return 1
 	else
 		# upgrade
-		univention-app upgrade "$app" --username=Administrator --pwdfile=/tmp/pwdfile --skip --noninteractive "$@" || return 1
+		univention-app upgrade "$app" --username=Administrator --pwdfile=/tmp/pwdfile --skip --noninteractive "${upgrade_args[@]}" "$@" || return 1
 	fi
 	# for the app specific test
 	echo "keycloak" >>/var/cache/appcenter-installed.txt
