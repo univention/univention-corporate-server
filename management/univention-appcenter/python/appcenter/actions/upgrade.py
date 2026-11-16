@@ -7,6 +7,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 #
 
+from argparse import SUPPRESS
+
 from univention.admindiary.client import write_event
 from univention.admindiary.events import APP_UPGRADE_FAILURE, APP_UPGRADE_START, APP_UPGRADE_SUCCESS
 from univention.appcenter.actions import StoreAppAction
@@ -46,19 +48,32 @@ class Upgrade(Install):
         #   themselves multiple times during one run and old_app will be set
         #   after each iteration
         self.original_app = self.old_app = None
+        self._allow_downgrade = False
 
     def setup_parser(self, parser):
         super(Install, self).setup_parser(parser)
         parser.add_argument('--only-master-packages', action='store_true', help='Install only Primary Node packages')
         parser.add_argument('--do-not-install-master-packages-remotely', action='store_false', dest='install_master_packages_remotely', help='Do not install Primary Node packages on Primary or Backup Directory Node systems')
+        # Internal, for tests only: upgrade a Docker app to a version that sorts lower
+        # than the installed one, e.g. a "0.0.0-<branch>" test version of the App Center
+        # over a released version. Unsupported, therefore hidden from --help.
+        parser.add_argument('--force', action='store_true', dest='allow_downgrade', help=SUPPRESS)
 
     def _app_too_old(self, current_app, specified_app):
+        if self._allow_downgrade and current_app > specified_app:
+            # apt does not downgrade packages, only the registered app version would change
+            self.fatal('The --force option is only supported for Docker apps')
+            return True
         if current_app >= specified_app:
             self.fatal('A newer version of %s than the one installed must be present and chosen' % current_app.id)
             return True
         return False
 
     def main(self, args):
+        self._allow_downgrade = getattr(args, 'allow_downgrade', False)
+        if self._allow_downgrade and getattr(args, 'skip_checks', None) != []:
+            # App.check() reports the older version as hard problem "must_have_candidate"
+            args.skip_checks = [*(getattr(args, 'skip_checks', None) or []), 'must_have_candidate']
         apps = args.app
         # Programmatic callers pass App objects and expect the newest candidate
         # unless they name the apps in apps_with_explicit_version

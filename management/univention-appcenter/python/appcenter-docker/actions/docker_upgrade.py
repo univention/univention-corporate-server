@@ -35,9 +35,17 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
         self._had_image_upgrade = False
         self._last_mode = None
 
+    def _downgrade_allowed(self, current_app, specified_app):
+        if self._allow_downgrade and current_app > specified_app:
+            self.warn('Upgrading %s from version %s to %s with the --force option. This option is for testing purposes only.' % (current_app.id, current_app.version, specified_app.version))
+            return True
+        return False
+
     def _app_too_old(self, current_app, specified_app):
         if not current_app.docker:
             return super()._app_too_old(current_app, specified_app)
+        if self._downgrade_allowed(current_app, specified_app):
+            return False
         if current_app > specified_app:
             self.fatal('The app you specified is older than the currently installed app')
             return True
@@ -50,7 +58,8 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
         mode = None
         detail = None
         if self.old_app.docker and app.plugin_of:
-            if app > self.old_app:
+            # with --force, an older version than the installed one is a target, too
+            if app > self.old_app or (self._allow_downgrade and app != self.old_app):
                 mode, detail = 'app', app.version
             return mode, detail
         if not self.old_app.docker:
@@ -79,7 +88,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
             mode, detail = 'release', mode[8:].strip()
         if mode not in ['packages', 'release']:
             # packages and release first!
-            if app > self.old_app:
+            if app > self.old_app or (self._allow_downgrade and app != self.old_app):
                 mode, detail = 'app', app.version
             if self.old_app.get_docker_image_name() not in app.get_docker_images():
                 mode, detail = 'image', app.get_docker_image_name()
