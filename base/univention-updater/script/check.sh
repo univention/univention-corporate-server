@@ -210,8 +210,7 @@ update_check_univention_object_identifier () {
 
 	echo "	$object_count LDAP objects without a valid univentionObjectIdentifier were found."
 	echo "	This must be fixed before updating to UCS $VERSION_NAME."
-	echo "	Run the diagnostic check '58_univentionObjectIdentifier' to migrate the reported objects."
-	echo "	You can start it with: univention-run-diagnostic-checks -t 58_univentionObjectIdentifier"
+	echo "	Run the migration via the System Diagnostic module to migrate the reported objects."
 	echo
 	echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
 	return 1
