@@ -1,3 +1,11 @@
+univention-appcenter (11.7.3) unstable; urgency=medium
+
+  * Bug #60142: Add the internal option "--force" to "univention-app
+    upgrade" to allow upgrading a Docker app to an older version for
+    testing purposes
+
+ -- Enock kipsang <enock.kipsang@univention.de>  Mon, 16 Nov 2026 14:59:07 +0300
+
 univention-appcenter (11.7.2) unstable; urgency=medium
 
   * Bug #60019: Detect the installed version of Apps that moved from the
