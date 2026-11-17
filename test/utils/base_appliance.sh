@@ -252,8 +252,14 @@ __EOF__
 		cd /var/cache/univention-system-setup/packages/
 		touch Packages
 
-		[ -e /etc/apt/sources.list.d/05univention-system-setup.list ] ||
-			echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
+		# UCS 5.3 uses the DEB822 format, the cleanup of older versions only removes the *.list file
+		if dpkg --compare-versions "$(ucr get version/version)" ge 5.3; then
+			[ -e /etc/apt/sources.list.d/05univention-system-setup.sources ] ||
+				printf 'Types: deb\nURIs: file:/var/cache/univention-system-setup/packages/\nSuites: ./\nTrusted: yes\n' >/etc/apt/sources.list.d/05univention-system-setup.sources
+		else
+			[ -e /etc/apt/sources.list.d/05univention-system-setup.list ] ||
+				echo "deb [trusted=yes] file:/var/cache/univention-system-setup/packages/ ./" >>/etc/apt/sources.list.d/05univention-system-setup.list
+		fi
 		echo "Try to download: $packages"
 		for package in $packages
 		do
@@ -669,7 +675,7 @@ setup_appliance () {  # [app_id]
 	univention-install -y --assume-yes --reinstall univention-system-setup-boot
 
 	# shrink appliance image size
-	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
+	rm -f /etc/apt/sources.list.d/05univention-system-setup.list /etc/apt/sources.list.d/05univention-system-setup.sources
 	rm -rf /var/cache/univention-system-setup/packages
 	download_system_setup_packages "$@"
 
