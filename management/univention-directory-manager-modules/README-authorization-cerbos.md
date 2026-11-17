@@ -759,3 +759,12 @@ UDM
 ```
 
 This significantly reduces architectural complexity while preserving the flexibility required for UDM-specific authorization use cases.
+
+
+### TODO: document this
+
+| Pattern   | `udm:object` | `udm:object:read` | `udm:property:firstname:read` |
+|-----------|--------------|-------------------|-------------------------------|
+| `udm:*`   | ALLOW        | deny              | deny                          |
+| `udm:*:*` | deny         | ALLOW             | deny                          |
+| `*`       | ALLOW        | ALLOW             | ALLOW                         |
