@@ -358,7 +358,12 @@ class UniventionDirectoryManagerPolicies:
                 'effect': 'EFFECT_DENY',
                 'condition': {
                     'match': {
-                        'expr': 'request.resource.attr.properties.new.uidNumber == 0 || request.resource.attr.properties.uidNumber == 0',
+                        'any': {
+                            'of': [
+                                {'expr': 'has(R.attr.properties.uidNumber) && R.attr.properties.uidNumber == 0'},
+                                {'expr': 'has(R.attr.new) && has(R.attr.new.properties.uidNumber) && R.attr.new.properties.uidNumber == 0'},
+                            ],
+                        },
                     },
                 },
             }])
