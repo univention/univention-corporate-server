@@ -11,6 +11,7 @@ from univention.admin.rest.client import UDM, NotFound
 USER_ROLE = 'udm:default-roles:domain-user'
 ADMIN_ROLE = 'udm:default-roles:domain-administrator'
 LDAP_BASE = 'dc=example,dc=com'
+MAIL_DOMAIN = None
 
 udm = ous = cns = users = groups = umc_policies = None
 
@@ -23,7 +24,7 @@ register_ldap_deny_user = ALL_ADMIN_USERS.append
 
 
 def main(args):
-    global LDAP_BASE, udm, ous, cns, users, groups, umc_policies
+    global LDAP_BASE, MAIL_DOMAIN, udm, ous, cns, users, groups, umc_policies
     LDAP_BASE = args.ldap_base
     GLOBAL_GROUPS = f'cn=groups,{LDAP_BASE}'
 
@@ -33,6 +34,11 @@ def main(args):
     users = udm.get('users/user')
     groups = udm.get('groups/group')
     umc_policies = udm.get('policies/umc')
+    mail_domain = udm.get('mail/domain')
+    try:
+        MAIL_DOMAIN = next(mail_domain.search(opened=True)).properties['name']
+    except AttributeError:
+        pass
 
     api_access_group = create_or_modify_obj(groups, name='test-api-access', position=GLOBAL_GROUPS)
     create_or_modify_obj(groups, name='Domain Admins', position=GLOBAL_GROUPS, guardianMemberRoles=[ADMIN_ROLE])
@@ -85,11 +91,14 @@ def create_group(name, position, **props):
 
 
 def create_user(name, position, policy=None, **props):
+    if MAIL_DOMAIN:
+        props.setdefault('mailPrimaryAddress', f"{name}@{MAIL_DOMAIN}")
     user = create_or_modify_obj(
         users, 'username', position,
         username=name,
         lastname=name,
-        password='univention',
+        firstname=name,
+        password='Univention.1234',
         overridePWHistory=True,
         **props,
     )
