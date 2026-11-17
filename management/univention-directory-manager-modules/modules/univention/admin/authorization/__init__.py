@@ -168,7 +168,7 @@ class Authorization:
         properties = set()
         unknown = set()
         for attribute in attributes:
-            if attribute.lower() == 'objectclass':
+            if attribute.lower() in ('objectclass', 'univentionObjectType'.lower()):
                 continue
             prop = descriptions.get(attribute.lower())
             if prop is None:
@@ -197,7 +197,7 @@ class Authorization:
         actions.update(self._property_actions_for(properties, ('search',)))
         allowed = self._check_actions(actor, target, actions)
         if not allowed:
-            auth_log('search', actor, target, scope=scope, properties=sorted(properties))
+            auth_log('search', actor, target, base=base, scope=scope, properties=sorted(properties))
             if raise_exception:
                 raise permissionDenied()
         return allowed
