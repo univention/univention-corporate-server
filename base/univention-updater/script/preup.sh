@@ -152,10 +152,10 @@ is_ucr_true update53/skip/autoremove ||
 	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove >&3 2>&3
 
 deactivate_old_package_sources () {
-	# disable UCS 5.1 package sources to avoid mixing package versions during update
-	local sources_lists
-	sources_lists=("/etc/apt/sources.list.d/15_ucs-online-version.list" "/etc/apt/sources.list.d/20_ucs-online-component.list")
-	for sources_list in "${sources_lists[@]}"; do
+	# disable the package sources of the old UCS version to avoid mixing package versions during update
+	local sources_list
+	for sources_list in /etc/apt/sources.list.d/{15_ucs-online-version,20_ucs-online-component}.{list,sources}; do
+		[ -e "$sources_list" ] || continue
 		mv "$sources_list" "${sources_list}.upgrade530.bak"
 	done
 }
