@@ -118,9 +118,9 @@ fi
 
 	set -e
 	checkapt --mirror "http://localhost\\(:80\\)\\?/${srcprefix}/" "${BDIR[@]}"
-	grep -v '^#\|^[[:space:]]*$' /etc/apt/sources.list.d/*.list && false
+	aptlines | grep -v '^#\|^[[:space:]]*$' && false
 	univention-repository-update net
-	ucr commit /etc/apt/sources.list.d/*.list
+	ucr commit /etc/apt/sources.list.d/*.sources
 	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${BDIR[@]}"
 
 	apt-get -qq update
