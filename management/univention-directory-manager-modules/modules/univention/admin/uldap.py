@@ -758,13 +758,17 @@ class access:
         return self.authz.filter_search_results(self, results, context=context)
 
     def search_filtered(self, context, filter='(objectClass=*)', base='', *args, **kwargs):
-        if not self._verify_search_base(base) or not self._verify_search_filter(filter):
+        scope = args[0] if args else kwargs.get('scope', 'sub')
+        module = (context or {}).get('module')
+        if not self.authz.is_search_allowed(self, module, filter, base, scope):
             return []
         results = self.authz_connection.search(filter, base, *args, **kwargs)
         return self._filter_ldap_search_results(results, dict(kwargs, **(context or {})))
 
     def search_dn_filtered(self, context, filter='(objectClass=*)', base='', *args, **kwargs):
-        if not self._verify_search_base(base) or not self._verify_search_filter(filter):
+        scope = args[0] if args else kwargs.get('scope', 'sub')
+        module = (context or {}).get('module')
+        if not self.authz.is_search_allowed(self, module, filter, base, scope):
             return []
         results = self.authz_connection.searchDn(filter, base, *args, **kwargs)
         return self._filter_ldap_search_dns(results, dict(kwargs, **(context or {})))
@@ -776,14 +780,3 @@ class access:
     def _filter_ldap_search_dns(self, results, context=None):
         """Evaluate access control rules for filtering of results"""
         return self.authz.filter_search_results_dn(self, results, context=context)
-
-    def _verify_search_base(self, base):
-        # mimic ldapsearch behavior
-        base = base or configRegistry['ldap/base']
-        if not self._filter_ldap_search_dns([base]):
-            raise univention.admin.uexceptions.noObject(base)
-        return True
-
-    def _verify_search_filter(self, filter_s):
-        # TODO: parse search filter and disallow certain filters for UDM property names where no "search" or "read" permission exists
-        return True
