@@ -470,22 +470,25 @@ The following commands create a repository for UCS 5.0 with the component name :
      gzip -9 < "Packages" > "$TESTCOMP/Packages.gz"
      mv "Packages" "$TESTCOMP/Packages" )
 
-You can then include this repository on any UCS system by appending the following line
-to :file:`/etc/apt/sources.list`,
+You can then include this repository on any UCS system by creating the file
+:file:`/etc/apt/sources.list.d/testcomp.sources` with the following content in the DEB822 format,
 assuming that the FQDN of the host with the repository is :samp:`{repository.example.com}`.
 
-.. code-block:: debsources
+.. code-block:: text
 
-   deb [trusted=yes] http://repository.example.com/repository/5.3/maintained/component testcomp/all/
+   Types: deb
+   URIs: http://repository.example.com/repository/5.3/maintained/component
+   Suites: testcomp/all/
+   Trusted: yes
 
 .. important::
 
    The directory, from where you run the :command:`apt-ftparchive` command,
-   must match the first string given in the :file:`sources.list` file after the ``deb`` prefix.
-   The URL together with the suffix ``testcomp/all/`` not only specifies the location of the :file:`Packages` file,
+   must match the URL given in the ``URIs`` field.
+   The URL together with the suite ``testcomp/all/`` not only specifies the location of the :file:`Packages` file,
    but the package manager also uses it as the base URL for all packages listed in the :file:`Packages` file.
 
-Instead of editing the :file:`sources.list` file directly,
+Instead of creating the :file:`.sources` file directly,
 you can include the repository as a component and configure it by setting several UCR variables.
 You can also configure UCR variables through UDM policies,
 which simplifies the task of installing packages from such a repository on many hosts.
