@@ -9,6 +9,7 @@
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
+import univention.admin.filter
 import univention.admin.modules
 import univention.admin.types
 from univention.admin import configRegistry
@@ -130,6 +131,70 @@ class Authorization:
     # @functools.lru_cache(maxsize=ROLE_CACHE_SIZE)
     def _get_cached_roles(self, lo, dn):
         return get_roles_from_ldap(self.lo, dn)
+
+    def is_search_allowed(self, lo, module, filter_s, base='', scope='sub', raise_exception=True):
+        """Authorize a UDM module search and its LDAP filter attributes."""
+        # NOTE: Checking a base DN does not yet prove that a subtree/one-level search is entirely inside the authorized search area.
+        # The scope is exposed to Cerbos for future scope-aware policy conditions
+        if not self.enabled:
+            return True
+
+        base = base or LDAP_BASE
+        mod = univention.admin.modules.get(module) if module else None
+        if mod is None:
+            # cannot map filter attributes without a module
+            raise permissionDenied()
+
+        attributes = set()
+        parsed_filter = univention.admin.filter.parse(filter_s)
+
+        def collect_attribute(expression, arg):
+            arg.add(expression.variable.split(':', 1)[0])
+
+        univention.admin.filter.walk(parsed_filter, collect_attribute, arg=attributes)
+
+        descriptions = {name.lower(): name for name in mod.property_descriptions}
+        ldap_names = {
+            mod.mapping.mapName(prop).lower(): prop
+            for prop in mod.property_descriptions
+            if mod.mapping.mapName(prop)
+        }
+        properties = set()
+        unknown = set()
+        for attribute in attributes:
+            if attribute.lower() == 'objectclass':
+                continue
+            prop = descriptions.get(attribute.lower())
+            if prop is None:
+                # LDAP attribute names are case-insensitive
+                prop = ldap_names.get(attribute.lower())
+            if prop and prop in mod.property_descriptions:
+                properties.add(prop)
+            else:
+                unknown.add(attribute)
+
+        if unknown:
+            log.debug('Search filter contains unmapped attributes', module=module, attributes=sorted(unknown))
+            if raise_exception:
+                raise permissionDenied()
+            return False
+
+        actor = self._get_actor(lo)
+        target = Resource(base, udm_resource_kind(module), attr=asdict(UDMObject(
+            dn=base,
+            objectType=module,
+            position=lo.parentDn(base) or LDAP_BASE,
+            roles=[],
+        )))
+        target.attr['search'] = {'base': base, 'scope': scope}
+        actions = {udm_object_action('search')}
+        actions.update(self._property_actions_for(properties, ('search',)))
+        allowed = self._check_actions(actor, target, actions)
+        if not allowed:
+            auth_log('search', actor, target, scope=scope, properties=sorted(properties))
+            if raise_exception:
+                raise permissionDenied()
+        return allowed
 
     def is_receive_allowed(self, obj, raise_exception=True):
         if not self.enabled:
