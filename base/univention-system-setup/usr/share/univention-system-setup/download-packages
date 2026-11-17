@@ -42,7 +42,7 @@ declare -a COMPONENTS=(
 )
 declare -a PACKAGES=("${BASE[@]}" "${COMPONENTS[@]}")
 CACHE='/var/cache/univention-system-setup/packages'
-APT='/etc/apt/sources.list.d/05univention-system-setup.list'
+APT='/etc/apt/sources.list.d/05univention-system-setup.sources'
 
 while getopts bh option
 do
@@ -81,6 +81,6 @@ chown _apt ./*
 chmod 0644 ./*
 
 [ -e "$APT" ] ||
-	echo "deb [trusted=yes] file://$CACHE ./" >"$APT"
+	printf 'Types: deb\nURIs: file://%s\nSuites: ./\nTrusted: yes\n' "$CACHE" >"$APT"
 
 exit 0
