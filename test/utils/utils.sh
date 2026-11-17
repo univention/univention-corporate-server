@@ -261,13 +261,13 @@ jenkins_updates () {
 	eval "$(ucr shell '^version/(version|patchlevel|erratalevel)$')"
 	echo "Finished at ${version_version}-${version_patchlevel}+${version_erratalevel}"
 
-	if [ -e /etc/apt/sources.list.d/99_extra_scope.list.disabled ]; then
+	if [ -e /etc/apt/sources.list.d/99_extra_scope.sources.disabled ]; then
 		# We update to the gitlab repo here and not with the updater.
 		# Why: If the package has the same version in the gitlab and ucs repo
 		#      we get a nasty endless loop because apt-get thinks the package
 		#      installed is the version from the ucs repo and always wants
 		#      to downgrade to the gitlab repo version.
-		mv /etc/apt/sources.list.d/99_extra_scope.list.disabled /etc/apt/sources.list.d/99_extra_scope.list
+		mv /etc/apt/sources.list.d/99_extra_scope.sources.disabled /etc/apt/sources.list.d/99_extra_scope.sources
 		apt-get update
 		eval "$(ucr shell update/commands/distupgrade)"
 		$update_commands_distupgrade
@@ -373,7 +373,7 @@ _upgrade_to_latest () {
 # temp. patch to retry source.list commit and apt-get update after error
 patch_setup_join () {
 	# shellcheck disable=SC2016
-	local script='{ set -x; nscd -i hosts; grep -H . /etc/resolv.conf /etc/apt/sources.list.d/15_ucs-online-version.list; ifconfig; ping -c 4 "$(ucr get repository/online/server)"; nslookup "$(ucr get repository/online/server)"; sleep 60; ucr commit /etc/apt/sources.list.d/*.list; apt-get update; } ; grep -H . /etc/apt/sources.list.d/15_ucs-online-version.list'
+	local script='{ set -x; nscd -i hosts; grep -H . /etc/resolv.conf /etc/apt/sources.list.d/15_ucs-online-version.*; ifconfig; ping -c 4 "$(ucr get repository/online/server)"; nslookup "$(ucr get repository/online/server)"; sleep 60; ucr commit /etc/apt/sources.list.d/*; apt-get update; } ; grep -H . /etc/apt/sources.list.d/15_ucs-online-version.*'
 	sed -i "s~^apt-get update\$~& || $script~" /usr/lib/univention-system-setup/scripts/setup-join.sh
 }
 _fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
@@ -419,8 +419,9 @@ assert_apt_sources () {
 	# a transient DNS or network error during a ucr commit leaves the sources.list
 	# snippets without any deb entries
 	local f attempt rv=0
-	for f in /etc/apt/sources.list.d/15_ucs-online-version.list /etc/apt/sources.list.d/20_ucs-online-component.list
+	for f in /etc/apt/sources.list.d/{15_ucs-online-version,20_ucs-online-component}.{list,sources}
 	do
+		[ -e "$f" ] || continue
 		for attempt in 1 2 3
 		do
 			grep -q '^# An error occurred during the repository check' "$f" || break
@@ -683,11 +684,11 @@ install_with_unmaintained () {
 	wait_for_repo_server || rv=$?
 	ucr set repository/online=true repository/online/unmaintained=yes
 	# rebuild sources list on network error
-	if grep -q "An error occurred during the repository check" /etc/apt/sources.list.d/15_ucs-online-version.list; then
+	if grep -q "An error occurred during the repository check" /etc/apt/sources.list.d/15_ucs-online-version.*; then
 		sleep 60
 		ucr set repository/online=true repository/online/unmaintained=yes
 	fi
-	cat /etc/apt/sources.list.d/15_ucs-online-version.list
+	cat /etc/apt/sources.list.d/15_ucs-online-version.*
 	univention-install --yes "$@" || rv=$?
 	ucr set repository/online/unmaintained=no
 	return $rv
@@ -854,8 +855,10 @@ ucsschool_scope_enabled () {
 
 activate_ucsschool_repositories () {
 	local rv=0
-	echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.3-0-ucs-school-5.3/all/' >>/etc/apt/sources.list
-	echo 'deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.3-0-ucs-school-5.3/$(ARCH)/' >>/etc/apt/sources.list
+	deb_to_sources >/etc/apt/sources.list.d/ucs-school-5.3.sources <<'__APT__'
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.3-0-ucs-school-5.3/all/
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.3-0-ucs-school-5.3/$(ARCH)/
+__APT__
 	return $rv
 
 	case "${UCSSCHOOL_RELEASE:-scope}" in
@@ -915,10 +918,10 @@ install_ucsschool () {
 			echo "install_ucsschool - DEBUG1"
 			# Ensure ucsschool is a registered app
 			echo "ucsschool" >>/var/cache/appcenter-installed.txt
-			cat /etc/apt/sources.list.d/20_ucs-online-component.list
+			cat /etc/apt/sources.list.d/20_ucs-online-component.*
 			univention-app install ucsschool --noninteractive --username Administrator --pwdfile /tmp/univention || rv=$?
 			echo "install_ucsschool - DEBUG2"
-			cat /etc/apt/sources.list.d/20_ucs-online-component.list
+			cat /etc/apt/sources.list.d/20_ucs-online-component.*
 			;;
 	esac
 	return $rv
@@ -1007,7 +1010,7 @@ setup_guardian_repo () {
 	local branch
 	[ -n "$GUARDIAN_BRANCH" ] || return 0
 	branch="$(echo "$GUARDIAN_BRANCH" | slugify)"
-	echo "deb [trusted=yes] http://omar.knut.univention.de/build2/git/guardian $branch main" | tee /etc/apt/sources.list.d/guardian.list
+	echo "deb [trusted=yes] http://omar.knut.univention.de/build2/git/guardian $branch main" | deb_to_sources | tee /etc/apt/sources.list.d/guardian.sources
 	# pin the branch repo above the regular UCS repos so its packages win
 	cat >/etc/apt/preferences.d/99guardian.pref <<__PREF__
 Package: *
@@ -1117,10 +1120,12 @@ _run_tests () {
 	fi
 
 	# TODO: remove this is just to make testing easier in the development phase
-	echo "deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_$(ucr get version/version)-0/all/" >/etc/apt/sources.list.d/99ucs-test.list
-	echo "deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_$(ucr get version/version)-0/\$(ARCH)/" >>/etc/apt/sources.list.d/99ucs-test.list
+	deb_to_sources >/etc/apt/sources.list.d/99ucs-test.sources <<__APT__
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_$(ucr get version/version)-0/all/
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_$(ucr get version/version)-0/\$(ARCH)/
+__APT__
 	univention-upgrade --disable-app-updates --noninteractive --ignoreterm --ignoressh
-	rm -f /etc/apt/sources.list.d/99ucs-test.list
+	rm -f /etc/apt/sources.list.d/99ucs-test.sources
 
 	wait_for_atd 600
 	nscd -i hosts || true
@@ -1638,7 +1643,7 @@ prepare_results () {
 add_ucsschool_dev_repo () {
 	local majorminor
 	majorminor="$(ucr get version/version)"
-	cat << EOF > /etc/apt/sources.list.d/ucsschool-dev-repo.list
+	deb_to_sources << EOF > /etc/apt/sources.list.d/ucsschool-dev-repo.sources
 deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs-school-${majorminor}/all/
 deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs-school-${majorminor}/\$(ARCH)/
 EOF
@@ -1666,7 +1671,7 @@ add_extra_branch_repository () {
 	local REPO_SERVER="http://omar.knut.univention.de/build2/git" repo_name
 	if [ -n "$UCS_ENV_UCS_BRANCH" ]; then
 		repo_name="$(echo "$UCS_ENV_UCS_BRANCH" | slugify)"
-		echo "deb [trusted=yes] $REPO_SERVER/$repo_name git main" >"/etc/apt/sources.list.d/$repo_name.list"
+		echo "deb [trusted=yes] $REPO_SERVER/$repo_name git main" | deb_to_sources >"/etc/apt/sources.list.d/$repo_name.sources"
 		cat >"/etc/apt/preferences.d/99$repo_name.pref" <<__PREF__
 Package: *
 Pin: release o=Univention,n=git
@@ -1918,11 +1923,12 @@ wait_for_winrm () {
 
 add_extra_apt_scope () {
 	local repo_name REPO_SERVER="http://omar.knut.univention.de/build2/git"
-	local apt_file="/etc/apt/sources.list.d/99_extra_scope.list.disabled"
+	local apt_file="/etc/apt/sources.list.d/99_extra_scope.sources.disabled" apt_lines
 
 	# ignore if SCOPE == UCS_VERSION
 	test -n "$UCS_VERSION" && test -n "$SCOPE"  && test "$SCOPE" = "$UCS_VERSION" && return
 
+	apt_lines="$(mktemp)"
 	case "$SCOPE" in
 	'')
 		return 0
@@ -1945,7 +1951,7 @@ add_extra_apt_scope () {
 		echo "deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_$(ucr get version/version)-0-$SCOPE/all/"
 		echo "deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_$(ucr get version/version)-0-$SCOPE/\$(ARCH)/"
 		;;
-	esac >"$apt_file"
+	esac >"$apt_lines"
 
 	# add yet another repo, with a lower apt pinning prio
 	# the idea is: we work on MR for a feature branch and we want all the
@@ -1954,7 +1960,7 @@ add_extra_apt_scope () {
 	if [ -n "$BASE_SCOPE" ] && [ "$BASE_SCOPE" != "$SCOPE" ]; then
 		repo_name="$(echo "$BASE_SCOPE" | slugify)"
 		# add as first entry
-		echo -e "deb [trusted=yes] $REPO_SERVER/$repo_name git main\n$(cat "$apt_file" 2>/dev/null)" >"$apt_file"
+		echo -e "deb [trusted=yes] $REPO_SERVER/$repo_name git main\n$(cat "$apt_lines" 2>/dev/null)" >"$apt_lines"
 		# allow downgrade
 		echo 'APT::Get::allow-downgrades "true";' > /etc/apt/apt.conf.d/99allow-downgrade
 		# pin repo prio 1001 (lower than SCOPE)
@@ -1967,6 +1973,25 @@ __PREF__
 
 	# create sources list, but disabled, you are supposed to call "jenkins_updates" in your cfg to do the
 	# actual upgrade see "jenkins_updates" why
+	deb_to_sources <"$apt_lines" >"$apt_file"
+	rm -f "$apt_lines"
+}
+
+deb_to_sources () { # Convert one-line APT entries "deb [trusted=yes] URI SUITE [COMPONENT...]" from stdin to DEB822 stanzas
+	awk '
+	/^[[:space:]]*(#|$)/ { next }
+	{
+		i = 2; trusted = 0
+		if ($i == "[trusted=yes]") { trusted = 1; i++ }
+		components = ""
+		for (j = i + 2; j <= NF; j++) components = components (components ? " " : "") $j
+		if (n++) print ""
+		print "Types: " $1
+		print "URIs: " $i
+		print "Suites: " $(i + 1)
+		if (components) print "Components: " components
+		if (trusted) print "Trusted: yes"
+	}'
 }
 
 create_version_file_tmp_ucsver () {
