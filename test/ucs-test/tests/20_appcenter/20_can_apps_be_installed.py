@@ -57,7 +57,7 @@ with UCSTestConfigRegistry():
             retcode = p.returncode
             if retcode == 0:
                 break
-            for s in ['/etc/apt/sources.list.d/15_ucs-online-version.list', '/etc/apt/sources.list.d/20_ucs-online-component.list']:
+            for s in ['/etc/apt/sources.list.d/15_ucs-online-version.sources', '/etc/apt/sources.list.d/20_ucs-online-component.sources']:
                 print(s)
                 with open(s) as f:
                     print(f.read())

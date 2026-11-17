@@ -41,7 +41,7 @@ comp="repository/online/component/${compname}"
 config_repo "${comp}=yes" "${comp}/username=${username}" "${comp}/password=${password}" proxy/http="http://${proxyuser}:${proxypass}@localhost:${proxy_port:?}"
 
 	set -e
-	"${FIXED_12571}" || ucr commit /etc/apt/sources.list.d/20_ucs-online-component.list >&3
+	"${FIXED_12571}" || ucr commit /etc/apt/sources.list.d/20_ucs-online-component.sources >&3
 	checkapt "http://${username}:${password}@localhost\\(:80\\)\\?/${repoprefix}/" "${DIRS[0]}"
 	apt-get -qq update
 	apt-get -qq install "${pkgname}"
