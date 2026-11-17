@@ -10,7 +10,7 @@ set -x
 
 prepare_system () {
   echo "Preparing system..."
-  rm -f /etc/apt/sources.list.d/05univention-system-setup.list
+  rm -f /etc/apt/sources.list.d/05univention-system-setup.list /etc/apt/sources.list.d/05univention-system-setup.sources
   ucr set repository/online=true
   univention-install -y apt-transport-https ca-certificates curl gpg bash-completion jq
 
