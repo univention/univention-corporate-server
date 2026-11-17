@@ -76,7 +76,7 @@ class RoleScript(AptScript):
         self.finish_task()
 
         # Cleanup
-        # rm -f /etc/apt/sources.list/05univention-system-setup.list
+        # rm -f /etc/apt/sources.list.d/05univention-system-setup.sources
         # rm -Rf /var/cache/univention-system-setup/packages
 
         return success
