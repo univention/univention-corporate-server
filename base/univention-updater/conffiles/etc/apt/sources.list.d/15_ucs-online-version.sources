@@ -2,7 +2,7 @@
 
 @!@
 import traceback
-from univention.updater.tools import UniventionUpdater, UCSRepoPool5
+from univention.updater.tools import UniventionUpdater
 
 try:
     updater = UniventionUpdater()
@@ -11,10 +11,7 @@ try:
         print('#   univention-config-registry set repository/online=true')
         print('')
     elif updater.current_version.major >= 5:
-        pool = UCSRepoPool5(updater.current_version)
-        for pool.errata in (False, True):
-            for typ in ["deb"] + ["deb-src"][:updater.sources]:
-                print(pool.deb(updater.server, typ))
+        print(updater.release_sources(updater.current_version))
 except Exception:
     print('# An error occurred during the repository check. The error message:')
     for line in traceback.format_exc().splitlines():
@@ -22,7 +19,7 @@ except Exception:
     print('#')
     print('')
     print('# After fixing this issue, you should rewrite this file with the following command:')
-    print('#   univention-config-registry commit /etc/apt/sources.list.d/15_ucs-online-version.list')
+    print('#   univention-config-registry commit /etc/apt/sources.list.d/15_ucs-online-version.sources')
     print('#')
     print('')
 @!@

@@ -189,7 +189,23 @@ class TestUniventionUpdater:
             'deb https://updates.software-univention.de/ ucs%d%d%d main' % (MAJOR, MINOR + 1, 0),
             'deb https://updates.software-univention.de/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', 'all'),
             'deb https://updates.software-univention.de/%d.%d/maintained/component/ %s/%s/' % (MAJOR, MINOR + 1, 'a', ARCH),
-        } == set(tmp)
+        } == {line for entry in tmp for line in entry.lines()}
+
+    @pytest.mark.parametrize("sources,types", [
+        ("no", "deb"),
+        ("yes", "deb deb-src"),
+    ])
+    def test_release_sources(self, ucr, u, sources, types):
+        """Test the DEB822 stanza for the release and errata repository."""
+        ucr({'repository/online/sources': sources})
+        u.ucr_reinit()
+        entry = u.release_sources(U.UCS_Version((MAJOR, MINOR, PATCH)))
+        assert str(entry) == (
+            'Types: %s\n'
+            'URIs: https://updates.software-univention.de/\n'
+            'Suites: ucs%d%d%d errata%d%d%d\n'
+            'Components: main'
+        ) % (types, MAJOR, MINOR, PATCH, MAJOR, MINOR, PATCH)
 
     def test_current_version(self, u):
         """Test current version property."""
@@ -372,7 +388,10 @@ class TestComponents:
         })
         mockopen.write(
             U.Component.FN_APTSOURCES,
-            b'deb http://host:port/prefix/0.0/maintained/component/ d/arch/\n'
+            b'Types: deb\n'
+            b'URIs: http://host:port/prefix/0.0/maintained/component/\n'
+            b'Suites: d/arch/\n'
+            b'\n'
             b'# credentials not accepted: d\n')
         assert u.component('d').status() == U.Component.PERMISSION_DENIED
 
@@ -402,10 +421,31 @@ class TestComponents:
         })
         mockopen.write(
             U.Component.FN_APTSOURCES,
-            b'deb http://host:port/prefix/0.0/maintained/component/ c/arch/\n'
-            b'deb http://host:port/prefix/0.0/unmaintained/component/ d/arch/\n')
+            b'Types: deb\n'
+            b'URIs: http://host:port/prefix/0.0/maintained/component/\n'
+            b'Suites: c/arch/\n'
+            b'\n'
+            b'# Component x: some error\n'
+            b'\n'
+            b'Types: deb\n'
+            b'URIs: http://host:port/prefix/0.0/unmaintained/component/\n'
+            b'# comment inside a stanza\n'
+            b'Suites: d/arch/\n')
         assert u.component('c').status() == U.Component.AVAILABLE
         assert u.component('d').status() == U.Component.AVAILABLE
+
+    @pytest.mark.parametrize("content", [
+        pytest.param(b'Types: deb-src\nURIs: http://host:port/prefix/0.0/maintained/component/\nSuites: c/source/\n', id="source-only"),
+        pytest.param(b'Types: deb\nURIs: http://host:port/prefix/0.0/maintained/component/\nSuites: c/arch/\nEnabled: no\n', id="disabled"),
+        pytest.param(b'# deb http://host:port/prefix/0.0/maintained/component/ c/arch/\n', id="comment"),
+    ])
+    def test_get_current_component_status_NOT_FOUND(self, ucr, u, mockopen, content):
+        """Test status of components without an enabled binary repository."""
+        ucr({
+            'repository/online/component/c': 'yes',
+        })
+        mockopen.write(U.Component.FN_APTSOURCES, content)
+        assert u.component('c').status() == U.Component.NOT_FOUND
 
     def test_get_component_defaultpackage_UNKNOWN(self, u):
         """Test default packages for unknown components."""

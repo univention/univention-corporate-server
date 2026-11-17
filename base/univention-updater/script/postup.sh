@@ -82,7 +82,15 @@ is_ucr_true update53/skip/autoremove ||
 	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove >&3 2>&3
 
 # removes temporary sources list (always required)
-rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
+rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list /etc/apt/sources.list.d/00_ucs_temporary_installation.sources
+
+# Bug #59408: move the entries of /etc/apt/sources.list to a file in the DEB822 format
+is_ucr_true update53/skip/sources-migration ||
+	python3 -c 'import sys; from univention.updater.sources import main; sys.exit(main(sys.argv[1:]))' --migrate --backup /etc/apt/sources.list.upgrade530.bak >&3 2>&3
+for sources_list in /etc/apt/sources.list.d/*.list; do
+	[ -e "$sources_list" ] || continue
+	echo "Note: $sources_list uses the deprecated one-line format. It can be converted with 'apt modernize-sources'." >&3
+done
 
 # removing the atd service conf file that is setting the KillMode attribute
 if [ -e "/etc/systemd/system/atd.service.d/update530.conf" ]; then
@@ -145,8 +153,7 @@ if [ -n "$(ucr search "^fetchmail/autostart/update530$")" ] ; then
 fi
 
 # remove backup packages sources
-rm -f /etc/apt/sources.list.d/15_ucs-online-version.list.upgrade530.bak
-rm -f /etc/apt/sources.list.d/20_ucs-online-component.list.upgrade530.bak
+rm -f /etc/apt/sources.list.d/{15_ucs-online-version,20_ucs-online-component}.{list,sources}.upgrade530.bak
 
 echo "
 
