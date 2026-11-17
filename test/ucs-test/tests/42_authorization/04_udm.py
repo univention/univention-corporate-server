@@ -485,3 +485,37 @@ def test_ou_admin_cannot_set_guardian_member_roles_on_groups(
             group_obj.modify()
 
         udm.remove_object('groups/group', dn=created_group_dn)
+
+
+# Search authorization: the lookup must not reveal whether an inaccessible
+# search base exists. These assertions deliberately check the UDM exception,
+# before REST/UMC translate it into an HTTP error.
+@check_delegation
+@pytest.mark.parametrize('base_kind', ['hidden', 'missing'])
+def test_search_base_not_discoverable(ou_admin_connection, random_username, base_kind):
+    lo = ou_admin_connection(OU1.admin_dn, OU1.admin_password)
+    users_module = modules.get('users/user')
+    modules.init(lo, position(lo.base), users_module)
+
+    if base_kind == 'hidden':
+        base = OU2.users_dn
+    else:
+        base = f'cn=nonexistent-{random_username()},{OU1.dn}'
+
+    with pytest.raises(noObject) as exc:
+        users_module.lookup(None, lo, '(uid=*)', base=base)
+    assert base in str(exc.value)
+
+
+@check_delegation
+def test_search_visible_base_no_matches_returns_empty(ou_admin_connection, random_username):
+    lo = ou_admin_connection(OU1.admin_dn, OU1.admin_password)
+    users_module = modules.get('users/user')
+    modules.init(lo, position(lo.base), users_module)
+
+    # a visible base with no matching objects must not raise noObject.
+    result = users_module.lookup(
+        None, lo, f'(uid=nonexistent-{random_username()})',
+        base=OU1.users_dn,
+    )
+    assert result == []
