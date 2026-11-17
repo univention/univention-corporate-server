@@ -2156,7 +2156,7 @@ class simpleLdap:
         result = []
         search_base = base or cls.ldap_base
 
-        if authz and lo.authz.enabled and not lo.authz.is_search_allowed(lo, cls.module, filter_str, search_base, scope):
+        if authz and not lo.authz.is_search_allowed(lo, cls.module, filter_str, search_base, scope):
             return result
 
         for dn, attrs in lo.authz_connection.search(filter_str, search_base, scope, attr, unique, required, timeout, sizelimit, serverctrls=serverctrls, response=response):
