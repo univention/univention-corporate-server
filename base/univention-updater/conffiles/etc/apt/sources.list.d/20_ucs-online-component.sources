@@ -12,10 +12,12 @@ try:
         ver = updater.current_version
         for comp in sorted(updater.get_components()):
             try:
-                for repo in comp.repositories(ver, ver):
-                    print(repo)
+                for entry in comp.sources(ver, ver):
+                    print(entry)
+                    print('')
             except UpdaterException as ex:
                 print("# Component %s: %s" % (comp.name, ex))
+                print('')
     else:
         print('# The online repository is disabled and can be enabled with:')
         print('#   univention-config-registry set repository/online=true')
@@ -27,7 +29,7 @@ except Exception:
     print('#')
     print('')
     print('# After fixing this issue, you should rewrite this file with the following command:')
-    print('#   univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list')
+    print('#   univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.sources')
     print('#')
     print('')
 @!@

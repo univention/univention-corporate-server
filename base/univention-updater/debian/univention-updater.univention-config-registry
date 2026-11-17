@@ -1,5 +1,5 @@
 Type: file
-File: etc/apt/sources.list.d/15_ucs-online-version.list
+File: etc/apt/sources.list.d/15_ucs-online-version.sources
 Variables: version/version
 Variables: version/patchlevel
 Variables: local/repository
@@ -10,7 +10,7 @@ Variables: repository/online/sources
 Variables: repository/online/httpmethod
 
 Type: file
-File: etc/apt/sources.list.d/20_ucs-online-component.list
+File: etc/apt/sources.list.d/20_ucs-online-component.sources
 Variables: local/repository
 Variables: version/version
 Variables: version/patchlevel

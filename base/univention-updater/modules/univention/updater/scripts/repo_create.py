@@ -16,6 +16,7 @@ from textwrap import dedent
 from univention.config_registry import ConfigRegistry, handler_commit, handler_set
 from univention.lib.ucs import UCS_Version
 from univention.updater.locking import UpdaterLock
+from univention.updater.sources import FN_APTSOURCES_COMPONENT, FN_APTSOURCES_VERSION
 
 
 configRegistry = ConfigRegistry()
@@ -124,8 +125,8 @@ def main() -> None:
         print('Check /var/log/univention/repository.log for the current status')
         subprocess.call(['univention-repository-update', 'net'])
         handler_commit([
-            '/etc/apt/sources.list.d/15_ucs-online-version.list',
-            '/etc/apt/sources.list.d/20_ucs-online-component.list',
+            FN_APTSOURCES_VERSION,
+            FN_APTSOURCES_COMPONENT,
         ])
 
         print(dedent(

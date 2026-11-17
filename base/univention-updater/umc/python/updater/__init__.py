@@ -30,6 +30,7 @@ from univention.management.console.modules.sanitizers import (
     ChoicesSanitizer, IntegerSanitizer, ListSanitizer, StringSanitizer,
 )
 from univention.updater.errors import RequiredComponentError
+from univention.updater.sources import FN_APTSOURCES_COMPONENT
 from univention.updater.tools import UniventionUpdater
 
 
@@ -40,7 +41,7 @@ if TYPE_CHECKING:
 _ = Translation('univention-management-console-module-updater').translate
 
 # the file whose file time is used as the 'serial' value for the 'Components' grid.
-COMPONENTS_SERIAL_FILE = '/etc/apt/sources.list.d/20_ucs-online-component.list'
+COMPONENTS_SERIAL_FILE = FN_APTSOURCES_COMPONENT
 
 HOOK_DIRECTORY = '/usr/share/univention-updater/hooks'
 

@@ -8,6 +8,7 @@ Build-Depends:
  debhelper-compat (=13),
  dh-python,
  python3-all,
+ python3-debian,
  python3-lazy-object-proxy,
  python3-pytest,
  python3-pytest-cov,
@@ -56,6 +57,7 @@ Description: UCS - system upgrading tool
 Package: python3-univention-updater
 Architecture: all
 Depends:
+ python3-debian,
  python3-univention-admin-diary,
  python3-univention-config-registry,
  sqv,

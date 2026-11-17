@@ -39,6 +39,22 @@ univention-config-registry set version/beta=5.3
 
 #DEBHELPER#
 
+if [ "$1" = "configure" ]; then
+	# The package sources are written in the DEB822 format to *.sources files.
+	# UCR diverted the old *.list files to *.list.debian. "ucr update" removes
+	# diversions which are no longer needed with "dpkg-divert --rename --remove",
+	# which moves *.list.debian back to *.list: the old one-line file would come
+	# back next to the new *.sources file. So remove the diversion without
+	# renaming and delete both files here.
+	for name in 15_ucs-online-version 20_ucs-online-component; do
+		list="/etc/apt/sources.list.d/${name}.list"
+		if [ -n "$(dpkg-divert --listpackage "$list")" ]; then
+			dpkg-divert --quiet --local --no-rename --remove "$list"
+		fi
+		rm -f "$list" "${list}.debian"
+	done
+fi
+
 # force the listener module license_uuid to be executed
 if [ -x /usr/sbin/univention-directory-listener-ctrl ]; then
 	/usr/sbin/univention-directory-listener-ctrl resync license_uuid || true
