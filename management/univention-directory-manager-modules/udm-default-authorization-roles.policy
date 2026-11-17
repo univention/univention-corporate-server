@@ -34,7 +34,7 @@
 #     Example: `grant actions="create"` and `grant properties="..." permission="write"`.
 
 condition "is-self"
-  expr="request.principal.id == request.resource.id"
+  expr="ldapDN(request.principal.id) == ldapDN(request.resource.id)"
 
 # access by role="*"
 #   to objecttype="*"
