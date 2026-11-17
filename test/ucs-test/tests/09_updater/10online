@@ -22,7 +22,7 @@ config_repo repository/online=no
 	set -e
 	# Check that lists are empty
 	cd /etc/univention/templates/files &&
-		for template in etc/apt/sources.list.d/*.list
+		for template in etc/apt/sources.list.d/*.sources
 		do
 			grep -v '^#\|^[[:space:]]*$' "/$template" && false
 		done

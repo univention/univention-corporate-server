@@ -77,7 +77,7 @@ cleanup_extra () {
 
 run_tests () { # execute all updater programs
 	local msg="$1"
-	grep -F "$msg" /etc/apt/sources.list.d/15_ucs-online-version.list
+	grep -F "$msg" /etc/apt/sources.list.d/15_ucs-online-version.sources
 
 	/usr/share/univention-updater/univention-updater net 2>&1 | grep -F "$msg"
 	grep -F "status=FAILED" /var/lib/univention-updater/univention-updater.status
@@ -112,7 +112,7 @@ run_tests () { # execute all updater programs
 
 	msg="Configuration error: credentials not accepted"
 	ucr set "${comp}=yes" "${comp}/username=DUMMY" "${comp}/password=DUMMY" "${comp}/version=current"
-	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
+	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.sources
 	/usr/share/univention-updater/univention-updater net 2>&1 | grep -F "$msg"
 	grep -F "status=FAILED" /var/lib/univention-updater/univention-updater.status
 	grep -F "errorsource=SETTINGS" /var/lib/univention-updater/univention-updater.status
@@ -128,7 +128,7 @@ run_tests () { # execute all updater programs
 
 	msg="Component ${compname}DUMMY: Error downloading"
 	ucr set "${comp}DUMMY=yes" "${comp}DUMMY/version=current"
-	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
+	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.sources
 	/usr/share/univention-updater/univention-updater net 2>&1 | grep -F " marked as required."
 	grep -F "status=DONE" /var/lib/univention-updater/univention-updater.status
 	[ ! -e /var/lib/univention-updater/update-failed ]
@@ -138,7 +138,7 @@ run_tests () { # execute all updater programs
 	ucr unset "${comp}DUMMY" "${comp}DUMMY/version"
 
 	ucr set proxy/http="http://DUMMY:DUMMY@localhost:${proxy_port:?}"
-	"${FIXED_12571}" || ucr commit /etc/apt/sources.list.d/15_ucs-online-version.list >&3
+	"${FIXED_12571}" || ucr commit /etc/apt/sources.list.d/15_ucs-online-version.sources >&3
 	run_tests "Proxy configuration error: credentials not accepted"
 	ucr unset proxy/http
 
@@ -154,7 +154,7 @@ run_tests () { # execute all updater programs
 	# must be last since update succeeds!
 	msg="Configuration error: credentials not accepted"
 	ucr set "${comp}=yes" "${comp}/username=DUMMY" "${comp}/password=DUMMY"
-	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
+	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.sources
 	/usr/share/univention-updater/univention-updater net 2>&1
 	grep -F "status=DONE" /var/lib/univention-updater/univention-updater.status
 	ucr search --brief ^update/available

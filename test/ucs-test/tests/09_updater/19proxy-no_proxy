@@ -27,7 +27,7 @@ proxy_port=9 # discard
 config_repo proxy/http="http://localhost:${proxy_port}" proxy/no_proxy=localhost
 
 	set -e
-	"${FIXED_12571}" || ucr commit /etc/apt/sources.list.d/15_ucs-online-version.list >&3
+	"${FIXED_12571}" || ucr commit /etc/apt/sources.list.d/15_ucs-online-version.sources >&3
 	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${DIR}"
 	# no_proxy can not be directly specified via /etc/apt/apt.conf.d/80proxy, only in environment.
 	# univention-updater will export no_proxy for its forked children as well, simulate that here.
