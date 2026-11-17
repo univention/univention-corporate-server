@@ -26,8 +26,8 @@ TRACEBACK_REGEX = re.compile(
 def run_ucr_commit(umc_instance: Instance) -> None:
     cmd = [
         'ucr', 'commit',
-        '/etc/apt/sources.list.d/15_ucs-online-version.list',
-        '/etc/apt/sources.list.d/20_ucs-online-component.list',
+        '/etc/apt/sources.list.d/15_ucs-online-version.sources',
+        '/etc/apt/sources.list.d/20_ucs-online-component.sources',
     ]
     subprocess.call(cmd)
     run(umc_instance, rerun=True)
