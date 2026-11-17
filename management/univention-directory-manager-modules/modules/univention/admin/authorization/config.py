@@ -468,14 +468,17 @@ class UDMAuthorizationConfig:
                         action_grants = grants_by_resource.setdefault((role, resource), {})
 
                         for grant in to_clause.get('grant', []):
-                            conditions = list(common_conditions)
+                            value_condition = None
                             if grant.get('values'):
-                                prop = grant['properties'][0]
-                                conditions.append(self._values_to_cel(grant['values'], prop))
+                                value_condition = self._values_to_cel(grant['values'], grant['properties'][0])
 
                             source_name = to_clause.get('name')
                             description = to_clause.get('description') or access_block.get('description')
-                            for action in self._grant_to_actions(grant):
+                            for action, explicit in self._grant_to_action_origins(grant):
+                                # implicit read/search rights must not depend on a future value
+                                conditions = list(common_conditions)
+                                if explicit and value_condition:
+                                    conditions.append(value_condition)
                                 action_grants.setdefault(action, []).append((tuple(dict.fromkeys(conditions)), source_name, description))
 
         policies = {}
@@ -670,30 +673,45 @@ class UDMAuthorizationConfig:
         return position
 
     def _grant_to_actions(self, grant):
+        """Expand a DSL grant into Cerbos actions."""
+        return sorted((action for action, _ in self._grant_to_action_origins(grant)), key=self._action_sort_key)
+
+    def _grant_to_action_origins(self, grant):
+        """
+        Return (action, explicit) pairs, distinguishing DSL grants from implied rights.
+
+        Property write implies read and search; read implies search.
+        Object read implies search.
+        Only explicitly requested actions inherit a grant's ``values`` condition.
+        """
         if 'actions' in grant:
-            actions = set(grant.get('actions', []))
-            if '*' in actions:
-                actions = set(ACTIONS)
-            elif 'read' in actions:
-                actions.add('search')
-            return sorted([udm_object_action(act) for act in actions], key=self._action_sort_key)
+            explicit = set(grant['actions'])
+            if '*' in explicit:
+                explicit = set(ACTIONS)
+            expanded = explicit | ({'search'} if 'read' in explicit else set())
+            return [
+                (udm_object_action(action), action in explicit)
+                for action in sorted(expanded)
+            ]
 
-        properties = grant['properties']
-        permissions = grant['permission'].split(',') if isinstance(grant['permission'], str) else grant['permission']
-        permissions = set(permissions)
-        if '*' in permissions:
-            permissions = set(PERMISSIONS)
-        if 'read' in permissions:
-            permissions.add('search')
-        if 'write' in permissions:
-            permissions.update({'read', 'search'})
+        explicit = grant['permission'].split(',') if isinstance(grant['permission'], str) else grant['permission']
+        explicit = set(explicit)
+        if '*' in explicit:
+            explicit = set(PERMISSIONS)
+        expanded = set(explicit)
+        if 'read' in expanded:
+            expanded.add('search')
+        if 'write' in expanded:
+            expanded.update({'read', 'search'})
 
-        actions = {
-            udm_property_action_wildcards(prop, permission) if prop == '*' else udm_property_action(prop, permission)
-            for prop in properties
-            for permission in permissions
-        }
-        return sorted(actions, key=self._action_sort_key)
+        return sorted((
+            (
+                udm_property_action_wildcards(prop, permission) if prop == '*' else udm_property_action(prop, permission),
+                permission in explicit,
+            )
+            for prop in grant['properties']
+            for permission in expanded
+        ), key=lambda entry: self._action_sort_key(entry[0]))
 
     @staticmethod
     def _action_sort_key(action):
