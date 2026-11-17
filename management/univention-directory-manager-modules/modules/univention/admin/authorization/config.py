@@ -13,6 +13,7 @@ import copy
 import hashlib
 import io
 import logging
+import operator
 import re
 import sys
 from pathlib import Path
@@ -386,7 +387,7 @@ class _DSLTransformer(Transformer):
         for rule in parsed['rules']:
             by = rule.pop('by')
             to = rule.pop('to')
-            roles = ' by %s' % _kv(by[0]) if len(by) == 1 else '\n  ' + '\n  '.join('by %s' % _kv(r) for r in sorted(by, key=lambda x: x['role']))
+            roles = ' by %s' % _kv(by[0]) if len(by) == 1 else '\n  ' + '\n  '.join('by %s' % _kv(r) for r in sorted(by, key=operator.itemgetter('role')))
             params = '\n  %s' % _kv(rule) if rule else ''
             print(file=result)
             print(f'access{roles}{params}', file=result)
@@ -439,87 +440,98 @@ class UDMAuthorizationConfig:
 
     def to_policy_data(self, *, commented=False):
         """
-        Compile DSL data.
+        Compile DSL grants into additive, action-specific Cerbos role rules.
 
-        Positional role contexts become derived roles.
-        Named ``if`` and grant-specific ``values`` expressions remain conditions on the exact resource-policy rule whose actions they guard.
+        For each (role, resource, action), alternative grants are ORed. Conditions
+        within one grant (position, if, values) are ANDed. Actions with identical
+        resulting conditions are then grouped back into one Cerbos rule.
         """
         named_conditions = {cond['name']: cond['expr'] for cond in self.parsed['conditions']}
         resources = {}
-        # derived_by_key = {}
         self._position_variables = {}
         self._position_variable_names = {}
 
-        policies = {}
+        # (role, resource) -> action -> [(conditions, source_name, description)]
+        grants_by_resource = {}
         for access_block in self.parsed['rules']:
             roles = sorted({entry['role'] for entry in access_block.get('by', [])})
             for to_clause in access_block.get('to', []):
                 for role in roles:
-                    rules = policies.setdefault(role, _policy_seq([], commented))
-                    used = self.USED_NAMES.setdefault(role, set())
+                    common_conditions = []
+                    if position := to_clause.get('position'):
+                        common_conditions.append(self._position_variable(role, *position))
+                    if if_cond := to_clause.get('if'):
+                        common_conditions.append(named_conditions.get(if_cond, if_cond))
 
-                    # TODO: iterate over grants first: 1 role policy for each grant!?
                     for object_type in self._expand_object_types(to_clause['objecttype']):
-                        resource = udm_resource_kind(object_type) if object_type != '*' else '*'  # TODO: check if '*' or 'udm:*' is allowed
-                        rule_conditions = []
-                        position = to_clause.get('position')
-                        if position:
-                            expr = self._position_variable(role, *position)
-                            rule_conditions.append(expr)
-                            # if self._is_context_position(position[1]):
-                            #    key = (role, expr)
-                            #    name = derived_by_key.get(key)
-                            #    if name is None:
-                            #        name = self._derived_role_name(role, position, set(derived_by_key.values()))
-                            #        derived_by_key[key] = name
+                        resource = udm_resource_kind(object_type) if object_type != '*' else '*'
+                        action_grants = grants_by_resource.setdefault((role, resource), {})
 
-                        if_cond = to_clause.get('if')
-                        if if_cond:
-                            rule_conditions.append(named_conditions.get(if_cond, if_cond))
-
-                        actions = []
                         for grant in to_clause.get('grant', []):
-                            actions.extend(self._grant_to_actions(grant))
+                            conditions = list(common_conditions)
                             if grant.get('values'):
                                 prop = grant['properties'][0]
-                                rule_conditions.append(self._values_to_cel(grant['values'], prop))
+                                conditions.append(self._values_to_cel(grant['values'], prop))
 
-                        rule = _policy_map({
-                            'resource': resource,
-                            'allowActions': actions,
-                        }, commented)
+                            source_name = to_clause.get('name')
+                            description = to_clause.get('description') or access_block.get('description')
+                            for action in self._grant_to_actions(grant):
+                                action_grants.setdefault(action, []).append((tuple(dict.fromkeys(conditions)), source_name, description))
 
-                        condition = self._condition(rule_conditions)
-                        if condition:
-                            rule['condition'] = condition
+        policies = {}
+        for (role, resource), action_grants in grants_by_resource.items():
+            # same condition -> actions and their source labels
+            by_condition = {}
+            for action, grants in action_grants.items():
+                condition = self._merge_grant_conditions([entry[0] for entry in grants])
+                key = yaml.safe_dump(condition, sort_keys=True) if condition is not None else ''
+                group = by_condition.setdefault(key, {'condition': condition, 'actions': [], 'sources': []})
+                group['actions'].append(action)
+                group['sources'].extend((name, description) for _, name, description in grants)
 
-                        rules.append(rule)
+            rules = policies.setdefault(role, _policy_seq([], commented))
+            used = set()
+            for group in by_condition.values():
+                actions = sorted(group['actions'], key=self._action_sort_key)
+                rule = _policy_map({'resource': resource, 'allowActions': actions}, commented)
+                if group['condition'] is not None:
+                    rule['condition'] = group['condition']
+                rules.append(rule)
 
-                        base_name = to_clause.get('name')
-                        if base_name:
-                            base_name += '-actions' if grant.get('actions') else '-properties'
-                        rule_name = self._unique_rule_name(base_name, used, actions, object_type)
-                        # rule_name = self._unique_rule_name(used, to_clause, actions, object_type)
-                        description = to_clause.get('description') or access_block.get('description')
-                        # rule.yaml_set_start_comment(description, indent=0)
-                        # _add_rule_comment(rule, 0, rule_name, description)
-                        _add_rule_comment(rules, len(rules) - 1, rule_name, description)
-
-        # definitions = []
-        # for (role, expr), name in sorted(derived_by_key.items(), key=lambda item: item[1]):
-        #    definitions.append(_policy_map({
-        #        'name': name,
-        #        'parentRoles': [role],
-        #        'condition': self._condition([expr]),
-        #    }, commented))
+                # a merged rule can originate from several DSL clauses
+                sources = list(dict.fromkeys(group['sources']))
+                names = [name for name, _ in sources if name]
+                descriptions = [description for _, description in sources if description]
+                rule_name = self._unique_rule_name(names[0] if len(set(names)) == 1 and names else None, used, actions, resource)
+                comment = '\n'.join(dict.fromkeys(descriptions)) or None
+                _add_rule_comment(rules, len(rules) - 1, rule_name, comment)
 
         return {
             'roles': policies,
             'derivedRoleSet': f'udm_{sanitize_filename(self.filename.stem).replace("-", "_")}_contexts',
-            'derivedRoles': [],  # _policy_seq(definitions, commented),
+            'derivedRoles': [],
             'variables': self._position_variable_names,
             'resources': resources,
         }
+
+    @classmethod
+    def _merge_grant_conditions(cls, condition_groups):
+        """OR alternative grants while preserving the AND within each grant."""
+        matches = []
+        for exprs in condition_groups:
+            condition = cls._condition(exprs)
+            if condition is None:
+                # an unconditional grant overrides all conditional alternatives
+                return None
+            match = condition['match']
+            if match not in matches:
+                matches.append(match)
+
+        if not matches:
+            return None
+        if len(matches) == 1:
+            return {'match': matches[0]}
+        return {'match': {'any': {'of': matches}}}
 
     def _role_policy_document(self, role, rules, *, commented=False):
         return _policy_map({
