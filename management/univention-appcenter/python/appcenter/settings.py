@@ -156,6 +156,9 @@ class ListSetting(Setting):
 
     def sanitize_value(self, app, value):
         super().sanitize_value(app, value)
+        # Preserve existing values when changing a Bool setting to a True/False list.
+        if set(self.values) == {'True', 'False'} and (isinstance(value, bool) or value in ('true', 'false')):
+            value = str(value).capitalize()
         if value is not None and value not in self.values:
             raise SettingValueError('%s: %r is not a valid option' % (self.name, value))
         return value
