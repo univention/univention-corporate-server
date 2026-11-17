@@ -10,6 +10,6 @@
 if [ -s /var/cache/univention-system-setup/profile ]; then
 	rm -f /var/cache/univention-system-setup/packages/*.deb
 	rm -f /var/cache/univention-system-setup/packages/Packages
-	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
+	rm -f /etc/apt/sources.list.d/05univention-system-setup.sources /etc/apt/sources.list.d/05univention-system-setup.list
 fi
 
