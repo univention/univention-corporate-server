@@ -203,7 +203,7 @@ cleanup () { # Undo all changes
 	cp "${BASEDIR}"/base*.conf /etc/univention/
 	rm -f /etc/apt/trusted.gpg.d/ucs-test.gpg
 	rm -f /etc/apt/sources.list.d/00_ucs_update_in_progress.list
-	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
+	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list /etc/apt/sources.list.d/00_ucs_temporary_installation.sources
 	find /var/lib/apt/lists/ -type f -not -name lock -delete
 
 	[ -x /etc/init.d/cron ] && [ -f "${BASEDIR}/reenable_cron" ] && invoke-rc.d cron start >&3 2>&3 3>&-
@@ -222,7 +222,7 @@ failure () { # Report failed command
 	echo "ERROR ${BASH_COMMAND}" >&2
 	dump_repo
 	[ -s "${BASEDIR}/apache2.log" ] && cat "${BASEDIR}/apache2.log"
-	grep -nHvFxf- --color=auto /etc/apt/sources.list /etc/apt/sources.list.d/*.list /etc/apt/mirror.list <<__GREP__ || :
+	grep -nHvFxf- --color=auto /etc/apt/sources.list /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources /etc/apt/mirror.list <<__GREP__ || :
 #Warning: This file is auto-generated and might be overwritten by
 #         univention-config-registry.
 #         Please edit the following file(s) instead:
@@ -757,8 +757,12 @@ mksh () { # Create shell scripts $@ in $1: $dir ( [--return $ret] <preup|postup>
 	done
 }
 
+aptlines () { # Print the APT sources in the one-line format
+	python3 "${SELFDIR}/deb822_to_lines.py" /etc/apt/sources.list.d/*.sources /etc/apt/sources.list.d/*.list
+}
 checkapt () { # Check for apt.source statement ${1}: [--mirror] [[--]source] [/path] [http*] [(ucs|errata)XXX] [[un]maintained] [X.Y-(Z|--errataZ|--component/Z]
-	local files='/etc/apt/sources.list.d/*.list'
+	local files="${BASEDIR}/aptlines"
+	aptlines >"${files}"
 	local prefix=deb
 	local pattern
 	while [ $# -ge 1 ]

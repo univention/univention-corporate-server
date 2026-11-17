@@ -30,7 +30,8 @@ then
 	echo "server is repository-server"
 	sources="/etc/apt/mirror.list"
 else
-	sources="/etc/apt/sources.list.d/20_ucs-online-component.list"
+	sources="$(mktemp)"
+	python3 "$(dirname "$0")/deb822_to_lines.py" /etc/apt/sources.list.d/20_ucs-online-component.sources >"$sources"
 fi
 
 for component in \

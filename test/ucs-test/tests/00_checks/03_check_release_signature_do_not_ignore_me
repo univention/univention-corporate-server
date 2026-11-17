@@ -53,7 +53,7 @@ case "$(ucr get repository/app_center/server)" in
 esac
 
 # skip if branch test repo is used
-[ -n "$SCOPE" ] && [ -e /etc/apt/sources.list.d/99_extra_scope.list ] && exit 77  # SKIP
+[ -n "$SCOPE" ] && { [ -e /etc/apt/sources.list.d/99_extra_scope.list ] || [ -e /etc/apt/sources.list.d/99_extra_scope.sources ]; } && exit 77  # SKIP
 
 # check if apt-get update in now+2y works
 if apt_update '+2y'
