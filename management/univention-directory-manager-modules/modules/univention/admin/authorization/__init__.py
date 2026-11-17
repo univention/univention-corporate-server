@@ -301,13 +301,20 @@ class Authorization:
         moved_obj.dn = dest
 
         actor = self._get_actor(obj.lo)
-        target = self._get_target_for_write(obj.lo, obj, moved_obj)
-        if not self._check_actions(actor, target, [udm_object_action('move')]):
-            auth_log('move', actor, target)
+        source = self._get_target_for_write(obj.lo, obj, moved_obj)
+        destination = self._get_target(moved_obj)
+
+        action = udm_object_action('move')
+        source_allowed = self._check_actions(actor, source, [action])
+        destination_allowed = self._check_actions(actor, destination, [action])
+        allowed = source_allowed and destination_allowed
+
+        if not allowed:
+            auth_log('move', actor, source, destination=dest)
             if raise_exception:
                 raise permissionDenied()
-            return False
-        return True
+
+        return allowed
 
     def is_remove_allowed(self, obj, raise_exception=True):
         if not self.enabled:
