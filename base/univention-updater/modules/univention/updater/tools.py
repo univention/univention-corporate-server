@@ -10,6 +10,7 @@ import copy
 import errno
 import functools
 import glob
+import io
 import json
 import logging
 import os
@@ -39,6 +40,7 @@ from .errors import (
     RequiredComponentError, UnmetDependencyError, VerificationError,
 )
 from .repo_url import UcsRepoUrl
+from .sources import FN_APTSOURCES_COMPONENT, SourcesEntry, iter_entries
 
 
 if TYPE_CHECKING:
@@ -175,6 +177,32 @@ class _UCSRepo(UCS_Version):  # noqa: PLW1641
         :rtype: str
         """
         raise NotImplementedError()
+
+    def entry(self, server: _UCSServer, type: str = "deb") -> SourcesEntry:
+        """
+        Format for a DEB822 :file:`.sources` file.
+
+        :param str server: The URL of the repository server.
+        :param str type: The repository type, e.g. `deb` for a binary and `deb-src` for source package repository.
+        :returns: The APT repository stanza.
+
+        >>> print(UCSRepoPool5(major=5, minor=3, patchlevel=0).entry('https://updates.software-univention.de/'))
+        Types: deb
+        URIs: https://updates.software-univention.de/
+        Suites: ucs530
+        Components: main
+        >>> print(UCSRepoPool(major=5, minor=3, patchlevel=0, part='maintained/component', patch='comp', arch='amd64').entry('https://updates.software-univention.de/'))
+        Types: deb
+        URIs: https://updates.software-univention.de/5.3/maintained/component/
+        Suites: comp/amd64/
+        >>> print(UCSRepoPoolNoArch(major=5, minor=3, part='maintained/component', patch='comp').entry('https://updates.software-univention.de/', 'deb-src'))
+        Types: deb-src
+        URIs: https://updates.software-univention.de/5.3/maintained/component/comp/
+        Suites: ./
+        """
+        entry = SourcesEntry.parse_line(self.deb(server, type))
+        assert entry is not None
+        return entry
 
     def path(self, filename: str | None = None) -> str:
         """
@@ -772,7 +800,7 @@ class UCSLocalServer(_UCSServer):
 
 
 class Component:
-    FN_APTSOURCES = '/etc/apt/sources.list.d/20_ucs-online-component.list'
+    FN_APTSOURCES = FN_APTSOURCES_COMPONENT
     UCRV = "repository/online/component/{}/{}"
     AVAILABLE = 'available'
     NOT_FOUND = 'not_found'
@@ -1065,18 +1093,37 @@ class Component:
                 else:
                     raise
 
+    def sources(
+        self,
+        start: UCS_Version,
+        end: UCS_Version,
+        failed: set[tuple[Component, str]] | None = None,
+    ) -> Iterator[SourcesEntry]:
+        """
+        Return the DEB822 stanzas for requested component.
+
+        :param start: Minimum requried version.
+        :param end: Maximum allowed version.
+        :param failed: A set to recive the failed component names.
+        :returns: The APT repository stanzas, one for each entry of :py:meth:`repositories`.
+        """
+        for line in self.repositories(start, end, failed=failed):
+            entry = SourcesEntry.parse_line(line)
+            assert entry is not None
+            yield entry
+
     def status(self) -> str:
         """
-        Returns the current status of specified component based on :file:`/etc/apt/sources.list.d/20_ucs-online-component.list`
+        Returns the current status of specified component based on :file:`/etc/apt/sources.list.d/20_ucs-online-component.sources`
 
         :returns: One of the strings:
 
             :py:const:`DISABLED`
                 component has been disabled via UCR
             :py:const:`AVAILABLE`
-                component is enabled and at least one valid repo string has been found in .list file
+                component is enabled and at least one valid repo has been found in the .sources file
             :py:const:`NOT_FOUND`
-                component is enabled but no valid repo string has been found in .list file
+                component is enabled but no valid repo has been found in the .sources file
             :py:const:`PERMISSION_DENIED`
                 component is enabled but authentication failed
             :py:const:`UNKNOWN`
@@ -1088,25 +1135,23 @@ class Component:
             return self.DISABLED
 
         try:
-            comp_file = open(self.FN_APTSOURCES)
+            with open(self.FN_APTSOURCES) as comp_file:
+                text = comp_file.read()
         except OSError:
             return self.UNKNOWN
         rePath = re.compile('(un)?maintained/component/ ?%s/' % self.name)
-        reDenied = re.compile('credentials not accepted: %s$' % self.name)
-        try:
-            # default: file contains no valid repo entry
-            result = self.NOT_FOUND
-            for line in comp_file:
-                if line.startswith('deb ') and rePath.search(line):
-                    # at least one repo has been found
-                    result = self.AVAILABLE
-                elif reDenied.search(line):
-                    # stop immediately if at least one repo has authentication problems
-                    return self.PERMISSION_DENIED
-            # return result
-            return result
-        finally:
-            comp_file.close()
+        reDenied = re.compile('credentials not accepted: %s$' % self.name, re.MULTILINE)
+        if reDenied.search(text):
+            # stop immediately if at least one repo has authentication problems
+            return self.PERMISSION_DENIED
+
+        for entry in iter_entries(io.StringIO(text)):
+            if 'deb' in entry.types and any(rePath.search('%s %s' % (uri, suite)) for uri in entry.uris for suite in entry.suites):
+                # at least one repo has been found
+                return self.AVAILABLE
+
+        # default: file contains no valid repo entry
+        return self.NOT_FOUND
 
     @property
     def layout(self) -> type[_UCSRepo]:
@@ -1326,18 +1371,32 @@ class UniventionUpdater:
         components = self.get_components(only_current=True)
         return self.get_next_version(UCS_Version(ucs_version), components, errorsto)
 
-    def release_update_temporary_sources_list(self, version: UCS_Version) -> list[str]:
+    def release_sources(self, version: UCS_Version) -> SourcesEntry:
         """
-        Return list of Debian repository statements for the release update including all enabled components.
+        Return the DEB822 stanza for the UCS release and its errata updates.
 
         :param version: The UCS release.
-        :returns: A list of Debian APT `sources.list` lines.
-        :rtype: list[str]
+        :returns: The APT repository stanza.
         """
-        result = [UCSRepoPool5(version).deb(self.server)]
+        pool = UCSRepoPool5(version)
+        return SourcesEntry(
+            types=("deb", "deb-src") if self.sources else ("deb",),
+            uris=(str(self.server),),
+            suites=(pool._suite, UCSRepoPool5(version, errata=True)._suite),
+            components=("main",),
+        )
+
+    def release_update_temporary_sources_list(self, version: UCS_Version) -> list[SourcesEntry]:
+        """
+        Return list of Debian repository stanzas for the release update including all enabled components.
+
+        :param version: The UCS release.
+        :returns: A list of DEB822 stanzas.
+        """
+        result = [UCSRepoPool5(version).entry(self.server)]
         for comp in self.get_components():
             try:
-                result += list(comp.repositories(version, version, failed=set()))
+                result += list(comp.sources(version, version, failed=set()))
             except (ConfigurationError, ProxyError):
                 if comp.current:
                     raise

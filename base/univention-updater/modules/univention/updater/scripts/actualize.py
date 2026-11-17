@@ -33,7 +33,6 @@ _JOB = Literal["add", "remove"]
 
 LOGNAME = '/var/log/univention/actualise.log'
 RE_STAT = re.compile(br'^(\d+) upgraded, (\d+) newly installed, (\d+) to remove and (?:\d+) not upgraded.')
-RE_APT = re.compile(r'^(?:deb|deb-src)\s+(?:\[[^]]+\]\s+)?([^:]*):')
 
 configRegistry = ConfigRegistry()
 configRegistry.load()
