@@ -301,7 +301,7 @@ class Authorization:
         moved_obj.dn = dest
 
         actor = self._get_actor(obj.lo)
-        target = self._get_target_new(obj.lo, obj, moved_obj)
+        target = self._get_target_for_write(obj.lo, obj, moved_obj)
         if not self._check_actions(actor, target, [udm_object_action('move')]):
             auth_log('move', actor, target)
             if raise_exception:
@@ -376,7 +376,7 @@ class Authorization:
         ]  # FIXME: we have a vulnerability if the logic of hasChanged is wrong. Then everyone can just change that property. but hasChanged might be overridden by single modules.
 
         actor = self._get_actor(obj.lo)
-        target = self._get_target_new(obj.lo, obj, obj)
+        target = self._get_target_for_write(obj.lo, obj, obj)
         actions = {udm_object_action(action)}
         actions.update(self._property_actions_for(changed_properties, ('write', 'none', 'readonly')))
         allowed_actions = self._check_actions_by_target(actor, target, actions)
@@ -453,11 +453,18 @@ class Authorization:
                 context_roles.append(context_role)
         return roles, context_roles
 
-    def _get_target_new(self, lo, obj, new_target=None):
-        attr = self._get_representation(obj, True)
-        attr['roles'] = self._get_target_roles(obj.module, obj.old_dn)
+    def _get_target_for_write(self, lo, obj, new_target=None):
+        is_create = not obj.old_dn
+
+        attr = self._get_representation(obj, old=not is_create)
+        attr['roles'] = self._get_target_roles(obj.module, obj.old_dn) if not is_create else []
         attr['new'] = self._get_representation(new_target, False)
-        return Resource(obj.old_dn, udm_resource_kind(obj.module), attr=attr)
+
+        return Resource(
+            obj.dn if is_create else obj.old_dn,
+            udm_resource_kind(obj.module),
+            attr=attr,
+        )
 
     def _get_target(self, obj, old=False):
         attr = self._get_representation(obj, old)
