@@ -150,6 +150,8 @@ class LocalGuardianAuthorizationClient:
             try:
                 func = {
                     "subtree": _check_scope_subtree,
+                    "ancestors": _check_scope_ancestors,
+                    "hierarchy": _check_scope_hierarchy,
                     "base": _check_scope_base,
                     "one": _check_scope_one,
                 }[scope]
@@ -240,6 +242,48 @@ def _check_scope_subtree(position: str, condition_positions: list[str]) -> bool:
     condition_positions = [DN(condition_position) for condition_position in condition_positions]
     return any(
         position.endswith(condition_position)
+        for condition_position in condition_positions
+    )
+
+
+def _check_scope_ancestors(position: str, condition_positions: list[str]) -> bool:
+    """
+    Check whether the target DN is a strict ancestor of any condition DN.
+
+    >>> _check_scope_ancestors('dc=base', ['cn=users,dc=base'])
+    True
+    >>> _check_scope_ancestors('cn=users,dc=base', ['cn=users,dc=base'])
+    False
+    >>> _check_scope_ancestors('uid=foo,cn=users,dc=base', ['cn=users,dc=base'])
+    False
+    >>> _check_scope_ancestors('cn=other,dc=base', ['cn=users,dc=base'])
+    False
+    """
+    position = DN(position)
+    condition_positions = [DN(condition_position) for condition_position in condition_positions]
+    return any(
+        condition_position.endswith(position) and condition_position != position
+        for condition_position in condition_positions
+    )
+
+
+def _check_scope_hierarchy(position: str, condition_positions: list[str]) -> bool:
+    """
+    Check whether the target DN is an ancestor, descendant, or the condition DN.
+
+    >>> _check_scope_hierarchy('dc=base', ['cn=users,dc=base'])
+    True
+    >>> _check_scope_hierarchy('cn=users,dc=base', ['cn=users,dc=base'])
+    True
+    >>> _check_scope_hierarchy('uid=foo,cn=users,dc=base', ['cn=users,dc=base'])
+    True
+    >>> _check_scope_hierarchy('cn=other,dc=base', ['cn=users,dc=base'])
+    False
+    """
+    position = DN(position)
+    condition_positions = [DN(condition_position) for condition_position in condition_positions]
+    return any(
+        position.endswith(condition_position) or condition_position.endswith(position)
         for condition_position in condition_positions
     )
 

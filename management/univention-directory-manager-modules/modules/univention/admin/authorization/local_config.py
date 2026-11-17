@@ -77,6 +77,8 @@ _SCOPES = {
     'onelevel': 'one',
     'sub': 'subtree',
     'subtree': 'subtree',
+    'ancestors': 'ancestors',
+    'hierarchy': 'hierarchy',
     'base': 'base',
     'children': 'children',
 }
