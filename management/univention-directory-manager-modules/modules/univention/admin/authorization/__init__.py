@@ -254,10 +254,10 @@ class Authorization:
         actor = self._get_actor(lo)
         actions = {udm_object_action('read'), udm_object_action('search')}
         for _, _, _, all_properties in results:
-            actions.update(self._property_actions_for(all_properties, ('read', 'write', 'none', 'writeonly')))
             # FIXME: this may exceed 500 maximum allowed cerbos actions, if many extended attributes are installed (OX app has many)
             # TODO: therefore make write and read separate, so that write doesn't include read automatically!?
             actions.update(self._property_actions_for(all_properties, ('read', 'none', 'writeonly')))
+
         permissions_result = self._check_actions_by_targets(actor, targets, actions)
 
         filtered = []
@@ -409,11 +409,13 @@ class Authorization:
     def _get_readable_properties(self, allowed_actions, all_properties):
         props = set()
         blocked = set()
+
         for prop in all_properties:
-            if udm_property_action(prop, 'read') in allowed_actions or udm_property_action(prop, 'write') in allowed_actions:
+            if udm_property_action(prop, 'read') in allowed_actions:
                 props.add(prop)
             if udm_property_action(prop, 'none') in allowed_actions or udm_property_action(prop, 'writeonly') in allowed_actions:
                 blocked.add(prop)
+
         return props - blocked
 
     def _get_writeable_properties(self, allowed_actions, all_properties):
