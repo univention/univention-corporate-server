@@ -21,7 +21,7 @@ install_upgrade_keycloak () {
 
 	if [[ -n "$KEYCLOAK_BRANCH" ]]; then
 		branch="$(echo "$KEYCLOAK_BRANCH" | slugify)"
-		echo "deb [trusted=yes] http://omar.knut.univention.de/build2/git/keycloak-app $branch main" | tee /etc/apt/sources.list.d/guardian.list
+		printf 'Types: deb\nURIs: http://omar.knut.univention.de/build2/git/keycloak-app\nSuites: %s\nComponents: main\nTrusted: yes\n' "$branch" | tee /etc/apt/sources.list.d/guardian.sources
 		# pin the branch repo above the regular UCS repos so its packages win
 		cat >/etc/apt/preferences.d/99keycloak.pref <<__PREF__
 Package: *
