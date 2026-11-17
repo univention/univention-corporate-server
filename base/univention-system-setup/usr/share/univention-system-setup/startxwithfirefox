@@ -29,7 +29,7 @@ from_init () {
 	# Disable CD image in sources.list
 	if [ -e "/etc/apt/sources.list" ]
 	then
-		printf "# This file is not maintained via Univention Configuration Registry\n# and can be used to add further package repositories manually\n" >/etc/apt/sources.list
+		printf "# This file is not maintained via Univention Configuration Registry\n# and can be used to add further package repositories manually.\n# Prefer files in the DEB822 format in /etc/apt/sources.list.d/*.sources\n" >/etc/apt/sources.list
 	fi
 
 	# stop plymouth - otherwise it is burning CPU power in background
