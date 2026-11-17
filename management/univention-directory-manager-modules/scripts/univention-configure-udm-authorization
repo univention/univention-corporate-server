@@ -353,7 +353,7 @@ class UniventionDirectoryManagerPolicies:
         if modname == 'users/user':
             global_rules.extend([{
                 'name': 'deny-uid-number-zero',
-                'actions': ['udm:*'],
+                'actions': ['udm:*:*:*', 'udm:*:*', 'udm:*'],
                 'roles': ['*'],
                 'effect': 'EFFECT_DENY',
                 'condition': {
