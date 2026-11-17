@@ -38,7 +38,7 @@ errata updates, which are put into a single repository, which is updated
 incrementally.
 
 Therefore, the updater will include the repositories of a new release in a file
-called :file:`/etc/apt/sources.list.d/00_ucs_temporary_installation.list` and
+called :file:`/etc/apt/sources.list.d/00_ucs_temporary_installation.sources` and
 then do the updates. Only at the end of a successful update are the |UCSUCRVs|
 updated.
 
