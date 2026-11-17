@@ -33,6 +33,7 @@ from univention.updater.errors import (
     ConfigurationError, DownloadError, PreconditionError, RequiredComponentError, VerificationError,
 )
 from univention.updater.locking import UpdaterLock, apt_lock
+from univention.updater.sources import SourcesEntry, render
 from univention.updater.tools import LocalUpdater, UniventionUpdater
 
 
@@ -51,8 +52,12 @@ _CMDS = Literal["local", "net"]
 FN_STATUS = '/var/lib/univention-updater/univention-updater.status'
 failure = '/var/lib/univention-updater/update-failed'
 reboot_required = '/run/univention-updater-reboot'
-TMPSOURCE = '/etc/apt/sources.list.d/00_ucs_temporary_installation.list'
-TMPSOURCE2 = '/etc/apt/sources.list.d/00_ucs_update_in_progress.list'
+TMPSOURCE = '/etc/apt/sources.list.d/00_ucs_temporary_installation.sources'
+# written by older versions of the updater
+TMPSOURCES_OLD = (
+    '/etc/apt/sources.list.d/00_ucs_temporary_installation.list',
+    '/etc/apt/sources.list.d/00_ucs_update_in_progress.list',
+)
 
 LOGNAME = '/var/log/univention/updater.log'
 fd_log: IO[str] = sys.stderr
@@ -147,8 +152,8 @@ def get_status() -> dict[str, str]:
 
 
 def remove_temporary_sources_list() -> None:
-    """Add the temporary sources.list."""
-    for fn in (TMPSOURCE, TMPSOURCE2):
+    """Remove the temporary APT sources."""
+    for fn in (TMPSOURCE, *TMPSOURCES_OLD):
         try:
             os.remove(fn)
         except OSError as ex:
@@ -156,12 +161,11 @@ def remove_temporary_sources_list() -> None:
                 raise
 
 
-def add_temporary_sources_list(temporary_sources_list: Iterable[str]) -> None:
-    """Add line to a temporary sources.list."""
+def add_temporary_sources_list(temporary_sources_list: Iterable[SourcesEntry]) -> None:
+    """Write the temporary APT sources."""
     remove_temporary_sources_list()
     with open(TMPSOURCE, 'w') as fp:
-        for entry in temporary_sources_list:
-            print(entry, file=fp)
+        fp.write(render(temporary_sources_list))
 
 
 def update_available(opt: Namespace, ucr: ConfigRegistry) -> tuple[UniventionUpdater, UCS_Version | None]:
