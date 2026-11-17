@@ -1,3 +1,10 @@
+univention-s4-connector (14.0.22) unstable; urgency=medium
+
+  * Bug #60160: sync group members that exist only in Samba/AD in
+    group_members_sync_from_ucs
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Wed, 18 Nov 2026 12:48:27 +0100
+
 univention-s4-connector (14.0.21) unstable; urgency=medium
 
   * Bug #58471: Add "Pre-Windows 2000 Compatible Access", "Windows
