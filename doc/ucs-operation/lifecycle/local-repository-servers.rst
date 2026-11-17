@@ -62,10 +62,13 @@ Choosing whether to use a local repository
    use online repositories directly.
 
 Nubus for UCS automatically generates APT package sources
-in the :file:`/etc/apt/sources.list.d/` directory
+in the DEB822 format in the :file:`/etc/apt/sources.list.d/` directory
 based on settings for release, errata updates, and add-on components.
 If you need additional repositories on a system,
-you can enter them in the :file:`/etc/apt/sources.list` file.
+add them as a :file:`.sources` file in the DEB822 format
+to the :file:`/etc/apt/sources.list.d/` directory.
+For the format, see the manual page
+`sources.list(5) <https://manpages.debian.org/trixie/apt/sources.list.5.en.html>`_.
 
 By default, new installations use the Univention repository at
 ``https://updates.software-univention.de``.
@@ -300,13 +303,13 @@ All configuration methods—the management module,
 Univention Configuration Registry,
 and policy-based configuration—modify the same system files:
 
-* :file:`/etc/apt/sources.list.d/15_ucs-online-version.list`
-* :file:`/etc/apt/sources.list.d/20_ucs-online-component.list`
+* :file:`/etc/apt/sources.list.d/15_ucs-online-version.sources`
+* :file:`/etc/apt/sources.list.d/20_ucs-online-component.sources`
 
 To verify that your configuration is correct,
 validate that the repository server URL in these files matches
 the value in the UCR variable :envvar:`repository/online/server`.
-The :file:`20_ucs-online-component.list` file only contains repository entries
+The :file:`20_ucs-online-component.sources` file only contains repository entries
 when you configure components.
 
 .. TODO: Add cross-reference to the components section once it is available and remove the space between the paragraphs.
@@ -318,7 +321,10 @@ shows how the repository server URL appears in the file.
    :caption: Repository server URL in :file:`sources.list.d` file (excerpt)
    :name: lifecycle-local-repository-verify-figure
 
-   deb https://updates.software-univention.de/ ucs520 main
+   Types: deb
+   URIs: https://updates.software-univention.de/
+   Suites: ucs530 errata530
+   Components: main
 
 .. _lifecycle-local-repository-maintenance:
 
@@ -455,8 +461,8 @@ Configuration fails to apply or appears incorrect
 
    After you corrected any configuration,
    review the files to confirm the changes took effect:
-   :file:`/etc/apt/sources.list.d/15_ucs-online-version.list`
-   and :file:`/etc/apt/sources.list.d/20_ucs-online-component.list`.
+   :file:`/etc/apt/sources.list.d/15_ucs-online-version.sources`
+   and :file:`/etc/apt/sources.list.d/20_ucs-online-component.sources`.
 
 .. _lifecycle-local-repository-troubleshooting-mirror-self:
 

@@ -178,8 +178,8 @@ Third party sources
 As a Debian GNU/Linux or Ubuntu administrator you know about the ability to add
 third-party software repositories to install additional software on your system.
 
-You can also add third-party repositories to |UCS| by editing the sources lists
-or adding files to :file:`/etc/apt/sources.list.d`. While this is possible, it's
+You can also add third-party repositories to |UCS| by adding files in the DEB822
+format to :file:`/etc/apt/sources.list.d`. While this is possible, it's
 not recommended. Be aware of the possible negative consequences, such as
 breaking existing services.
 
