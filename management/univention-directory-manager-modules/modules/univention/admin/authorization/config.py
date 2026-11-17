@@ -621,6 +621,7 @@ class UDMAuthorizationConfig:
 
     def _position_variable(self, role, raw_scope, raw_position):
         expr = self._position_to_cel(role, raw_scope, raw_position)
+        return expr  # does a variable save much? it decreases visibility
 
         # same role, scope and position use the same variable
         key = (role, expr)
@@ -628,7 +629,9 @@ class UDMAuthorizationConfig:
         if key not in self._position_variables:
             digest = hashlib.sha256(repr(key).encode()).hexdigest()[:12]
             role_name = re.sub(r'[^a-zA-Z0-9_]', '_', role)
-            name = f'position_{role_name}_{digest}'
+            scope = re.sub(r'[^a-zA-Z0-9_]', '_', raw_scope)
+            pos = 'context' if raw_position == 'context=udm:contexts:position' else re.sub(r'[^a-zA-Z0-9_]', '_', raw_position).strip('_')
+            name = f'{role_name}_position_{scope}_{pos}_{digest}'
 
             self._position_variables[key] = name
             self._position_variable_names[name] = expr
