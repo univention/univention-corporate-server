@@ -79,6 +79,14 @@ access
     grant actions="search,read"
     grant properties="*" permission="read"
 
+  to objecttype="users/user"
+    grant actions="search"
+    grant properties="*" permission="search"
+
+  to objecttype="groups/group"
+    grant actions="search"
+    grant properties="*" permission="search"
+
 # Every context role
 access
   by role="udm:default-roles:helpdesk-operator"
