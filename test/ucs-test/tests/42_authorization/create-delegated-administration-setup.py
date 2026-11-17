@@ -16,6 +16,7 @@ USER_ROLE = 'udm:default-roles:domain-user'
 ADMIN_ROLE = 'udm:default-roles:domain-administrator'
 LDAP_BASE = ucr['ldap/base']
 GLOBAL_GROUPS = f'cn=groups,{LDAP_BASE}'
+MAIL_DOMAIN = None
 
 udm = UDM.admin().version(3)
 ous = udm.get('container/ou')
@@ -23,6 +24,7 @@ cns = udm.get('container/cn')
 users = udm.get('users/user')
 groups = udm.get('groups/group')
 umc_policies = udm.get('policies/umc')
+mail_domain = udm.get('mail/domain')
 
 NUMBER_OF_OUS = 10
 NUMBER_OF_USERS = 10
@@ -33,6 +35,7 @@ register_ldap_deny_user = ALL_ADMIN_USERS.append
 
 
 def main():
+    global MAIL_DOMAIN
     api_access_group = create_or_modify_obj(groups, name='test-api-access', position=GLOBAL_GROUPS)
     create_or_modify_obj(groups, name=custom_groupname('Domain Admins', ucr), position=GLOBAL_GROUPS, guardianMemberRoles=[ADMIN_ROLE])
     create_or_modify_obj(groups, name=custom_groupname('Domain Users', ucr), position=GLOBAL_GROUPS, guardianMemberRoles=[USER_ROLE])
@@ -42,6 +45,11 @@ def main():
         position=f'cn=UMC,cn=policies,{LDAP_BASE}',
         allow=[f'cn=udm-all,cn=operations,cn=UMC,cn=univention,{LDAP_BASE}'],
     )
+
+    try:
+        MAIL_DOMAIN = next(mail_domain.search()).props.name
+    except AttributeError:
+        pass
 
     kwargs = {'api_access_group': api_access_group, 'umc_policy': umc_policy}
 
@@ -133,11 +141,14 @@ def create_group(name, position, **props):
 
 
 def create_user(name, position, policy=None, **props):
+    if MAIL_DOMAIN:
+        props.setdefault('mailPrimaryAddress', f"{name}@{MAIL_DOMAIN}")
     user = create_or_modify_obj(
         users, 'username', position,
         username=name,
         lastname=name,
-        password='univention',
+        firstname=name,
+        password='Univention.1234',
         overridePWHistory='1',
         **props,
     )
