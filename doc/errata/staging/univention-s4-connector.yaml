@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-s4-connector
+fix: 14.0.22
+desc: |
+ This update addresses the following issues:
+ * Group members that exist only in Samba/AD were not reconciled back into
+   UCS during a group sync.  The function now iterates the right set
+   instead, restoring the intended behaviour.
+bug: [60160]
