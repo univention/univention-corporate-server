@@ -203,12 +203,18 @@ class UniventionDirectoryManagerPolicies:
         policies. Avoid `*` as an action, as negative permission signals must
         never be allowed to the domain administrator.
         """
+        # rules = [
+        #     {
+        #         'resource': udm_resource_kind(modname),
+        #         'allowActions': list(DOMAIN_ADMIN_ACTIONS),
+        #     }
+        #     for modname in sorted(univention.admin.modules.modules)
+        # ]
         rules = [
             {
-                'resource': udm_resource_kind(modname),
+                'resource': udm_resource_kind('*'),
                 'allowActions': list(DOMAIN_ADMIN_ACTIONS),
-            }
-            for modname in sorted(univention.admin.modules.modules)
+            },
         ]
         document = {
             'apiVersion': 'api.cerbos.dev/v1',
