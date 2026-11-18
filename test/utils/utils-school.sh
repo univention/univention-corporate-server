@@ -191,8 +191,12 @@ add_dns_entry () {
 }
 
 install_ucsschool_apis () {
-  # ucsschool-apis is end of life, but still needed by the ID Broker
-  APP_INSTALL_SKIP_CHECKS="must_not_be_end_of_life" install_docker_app_from_branch ucsschool-apis "$UCS_ENV_UCSSCHOOL_APIS_IMAGE" ucsschool/apis/log_level=DEBUG ucsschool/apis/processes=0 || return $?
+  # The latest ucsschool-apis version is end of life and refuses to be
+  # installed, but the ID Broker still needs it. The end of life check only
+  # applies to installs, so install the last version before it and upgrade.
+  printf '%s' univention > /tmp/univention
+  univention-app install ucsschool-apis=1.1.0 --noninteractive --username Administrator --pwdfile /tmp/univention --set ucsschool/apis/log_level=DEBUG ucsschool/apis/processes=0 || return $?
+  univention-app upgrade ucsschool-apis --noninteractive --username Administrator --pwdfile /tmp/univention || return $?
 }
 
 add_pre_join_hook_to_install_from_test_appcenter () {
