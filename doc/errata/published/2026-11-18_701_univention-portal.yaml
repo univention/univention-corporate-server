@@ -16,3 +16,6 @@ desc: |
    `Passkey authentication` in the Keycloak app manual at
    https://docs.software-univention.de/keycloak-app/latest/configuration.html
 bug: [60132, 60124]
+erratum: 701
+announced: 2026-11-18
+support: core
