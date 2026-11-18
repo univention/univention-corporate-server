@@ -1742,3 +1742,6 @@ cve:
 - CVE-2026-99287
 - CVE-2026-99288
 note: This is the 1st of two parts.
+erratum: 696
+announced: 2026-11-18
+support: core
