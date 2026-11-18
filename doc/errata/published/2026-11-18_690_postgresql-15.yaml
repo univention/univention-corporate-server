@@ -76,3 +76,6 @@ cve:
 - CVE-2026-120151
 - CVE-2026-120153
 - CVE-2026-120154
+erratum: 690
+announced: 2026-11-18
+support: core
