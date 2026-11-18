@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+name: PlusSignInDn
+description: DNs with a plus sign, escaped in a value or as a multi-valued RDN, in positions, contexts and is-self.
+
+tests:
+  - name: Handles a plus sign in DNs, escaped or as a multi-valued RDN, in objects and in its context
+    input:
+      principals: [ou_admin_bremen, ou_admin_bremen_plus_1]
+      resources: [user_plus_in_rdn_bremen, user_multivalued_rdn_bremen, user_plus_in_rdn_berlin, user_in_ou_bremen_plus_1]
+      actions:
+        - udm:object:read
+        - udm:object:modify
+    expected:
+      - principal: ou_admin_bremen
+        resource: user_plus_in_rdn_bremen
+        actions:
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+      - principal: ou_admin_bremen
+        resource: user_multivalued_rdn_bremen
+        actions:
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+      - principal: ou_admin_bremen
+        resource: user_plus_in_rdn_berlin
+        actions:
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+      - principal: ou_admin_bremen
+        resource: user_in_ou_bremen_plus_1
+        actions:
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+      - principal: ou_admin_bremen_plus_1
+        resource: user_plus_in_rdn_bremen
+        actions:
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+      - principal: ou_admin_bremen_plus_1
+        resource: user_multivalued_rdn_bremen
+        actions:
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+      - principal: ou_admin_bremen_plus_1
+        resource: user_plus_in_rdn_berlin
+        actions:
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+      - principal: ou_admin_bremen_plus_1
+        resource: user_in_ou_bremen_plus_1
+        actions:
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+
+  - name: Recognizes its own object with an escaped plus sign, but not a multi-valued RDN with the same characters
+    input:
+      principals: [user_plus_1]
+      resources: [user_plus_1, user_1_multivalued_rdn]
+      actions:
+        - udm:object:read
+        - udm:property:username:read
+    expected:
+      - principal: user_plus_1
+        resource: user_plus_1
+        actions:
+          udm:object:read: EFFECT_ALLOW
+          udm:property:username:read: EFFECT_ALLOW
+      - principal: user_plus_1
+        resource: user_1_multivalued_rdn
+        actions:
+          udm:object:read: EFFECT_DENY
+          udm:property:username:read: EFFECT_DENY

@@ -1,0 +1,259 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+name: DomainUser
+description: Permissions of udm:default-roles:domain-user with the default DSL.
+
+tests:
+  - name: Reads its own user object and all its properties
+    input:
+      principals: [alice]
+      resources: [user_alice]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:property:username:search
+        - udm:property:username:read
+        - udm:property:lastname:read
+        - udm:property:guardianRoles:read
+        - udm:property:lastname:none
+        - udm:property:lastname:readonly
+        - udm:property:lastname:writeonly
+    expected:
+      - principal: alice
+        resource: user_alice
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:property:username:search: EFFECT_ALLOW
+          udm:property:username:read: EFFECT_ALLOW
+          udm:property:lastname:read: EFFECT_ALLOW
+          udm:property:guardianRoles:read: EFFECT_ALLOW
+          udm:property:lastname:none: EFFECT_DENY
+          udm:property:lastname:readonly: EFFECT_DENY
+          udm:property:lastname:writeonly: EFFECT_DENY
+
+  - name: Cannot change, rename, move or remove its own user object
+    input:
+      principals: [alice]
+      resources: [user_alice]
+      actions:
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:rename
+        - udm:object:move
+        - udm:object:remove
+        - udm:object:report-create
+        - udm:property:lastname:write
+        - udm:property:password:write
+        - udm:property:guardianRoles:write
+    expected:
+      - principal: alice
+        resource: user_alice
+        actions:
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:report-create: EFFECT_DENY
+          udm:property:lastname:write: EFFECT_DENY
+          udm:property:password:write: EFFECT_DENY
+          udm:property:guardianRoles:write: EFFECT_DENY
+
+  - name: Recognizes its own object independent of the DN spelling
+    input:
+      principals: [alice, alice_other_spelling]
+      resources: [user_alice, user_alice_other_spelling]
+      actions:
+        - udm:object:read
+        - udm:property:username:read
+    expected:
+      - principal: alice
+        resource: user_alice
+        actions:
+          udm:object:read: EFFECT_ALLOW
+          udm:property:username:read: EFFECT_ALLOW
+      - principal: alice
+        resource: user_alice_other_spelling
+        actions:
+          udm:object:read: EFFECT_ALLOW
+          udm:property:username:read: EFFECT_ALLOW
+      - principal: alice_other_spelling
+        resource: user_alice
+        actions:
+          udm:object:read: EFFECT_ALLOW
+          udm:property:username:read: EFFECT_ALLOW
+      - principal: alice_other_spelling
+        resource: user_alice_other_spelling
+        actions:
+          udm:object:read: EFFECT_ALLOW
+          udm:property:username:read: EFFECT_ALLOW
+
+  - name: Recognizes its own object independent of the case of attribute values
+    input:
+      principals: [alice_other_value_case]
+      resources: [user_alice]
+      actions:
+        - udm:object:read
+        - udm:property:username:read
+    expected:
+      - principal: alice_other_value_case
+        resource: user_alice
+        actions:
+          udm:object:read: EFFECT_ALLOW
+          udm:property:username:read: EFFECT_ALLOW
+
+  - name: Cannot search or read other users, not even one with the same name in another OU
+    input:
+      principals: [alice]
+      resources: [user_bob, user_alice_lookalike]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:property:username:search
+        - udm:property:username:read
+    expected:
+      - principal: alice
+        resource: user_bob
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:property:username:search: EFFECT_DENY
+          udm:property:username:read: EFFECT_DENY
+      - principal: alice
+        resource: user_alice_lookalike
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:property:username:search: EFFECT_DENY
+          udm:property:username:read: EFFECT_DENY
+
+  - name: Reads the LDAP base but cannot change it
+    input:
+      principals: [alice]
+      resources: [ldap_base]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:remove
+    expected:
+      - principal: alice
+        resource: ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+
+  - name: Cannot read OUs, containers, groups or policies
+    input:
+      principals: [alice]
+      resources: [ou_bremen, cn_users_bremen, group_bremen, policy_desktop]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: alice
+        resource: ou_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: alice
+        resource: cn_users_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: alice
+        resource: group_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: alice
+        resource: policy_desktop
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+
+  - name: Searches users from its own object and from every parent of it
+    input:
+      principals: [alice]
+      resources: [search_users_from_own_dn, search_users_from_ou_bremen, search_users_from_ldap_base]
+      actions:
+        - udm:object:search
+        - udm:property:username:search
+        - udm:property:guardianRoles:search
+    expected:
+      - principal: alice
+        resource: search_users_from_own_dn
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:property:username:search: EFFECT_ALLOW
+          udm:property:guardianRoles:search: EFFECT_ALLOW
+      - principal: alice
+        resource: search_users_from_ou_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:property:username:search: EFFECT_ALLOW
+          udm:property:guardianRoles:search: EFFECT_ALLOW
+      - principal: alice
+        resource: search_users_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:property:username:search: EFFECT_ALLOW
+          udm:property:guardianRoles:search: EFFECT_ALLOW
+
+  - name: Cannot search users from a base that does not contain its own object
+    input:
+      principals: [alice]
+      resources: [search_users_from_ou_berlin, search_users_from_cn_users_base]
+      actions:
+        - udm:object:search
+        - udm:property:username:search
+    expected:
+      - principal: alice
+        resource: search_users_from_ou_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:property:username:search: EFFECT_DENY
+      - principal: alice
+        resource: search_users_from_cn_users_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:property:username:search: EFFECT_DENY
+
+  - name: Cannot search groups from the LDAP base
+    input:
+      principals: [alice]
+      resources: [search_groups_from_ldap_base]
+      actions:
+        - udm:object:search
+        - udm:property:name:search
+    expected:
+      - principal: alice
+        resource: search_groups_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:property:name:search: EFFECT_DENY
+
+  - name: Without the domain-user role it cannot read its own object
+    input:
+      principals: [alice_without_role]
+      resources: [user_alice, ldap_base]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: alice_without_role
+        resource: user_alice
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: alice_without_role
+        resource: ldap_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY

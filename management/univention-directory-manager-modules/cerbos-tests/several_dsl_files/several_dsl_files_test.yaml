@@ -1,0 +1,108 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+name: SeveralDslFiles
+description: Policies generated from a.policy and b.policy together.
+
+tests:
+  - name: A role defined only in the first file keeps its permissions
+    input:
+      principals: [only_in_a_bremen]
+      resources: [user_bremen, user_base, user_berlin, group_bremen, group_berlin]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: only_in_a_bremen
+        resource: user_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+      - principal: only_in_a_bremen
+        resource: user_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: only_in_a_bremen
+        resource: user_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: only_in_a_bremen
+        resource: group_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: only_in_a_bremen
+        resource: group_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+
+  - name: A role defined only in the second file keeps its permissions
+    input:
+      principals: [only_in_b_bremen]
+      resources: [user_bremen, user_base, user_berlin, group_bremen, group_berlin]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: only_in_b_bremen
+        resource: user_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: only_in_b_bremen
+        resource: user_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: only_in_b_bremen
+        resource: user_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: only_in_b_bremen
+        resource: group_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+      - principal: only_in_b_bremen
+        resource: group_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+
+  - name: A role defined in both files gets the permissions of both, for different and for the same object types
+    input:
+      principals: [in_both_files_bremen]
+      resources: [user_bremen, user_base, user_berlin, group_bremen, group_berlin]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: in_both_files_bremen
+        resource: user_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+      - principal: in_both_files_bremen
+        resource: user_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+      - principal: in_both_files_bremen
+        resource: user_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: in_both_files_bremen
+        resource: group_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+      - principal: in_both_files_bremen
+        resource: group_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY

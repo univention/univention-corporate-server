@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+access by role="udm:test-roles:only-in-b"
+  to objecttype="groups/group" position.subtree="context=udm:contexts:position"
+    name="only-in-b-read-groups"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+access by role="udm:test-roles:in-both-files"
+  to objecttype="groups/group" position.subtree="context=udm:contexts:position"
+    name="in-both-files-read-context-groups"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+  to objecttype="users/user" position.subtree="cn=users,{ldap/base}"
+    name="in-both-files-read-base-users"
+    grant actions="search,read"
+    grant properties="*" permission="read"

@@ -657,3 +657,119 @@ tests:
         actions:
           udm:object:search: EFFECT_DENY
           udm:object:read: EFFECT_DENY
+
+  - name: Searches users from the LDAP base by any property
+    input:
+      principals: [ou_admin_bremen]
+      resources: [search_users_from_ldap_base]
+      actions:
+        - udm:object:search
+        - udm:property:username:search
+        - udm:property:lastname:search
+        - udm:property:uidNumber:search
+        - udm:property:objectFlag:search
+    expected:
+      - principal: ou_admin_bremen
+        resource: search_users_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:property:username:search: EFFECT_ALLOW
+          udm:property:lastname:search: EFFECT_ALLOW
+          udm:property:uidNumber:search: EFFECT_ALLOW
+          udm:property:objectFlag:search: EFFECT_ALLOW
+
+  - name: Searches users from a base inside its OU
+    input:
+      principals: [ou_admin_bremen]
+      resources: [search_users_from_cn_users_bremen]
+      actions:
+        - udm:object:search
+        - udm:property:username:search
+        - udm:property:lastname:search
+        - udm:property:uidNumber:search
+        - udm:property:objectFlag:search
+    expected:
+      - principal: ou_admin_bremen
+        resource: search_users_from_cn_users_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:property:username:search: EFFECT_ALLOW
+          udm:property:lastname:search: EFFECT_ALLOW
+          udm:property:uidNumber:search: EFFECT_ALLOW
+          udm:property:objectFlag:search: EFFECT_ALLOW
+
+  - name: Searches groups from the LDAP base by name
+    input:
+      principals: [ou_admin_bremen]
+      resources: [search_groups_from_ldap_base]
+      actions:
+        - udm:object:search
+        - udm:property:name:search
+    expected:
+      - principal: ou_admin_bremen
+        resource: search_groups_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+
+  - name: Searches desktop policies from the LDAP base
+    input:
+      principals: [ou_admin_bremen]
+      resources: [search_desktop_policies_from_ldap_base]
+      actions:
+        - udm:object:search
+        - udm:property:name:search
+    expected:
+      - principal: ou_admin_bremen
+        resource: search_desktop_policies_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+
+  - name: Cannot search object types it has no grant for
+    input:
+      principals: [ou_admin_bremen]
+      resources: [search_windows_computers_from_ldap_base]
+      actions:
+        - udm:object:search
+        - udm:property:name:search
+    expected:
+      - principal: ou_admin_bremen
+        resource: search_windows_computers_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:property:name:search: EFFECT_DENY
+
+  - name: Without a context of its own role it cannot search users or groups
+    input:
+      principals: [ou_admin_no_context, ou_admin_context_of_other_role]
+      resources: [search_users_from_ldap_base, search_groups_from_ldap_base]
+      actions:
+        - udm:object:search
+        - udm:property:username:search
+        - udm:property:uidNumber:search
+    expected:
+      - principal: ou_admin_no_context
+        resource: search_users_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:property:username:search: EFFECT_DENY
+          udm:property:uidNumber:search: EFFECT_DENY
+      - principal: ou_admin_no_context
+        resource: search_groups_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:property:username:search: EFFECT_DENY
+          udm:property:uidNumber:search: EFFECT_DENY
+      - principal: ou_admin_context_of_other_role
+        resource: search_users_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:property:username:search: EFFECT_DENY
+          udm:property:uidNumber:search: EFFECT_DENY
+      - principal: ou_admin_context_of_other_role
+        resource: search_groups_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:property:username:search: EFFECT_DENY
+          udm:property:uidNumber:search: EFFECT_DENY

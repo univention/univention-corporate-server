@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+resources:
+  user_plus_in_rdn_bremen:
+    kind: udm:module:users/user
+    id: 'uid=user\+1,cn=users,ou=bremen,dc=ucs,dc=test'
+    attr:
+      dn: 'uid=user\+1,cn=users,ou=bremen,dc=ucs,dc=test'
+      objectType: users/user
+      position: 'cn=users,ou=bremen,dc=ucs,dc=test'
+      properties: {username: user+1}
+      options: {}
+
+  user_multivalued_rdn_bremen:
+    kind: udm:module:users/user
+    id: 'uid=user1+cn=User 1,cn=users,ou=bremen,dc=ucs,dc=test'
+    attr:
+      dn: 'uid=user1+cn=User 1,cn=users,ou=bremen,dc=ucs,dc=test'
+      objectType: users/user
+      position: 'cn=users,ou=bremen,dc=ucs,dc=test'
+      properties: {username: user1}
+      options: {}
+
+  user_plus_in_rdn_berlin:
+    kind: udm:module:users/user
+    id: 'uid=user\+1,cn=users,ou=berlin,dc=ucs,dc=test'
+    attr:
+      dn: 'uid=user\+1,cn=users,ou=berlin,dc=ucs,dc=test'
+      objectType: users/user
+      position: 'cn=users,ou=berlin,dc=ucs,dc=test'
+      properties: {username: user+1}
+      options: {}
+
+  user_in_ou_bremen_plus_1:
+    kind: udm:module:users/user
+    id: 'uid=bob,cn=users,ou=bremen\+1,dc=ucs,dc=test'
+    attr:
+      dn: 'uid=bob,cn=users,ou=bremen\+1,dc=ucs,dc=test'
+      objectType: users/user
+      position: 'cn=users,ou=bremen\+1,dc=ucs,dc=test'
+      properties: {username: bob}
+      options: {}
+
+  user_plus_1:
+    kind: udm:module:users/user
+    id: 'uid=user\+1,cn=users,ou=bremen,dc=ucs,dc=test'
+    attr:
+      dn: 'uid=user\+1,cn=users,ou=bremen,dc=ucs,dc=test'
+      objectType: users/user
+      position: cn=users,ou=bremen,dc=ucs,dc=test
+      properties: {username: user+1}
+      options: {}
+
+  user_1_multivalued_rdn:
+    kind: udm:module:users/user
+    id: 'uid=user+cn=1,cn=users,ou=bremen,dc=ucs,dc=test'
+    attr:
+      dn: 'uid=user+cn=1,cn=users,ou=bremen,dc=ucs,dc=test'
+      objectType: users/user
+      position: cn=users,ou=bremen,dc=ucs,dc=test
+      properties: {username: user}
+      options: {}

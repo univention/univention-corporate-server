@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+access by role="udm:test-roles:only-in-a"
+  to objecttype="users/user" position.subtree="context=udm:contexts:position"
+    name="only-in-a-read-users"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+access by role="udm:test-roles:in-both-files"
+  to objecttype="users/user" position.subtree="context=udm:contexts:position"
+    name="in-both-files-read-context-users"
+    grant actions="search,read"
+    grant properties="*" permission="read"

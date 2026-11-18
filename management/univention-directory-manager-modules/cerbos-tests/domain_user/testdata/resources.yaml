@@ -1,0 +1,177 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+resources:
+  ldap_base:
+    kind: udm:module:container/dc
+    id: "dc=ucs,dc=test"
+    attr:
+      dn: "dc=ucs,dc=test"
+      objectType: container/dc
+      position: dc=ucs,dc=test
+      properties: {name: ucs}
+      options: {}
+
+  ou_bremen:
+    kind: udm:module:container/ou
+    id: "ou=bremen,dc=ucs,dc=test"
+    attr:
+      dn: "ou=bremen,dc=ucs,dc=test"
+      objectType: container/ou
+      position: dc=ucs,dc=test
+      properties: {name: bremen}
+      options: {}
+
+  cn_users_bremen:
+    kind: udm:module:container/cn
+    id: "cn=users,ou=bremen,dc=ucs,dc=test"
+    attr:
+      dn: "cn=users,ou=bremen,dc=ucs,dc=test"
+      objectType: container/cn
+      position: ou=bremen,dc=ucs,dc=test
+      properties: {name: users}
+      options: {}
+
+  user_alice:
+    kind: udm:module:users/user
+    id: "uid=alice,cn=users,ou=bremen,dc=ucs,dc=test"
+    attr:
+      dn: "uid=alice,cn=users,ou=bremen,dc=ucs,dc=test"
+      objectType: users/user
+      position: cn=users,ou=bremen,dc=ucs,dc=test
+      properties: {username: alice}
+      options: {}
+
+  user_alice_other_spelling:
+    kind: udm:module:users/user
+    id: "UID=alice, CN=users, OU=bremen, DC=ucs, DC=test"
+    attr:
+      dn: "UID=alice, CN=users, OU=bremen, DC=ucs, DC=test"
+      objectType: users/user
+      position: cn=users,ou=bremen,dc=ucs,dc=test
+      properties: {username: alice}
+      options: {}
+
+  user_bob:
+    kind: udm:module:users/user
+    id: "uid=bob,cn=users,ou=bremen,dc=ucs,dc=test"
+    attr:
+      dn: "uid=bob,cn=users,ou=bremen,dc=ucs,dc=test"
+      objectType: users/user
+      position: cn=users,ou=bremen,dc=ucs,dc=test
+      properties: {username: bob}
+      options: {}
+
+  user_alice_lookalike:
+    kind: udm:module:users/user
+    id: "uid=alice,cn=users,ou=berlin,dc=ucs,dc=test"
+    attr:
+      dn: "uid=alice,cn=users,ou=berlin,dc=ucs,dc=test"
+      objectType: users/user
+      position: cn=users,ou=berlin,dc=ucs,dc=test
+      properties: {username: alice}
+      options: {}
+
+  group_bremen:
+    kind: udm:module:groups/group
+    id: "cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test"
+    attr:
+      dn: "cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test"
+      objectType: groups/group
+      position: cn=groups,ou=bremen,dc=ucs,dc=test
+      properties: {name: staff}
+      options: {}
+
+  policy_desktop:
+    kind: udm:module:policies/desktop
+    id: "cn=default,cn=desktop,cn=policies,dc=ucs,dc=test"
+    attr:
+      dn: "cn=default,cn=desktop,cn=policies,dc=ucs,dc=test"
+      objectType: policies/desktop
+      position: cn=desktop,cn=policies,dc=ucs,dc=test
+      properties: {name: default}
+      options: {}
+
+  search_users_from_own_dn:
+    kind: udm:module:users/user
+    id: "uid=alice,cn=users,ou=bremen,dc=ucs,dc=test"
+    attr:
+      dn: "uid=alice,cn=users,ou=bremen,dc=ucs,dc=test"
+      objectType: users/user
+      position: cn=users,ou=bremen,dc=ucs,dc=test
+      properties: {}
+      options: {}
+      roles: []
+      policies: null
+      uuid: null
+      search: {base: "uid=alice,cn=users,ou=bremen,dc=ucs,dc=test", scope: sub}
+
+  search_users_from_ldap_base:
+    kind: udm:module:users/user
+    id: "dc=ucs,dc=test"
+    attr:
+      dn: "dc=ucs,dc=test"
+      objectType: users/user
+      position: dc=ucs,dc=test
+      properties: {}
+      options: {}
+      roles: []
+      policies: null
+      uuid: null
+      search: {base: "dc=ucs,dc=test", scope: sub}
+
+  search_groups_from_ldap_base:
+    kind: udm:module:groups/group
+    id: "dc=ucs,dc=test"
+    attr:
+      dn: "dc=ucs,dc=test"
+      objectType: groups/group
+      position: dc=ucs,dc=test
+      properties: {}
+      options: {}
+      roles: []
+      policies: null
+      uuid: null
+      search: {base: "dc=ucs,dc=test", scope: sub}
+
+  search_users_from_ou_bremen:
+    kind: udm:module:users/user
+    id: "ou=bremen,dc=ucs,dc=test"
+    attr:
+      dn: "ou=bremen,dc=ucs,dc=test"
+      objectType: users/user
+      position: dc=ucs,dc=test
+      properties: {}
+      options: {}
+      roles: []
+      policies: null
+      uuid: null
+      search: {base: "ou=bremen,dc=ucs,dc=test", scope: sub}
+
+  search_users_from_ou_berlin:
+    kind: udm:module:users/user
+    id: "ou=berlin,dc=ucs,dc=test"
+    attr:
+      dn: "ou=berlin,dc=ucs,dc=test"
+      objectType: users/user
+      position: dc=ucs,dc=test
+      properties: {}
+      options: {}
+      roles: []
+      policies: null
+      uuid: null
+      search: {base: "ou=berlin,dc=ucs,dc=test", scope: sub}
+
+  search_users_from_cn_users_base:
+    kind: udm:module:users/user
+    id: "cn=users,dc=ucs,dc=test"
+    attr:
+      dn: "cn=users,dc=ucs,dc=test"
+      objectType: users/user
+      position: dc=ucs,dc=test
+      properties: {}
+      options: {}
+      roles: []
+      policies: null
+      uuid: null
+      search: {base: "cn=users,dc=ucs,dc=test", scope: sub}

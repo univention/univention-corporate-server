@@ -1,0 +1,548 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+name: HelpdeskOperator
+description: Permissions of udm:default-roles:helpdesk-operator with the default DSL.
+
+tests:
+  - name: Reads the LDAP base but cannot change it
+    input:
+      principals: [helpdesk_bremen, helpdesk_no_context]
+      resources: [ldap_base]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:remove
+    expected:
+      - principal: helpdesk_bremen
+        resource: ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+      - principal: helpdesk_no_context
+        resource: ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+
+  - name: Reads its OU, the OUs below it and the OUs above it
+    input:
+      principals: [helpdesk_team_bremen]
+      resources: [ou_bremen, ou_team_bremen]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: helpdesk_team_bremen
+        resource: ou_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+      - principal: helpdesk_team_bremen
+        resource: ou_team_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+
+  - name: Cannot read sibling OUs or other OUs
+    input:
+      principals: [helpdesk_team_bremen]
+      resources: [ou_other_bremen, ou_berlin]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: helpdesk_team_bremen
+        resource: ou_other_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: helpdesk_team_bremen
+        resource: ou_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+
+  - name: Cannot create, change or remove OUs, not even its own
+    input:
+      principals: [helpdesk_bremen]
+      resources: [ou_bremen]
+      actions:
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:rename
+        - udm:object:remove
+        - udm:object:move
+    expected:
+      - principal: helpdesk_bremen
+        resource: ou_bremen
+        actions:
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+
+  - name: Reads containers in its OU only
+    input:
+      principals: [helpdesk_bremen]
+      resources: [cn_users_bremen, cn_users_base]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:modify
+    expected:
+      - principal: helpdesk_bremen
+        resource: cn_users_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_DENY
+      - principal: helpdesk_bremen
+        resource: cn_users_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+
+  - name: Reads and changes users in its OU and below, but cannot create, rename, move or remove them
+    input:
+      principals: [helpdesk_bremen]
+      resources: [user_bremen, user_team_bremen]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:modify
+        - udm:object:create
+        - udm:object:rename
+        - udm:object:move
+        - udm:object:remove
+    expected:
+      - principal: helpdesk_bremen
+        resource: user_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+      - principal: helpdesk_bremen
+        resource: user_team_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:rename: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+
+  - name: Cannot access users outside its OU
+    input:
+      principals: [helpdesk_bremen]
+      resources: [user_berlin, user_base, user_bremen_lookalike]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:modify
+    expected:
+      - principal: helpdesk_bremen
+        resource: user_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+      - principal: helpdesk_bremen
+        resource: user_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+      - principal: helpdesk_bremen
+        resource: user_bremen_lookalike
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+
+  - name: Sets passwords and unlocks users, the password is write-only
+    input:
+      principals: [helpdesk_bremen]
+      resources: [user_bremen]
+      actions:
+        - udm:property:password:write
+        - udm:property:password:writeonly
+        - udm:property:password:read
+        - udm:property:overridePWHistory:write
+        - udm:property:overridePWLength:write
+        - udm:property:unlock:write
+        - udm:property:homeSharePath:write
+    expected:
+      - principal: helpdesk_bremen
+        resource: user_bremen
+        actions:
+          udm:property:password:write: EFFECT_ALLOW
+          udm:property:password:writeonly: EFFECT_ALLOW
+          udm:property:password:read: EFFECT_ALLOW
+          udm:property:overridePWHistory:write: EFFECT_ALLOW
+          udm:property:overridePWLength:write: EFFECT_ALLOW
+          udm:property:unlock:write: EFFECT_ALLOW
+          udm:property:homeSharePath:write: EFFECT_ALLOW
+
+  - name: Reads only some user properties and cannot change them
+    input:
+      principals: [helpdesk_bremen]
+      resources: [user_bremen]
+      actions:
+        - udm:property:username:read
+        - udm:property:username:write
+        - udm:property:lastname:read
+        - udm:property:lastname:write
+        - udm:property:primaryGroup:read
+        - udm:property:entryUUID:read
+        - udm:property:unixhome:read
+        - udm:property:mailForwardCopyToSelf:read
+        - udm:property:firstname:read
+        - udm:property:firstname:write
+        - udm:property:mailPrimaryAddress:read
+        - udm:property:guardianRoles:read
+        - udm:property:guardianRoles:write
+        - udm:property:guardianRoles:none
+    expected:
+      - principal: helpdesk_bremen
+        resource: user_bremen
+        actions:
+          udm:property:username:read: EFFECT_ALLOW
+          udm:property:username:write: EFFECT_DENY
+          udm:property:lastname:read: EFFECT_ALLOW
+          udm:property:lastname:write: EFFECT_DENY
+          udm:property:primaryGroup:read: EFFECT_ALLOW
+          udm:property:entryUUID:read: EFFECT_ALLOW
+          udm:property:unixhome:read: EFFECT_ALLOW
+          udm:property:mailForwardCopyToSelf:read: EFFECT_ALLOW
+          udm:property:firstname:read: EFFECT_DENY
+          udm:property:firstname:write: EFFECT_DENY
+          udm:property:mailPrimaryAddress:read: EFFECT_DENY
+          udm:property:guardianRoles:read: EFFECT_DENY
+          udm:property:guardianRoles:write: EFFECT_DENY
+          udm:property:guardianRoles:none: EFFECT_DENY
+
+  - name: Cannot create user reports
+    input:
+      principals: [helpdesk_bremen, helpdesk_no_context]
+      resources: [user_bremen, user_berlin]
+      actions:
+        - udm:object:report-create
+    expected:
+      - principal: helpdesk_bremen
+        resource: user_bremen
+        actions:
+          udm:object:report-create: EFFECT_DENY
+      - principal: helpdesk_bremen
+        resource: user_berlin
+        actions:
+          udm:object:report-create: EFFECT_DENY
+      - principal: helpdesk_no_context
+        resource: user_bremen
+        actions:
+          udm:object:report-create: EFFECT_DENY
+      - principal: helpdesk_no_context
+        resource: user_berlin
+        actions:
+          udm:object:report-create: EFFECT_DENY
+
+  - name: Reads group names in its OU but cannot change groups
+    input:
+      principals: [helpdesk_bremen]
+      resources: [group_bremen]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:remove
+        - udm:property:name:read
+        - udm:property:name:write
+        - udm:property:users:read
+        - udm:property:guardianMemberRoles:read
+    expected:
+      - principal: helpdesk_bremen
+        resource: group_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:property:name:read: EFFECT_ALLOW
+          udm:property:name:write: EFFECT_DENY
+          udm:property:users:read: EFFECT_DENY
+          udm:property:guardianMemberRoles:read: EFFECT_DENY
+
+  - name: Cannot access groups outside its OU
+    input:
+      principals: [helpdesk_bremen]
+      resources: [group_berlin]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: helpdesk_bremen
+        resource: group_berlin
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+
+  - name: Reads desktop, password history and UMC policies but cannot change them
+    input:
+      principals: [helpdesk_bremen, helpdesk_no_context]
+      resources: [policy_desktop, policy_pwhistory, policy_umc]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:modify
+    expected:
+      - principal: helpdesk_bremen
+        resource: policy_desktop
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_DENY
+      - principal: helpdesk_bremen
+        resource: policy_pwhistory
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_DENY
+      - principal: helpdesk_bremen
+        resource: policy_umc
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_DENY
+      - principal: helpdesk_no_context
+        resource: policy_desktop
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_DENY
+      - principal: helpdesk_no_context
+        resource: policy_pwhistory
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_DENY
+      - principal: helpdesk_no_context
+        resource: policy_umc
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_DENY
+
+  - name: Cannot read other policy types, mail domains or computers
+    input:
+      principals: [helpdesk_bremen]
+      resources: [policy_registry, mail_domain_global, windows_computer_bremen]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: helpdesk_bremen
+        resource: policy_registry
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: helpdesk_bremen
+        resource: mail_domain_global
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: helpdesk_bremen
+        resource: windows_computer_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+
+  - name: Without a context it cannot access users, groups, containers or OUs
+    input:
+      principals: [helpdesk_no_context]
+      resources: [user_bremen, group_bremen, cn_users_bremen, ou_bremen]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: helpdesk_no_context
+        resource: user_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: helpdesk_no_context
+        resource: group_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: helpdesk_no_context
+        resource: cn_users_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: helpdesk_no_context
+        resource: ou_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+
+  - name: A context assigned to another role grants nothing
+    input:
+      principals: [helpdesk_context_of_other_role]
+      resources: [user_bremen, group_bremen, cn_users_bremen, ou_bremen]
+      actions:
+        - udm:object:search
+        - udm:object:read
+    expected:
+      - principal: helpdesk_context_of_other_role
+        resource: user_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: helpdesk_context_of_other_role
+        resource: group_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: helpdesk_context_of_other_role
+        resource: cn_users_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+      - principal: helpdesk_context_of_other_role
+        resource: ou_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+
+  - name: Searches users from the LDAP base by any property
+    input:
+      principals: [helpdesk_bremen]
+      resources: [search_users_from_ldap_base]
+      actions:
+        - udm:object:search
+        - udm:property:username:search
+        - udm:property:lastname:search
+        - udm:property:uidNumber:search
+        - udm:property:objectFlag:search
+    expected:
+      - principal: helpdesk_bremen
+        resource: search_users_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:property:username:search: EFFECT_ALLOW
+          udm:property:lastname:search: EFFECT_ALLOW
+          udm:property:uidNumber:search: EFFECT_ALLOW
+          udm:property:objectFlag:search: EFFECT_ALLOW
+
+  - name: Searches users from a base inside its OU
+    input:
+      principals: [helpdesk_bremen]
+      resources: [search_users_from_cn_users_bremen]
+      actions:
+        - udm:object:search
+        - udm:property:username:search
+        - udm:property:lastname:search
+        - udm:property:uidNumber:search
+        - udm:property:objectFlag:search
+    expected:
+      - principal: helpdesk_bremen
+        resource: search_users_from_cn_users_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:property:username:search: EFFECT_ALLOW
+          udm:property:lastname:search: EFFECT_ALLOW
+          udm:property:uidNumber:search: EFFECT_ALLOW
+          udm:property:objectFlag:search: EFFECT_ALLOW
+
+  - name: Searches groups from the LDAP base by name
+    input:
+      principals: [helpdesk_bremen]
+      resources: [search_groups_from_ldap_base]
+      actions:
+        - udm:object:search
+        - udm:property:name:search
+    expected:
+      - principal: helpdesk_bremen
+        resource: search_groups_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+
+  - name: Searches desktop policies from the LDAP base
+    input:
+      principals: [helpdesk_bremen]
+      resources: [search_desktop_policies_from_ldap_base]
+      actions:
+        - udm:object:search
+        - udm:property:name:search
+    expected:
+      - principal: helpdesk_bremen
+        resource: search_desktop_policies_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+
+  - name: Cannot search object types it has no grant for
+    input:
+      principals: [helpdesk_bremen]
+      resources: [search_windows_computers_from_ldap_base]
+      actions:
+        - udm:object:search
+        - udm:property:name:search
+    expected:
+      - principal: helpdesk_bremen
+        resource: search_windows_computers_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:property:name:search: EFFECT_DENY
+
+  - name: Without a context of its own role it cannot search users or groups
+    input:
+      principals: [helpdesk_no_context, helpdesk_context_of_other_role]
+      resources: [search_users_from_ldap_base, search_groups_from_ldap_base]
+      actions:
+        - udm:object:search
+        - udm:property:username:search
+        - udm:property:uidNumber:search
+    expected:
+      - principal: helpdesk_no_context
+        resource: search_users_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:property:username:search: EFFECT_DENY
+          udm:property:uidNumber:search: EFFECT_DENY
+      - principal: helpdesk_no_context
+        resource: search_groups_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:property:username:search: EFFECT_DENY
+          udm:property:uidNumber:search: EFFECT_DENY
+      - principal: helpdesk_context_of_other_role
+        resource: search_users_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:property:username:search: EFFECT_DENY
+          udm:property:uidNumber:search: EFFECT_DENY
+      - principal: helpdesk_context_of_other_role
+        resource: search_groups_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:property:username:search: EFFECT_DENY
+          udm:property:uidNumber:search: EFFECT_DENY
