@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import os
+import sys
 import time
 from pathlib import Path
 from urllib.parse import quote
@@ -10,6 +11,31 @@ from playwright.sync_api import BrowserContext, Page, expect
 
 from univention.testing.browser import logger
 from univention.testing.browser.lib import SEC
+
+
+def capture_javascript_diagnostics(page: Page) -> None:
+    """Collect JavaScript console messages and uncaught exceptions on a page."""
+    diagnostics = []
+
+    def on_console(message) -> None:
+        location = message.location
+        source = location.get('url') or '<unknown>'
+        if location.get('lineNumber') is not None:
+            source += f":{location['lineNumber']}:{location.get('columnNumber', 0)}"
+        diagnostics.append(f'console.{message.type} {source}: {message.text}')
+
+    def on_page_error(error) -> None:
+        diagnostics.append(f'pageerror: {getattr(error, "stack", None) or error}')
+
+    page.on('console', on_console)
+    page.on('pageerror', on_page_error)
+    page._univention_javascript_diagnostics = diagnostics
+
+
+def print_javascript_diagnostics(page: Page, page_index: int = 0) -> None:
+    """Print collected JavaScript diagnostics to stderr."""
+    for diagnostic in getattr(page, '_univention_javascript_diagnostics', ()):
+        print(f'Browser page {page_index} JavaScript: {diagnostic}', file=sys.stderr)
 
 
 def check_for_backtrace(page: Page, page_index: int = 0):
