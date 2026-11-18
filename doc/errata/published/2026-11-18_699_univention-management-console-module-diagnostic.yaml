@@ -11,3 +11,6 @@ desc: |
    configured Samba idmap ranges. On AD DCs, it reads the actual allocation
    range from idmap.ldb and reports overlapping or invalid ranges.
 bug: [58779]
+erratum: 699
+announced: 2026-11-18
+support: core
