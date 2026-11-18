@@ -474,7 +474,7 @@ You can then include this repository on any UCS system by creating the file
 :file:`/etc/apt/sources.list.d/testcomp.sources` with the following content in the DEB822 format,
 assuming that the FQDN of the host with the repository is :samp:`{repository.example.com}`.
 
-.. code-block:: text
+.. code-block:: debcontrol
 
    Types: deb
    URIs: http://repository.example.com/repository/5.3/maintained/component
