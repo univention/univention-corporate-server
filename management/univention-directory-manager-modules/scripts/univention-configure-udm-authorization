@@ -306,6 +306,8 @@ class UniventionDirectoryManagerPolicies:
         rules = self._global_deny_rules(modname)
         rules.append(
             {
+                # parent role of all generated role policies. Never assigned to a user;
+                # the role policies narrow it down to what each role may do
                 'name': f'allow-role-policy-actions-{modname.replace("/", "-")}',
                 'actions': [*object_actions, 'udm:property:*:*'],
                 'effect': 'EFFECT_ALLOW',
@@ -387,6 +389,7 @@ class UniventionDirectoryManagerPolicies:
         if modname == 'users/user':
             global_rules.append(
                 {
+                    # nobody may manage a user with UID 0, neither the current nor the new state
                     'name': 'deny-uid-number-zero',
                     'actions': ['udm:*:*:*', 'udm:*:*', 'udm:*'],
                     'roles': ['*'],
