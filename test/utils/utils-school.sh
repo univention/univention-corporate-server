@@ -191,7 +191,8 @@ add_dns_entry () {
 }
 
 install_ucsschool_apis () {
-  install_docker_app_from_branch ucsschool-apis "$UCS_ENV_UCSSCHOOL_APIS_IMAGE" ucsschool/apis/log_level=DEBUG ucsschool/apis/processes=0 || return $?
+  # ucsschool-apis is end of life, but still needed by the ID Broker
+  APP_INSTALL_SKIP_CHECKS="must_not_be_end_of_life" install_docker_app_from_branch ucsschool-apis "$UCS_ENV_UCSSCHOOL_APIS_IMAGE" ucsschool/apis/log_level=DEBUG ucsschool/apis/processes=0 || return $?
 }
 
 add_pre_join_hook_to_install_from_test_appcenter () {

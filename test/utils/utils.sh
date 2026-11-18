@@ -673,6 +673,9 @@ install_docker_app_from_branch () {
     univention-app dev-set "$app_name" "DockerImage=$custom_docker_image"
 	fi
 	declare -a cmd=(univention-app install "$app_name" --noninteractive --username Administrator --pwdfile /tmp/univention)
+	# space separated list of app requirement checks to skip, e.g. must_not_be_end_of_life
+	# shellcheck disable=SC2206
+	[ -n "${APP_INSTALL_SKIP_CHECKS:-}" ] && cmd+=(--skip-checks $APP_INSTALL_SKIP_CHECKS)
 	"${cmd[@]}" ${1:+--set $@} || return $?
 	container_name="appcenter/apps/$app_name/container"
 	container="$(ucr get "$container_name")"
