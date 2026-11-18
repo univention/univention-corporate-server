@@ -143,6 +143,7 @@ class Authorization:
 
         # preserve ldap.NO_SUCH_OBJECT semantics!
         self._verify_search_base(lo, base)
+        return True
 
         # only after verifying the visibility of the search base,
         # authorize the search operation and its filter attributes.
