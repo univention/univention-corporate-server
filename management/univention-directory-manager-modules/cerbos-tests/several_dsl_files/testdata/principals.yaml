@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+principals:
+  only_in_a_bremen:
+    id: "uid=tester,cn=users,dc=ucs,dc=test"
+    roles: ["udm:test-roles:only-in-a"]
+    attr:
+      context_roles:
+        - {role: "udm:test-roles:only-in-a", position: "ou=bremen,dc=ucs,dc=test"}
+
+  only_in_b_bremen:
+    id: "uid=tester,cn=users,dc=ucs,dc=test"
+    roles: ["udm:test-roles:only-in-b"]
+    attr:
+      context_roles:
+        - {role: "udm:test-roles:only-in-b", position: "ou=bremen,dc=ucs,dc=test"}
+
+  in_both_files_bremen:
+    id: "uid=tester,cn=users,dc=ucs,dc=test"
+    roles: ["udm:test-roles:in-both-files"]
+    attr:
+      context_roles:
+        - {role: "udm:test-roles:in-both-files", position: "ou=bremen,dc=ucs,dc=test"}

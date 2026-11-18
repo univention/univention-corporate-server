@@ -1,0 +1,269 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+resources:
+  ldap_base:
+    kind: udm:module:container/dc
+    id: dc=ucs,dc=test
+    attr:
+      dn: dc=ucs,dc=test
+      objectType: container/dc
+      position: dc=ucs,dc=test
+      properties: {name: ucs}
+      options: {}
+
+  ou_bremen:
+    kind: udm:module:container/ou
+    id: ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: ou=bremen,dc=ucs,dc=test
+      objectType: container/ou
+      position: dc=ucs,dc=test
+      properties: {name: bremen}
+      options: {}
+
+  ou_berlin:
+    kind: udm:module:container/ou
+    id: ou=berlin,dc=ucs,dc=test
+    attr:
+      dn: ou=berlin,dc=ucs,dc=test
+      objectType: container/ou
+      position: dc=ucs,dc=test
+      properties: {name: berlin}
+      options: {}
+
+  linux_bremen:
+    kind: udm:module:computers/linux
+    id: cn=client1,cn=computers,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=client1,cn=computers,ou=bremen,dc=ucs,dc=test
+      objectType: computers/linux
+      position: cn=computers,ou=bremen,dc=ucs,dc=test
+      properties: {name: client1}
+      options: {}
+
+  linux_team_bremen:
+    kind: udm:module:computers/linux
+    id: cn=client2,cn=computers,ou=team,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=client2,cn=computers,ou=team,ou=bremen,dc=ucs,dc=test
+      objectType: computers/linux
+      position: cn=computers,ou=team,ou=bremen,dc=ucs,dc=test
+      properties: {name: client2}
+      options: {}
+
+  linux_berlin:
+    kind: udm:module:computers/linux
+    id: cn=client3,cn=computers,ou=berlin,dc=ucs,dc=test
+    attr:
+      dn: cn=client3,cn=computers,ou=berlin,dc=ucs,dc=test
+      objectType: computers/linux
+      position: cn=computers,ou=berlin,dc=ucs,dc=test
+      properties: {name: client3}
+      options: {}
+
+  linux_base:
+    kind: udm:module:computers/linux
+    id: cn=client4,cn=computers,dc=ucs,dc=test
+    attr:
+      dn: cn=client4,cn=computers,dc=ucs,dc=test
+      objectType: computers/linux
+      position: cn=computers,dc=ucs,dc=test
+      properties: {name: client4}
+      options: {}
+
+  windows_bremen:
+    kind: udm:module:computers/windows
+    id: cn=pc1,cn=computers,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=pc1,cn=computers,ou=bremen,dc=ucs,dc=test
+      objectType: computers/windows
+      position: cn=computers,ou=bremen,dc=ucs,dc=test
+      properties: {name: pc1}
+      options: {}
+
+  group_bremen:
+    kind: udm:module:groups/group
+    id: cn=clients,cn=groups,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=clients,cn=groups,ou=bremen,dc=ucs,dc=test
+      objectType: groups/group
+      position: cn=groups,ou=bremen,dc=ucs,dc=test
+      properties: {name: clients}
+      options: {}
+
+  group_berlin:
+    kind: udm:module:groups/group
+    id: cn=clients,cn=groups,ou=berlin,dc=ucs,dc=test
+    attr:
+      dn: cn=clients,cn=groups,ou=berlin,dc=ucs,dc=test
+      objectType: groups/group
+      position: cn=groups,ou=berlin,dc=ucs,dc=test
+      properties: {name: clients}
+      options: {}
+
+  group_domain_admins:
+    kind: udm:module:groups/group
+    id: cn=Domain Admins,cn=groups,dc=ucs,dc=test
+    attr:
+      dn: cn=Domain Admins,cn=groups,dc=ucs,dc=test
+      objectType: groups/group
+      position: cn=groups,dc=ucs,dc=test
+      properties: {name: "Domain Admins"}
+      options: {}
+
+  user_bremen:
+    kind: udm:module:users/user
+    id: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: uid=alice,cn=users,ou=bremen,dc=ucs,dc=test
+      objectType: users/user
+      position: cn=users,ou=bremen,dc=ucs,dc=test
+      properties: {username: alice}
+      options: {}
+
+  network_default:
+    kind: udm:module:networks/network
+    id: cn=default,cn=networks,dc=ucs,dc=test
+    attr:
+      dn: cn=default,cn=networks,dc=ucs,dc=test
+      objectType: networks/network
+      position: cn=networks,dc=ucs,dc=test
+      properties: {name: default}
+      options: {}
+
+  dns_host_record:
+    kind: udm:module:dns/host_record
+    id: relativeDomainName=client1,zoneName=ucs.test,cn=dns,dc=ucs,dc=test
+    attr:
+      dn: relativeDomainName=client1,zoneName=ucs.test,cn=dns,dc=ucs,dc=test
+      objectType: dns/host_record
+      position: zoneName=ucs.test,cn=dns,dc=ucs,dc=test
+      properties: {name: client1}
+      options: {}
+
+  dns_host_record_primary:
+    kind: udm:module:dns/host_record
+    id: relativeDomainName=primary,zoneName=ucs.test,cn=dns,dc=ucs,dc=test
+    attr:
+      dn: relativeDomainName=primary,zoneName=ucs.test,cn=dns,dc=ucs,dc=test
+      objectType: dns/host_record
+      position: zoneName=ucs.test,cn=dns,dc=ucs,dc=test
+      properties: {name: primary}
+      options: {}
+
+  dns_ptr_record:
+    kind: udm:module:dns/ptr_record
+    id: relativeDomainName=10,zoneName=12.150.10.in-addr.arpa,cn=dns,dc=ucs,dc=test
+    attr:
+      dn: relativeDomainName=10,zoneName=12.150.10.in-addr.arpa,cn=dns,dc=ucs,dc=test
+      objectType: dns/ptr_record
+      position: zoneName=12.150.10.in-addr.arpa,cn=dns,dc=ucs,dc=test
+      properties: {address: "10"}
+      options: {}
+
+  dhcp_service:
+    kind: udm:module:dhcp/service
+    id: cn=ucs.test,cn=dhcp,dc=ucs,dc=test
+    attr:
+      dn: cn=ucs.test,cn=dhcp,dc=ucs,dc=test
+      objectType: dhcp/service
+      position: cn=dhcp,dc=ucs,dc=test
+      properties: {service: ucs.test}
+      options: {}
+
+  dhcp_subnet:
+    kind: udm:module:dhcp/subnet
+    id: cn=10.150.12.0,cn=ucs.test,cn=dhcp,dc=ucs,dc=test
+    attr:
+      dn: cn=10.150.12.0,cn=ucs.test,cn=dhcp,dc=ucs,dc=test
+      objectType: dhcp/subnet
+      position: cn=ucs.test,cn=dhcp,dc=ucs,dc=test
+      properties: {subnet: 10.150.12.0}
+      options: {}
+
+  policy_desktop:
+    kind: udm:module:policies/desktop
+    id: cn=default,cn=desktop,cn=policies,dc=ucs,dc=test
+    attr:
+      dn: cn=default,cn=desktop,cn=policies,dc=ucs,dc=test
+      objectType: policies/desktop
+      position: cn=desktop,cn=policies,dc=ucs,dc=test
+      properties: {name: default}
+      options: {}
+
+  search_linux_from_ldap_base:
+    kind: udm:module:computers/linux
+    id: dc=ucs,dc=test
+    attr:
+      dn: dc=ucs,dc=test
+      objectType: computers/linux
+      position: dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "dc=ucs,dc=test", scope: sub}
+
+  search_groups_from_ldap_base:
+    kind: udm:module:groups/group
+    id: dc=ucs,dc=test
+    attr:
+      dn: dc=ucs,dc=test
+      objectType: groups/group
+      position: dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "dc=ucs,dc=test", scope: sub}
+
+  search_dns_host_records_from_ldap_base:
+    kind: udm:module:dns/host_record
+    id: dc=ucs,dc=test
+    attr:
+      dn: dc=ucs,dc=test
+      objectType: dns/host_record
+      position: dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "dc=ucs,dc=test", scope: sub}
+
+  linux_bremen_primary_group_domain_computers:
+    kind: udm:module:computers/linux
+    id: cn=client1,cn=computers,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=client1,cn=computers,ou=bremen,dc=ucs,dc=test
+      objectType: computers/linux
+      position: cn=computers,ou=bremen,dc=ucs,dc=test
+      properties: {}
+      options: {}
+      roles: []
+      new:
+        dn: cn=client1,cn=computers,ou=bremen,dc=ucs,dc=test
+        objectType: computers/linux
+        position: cn=computers,ou=bremen,dc=ucs,dc=test
+        properties: {name: client1, primaryGroup: "cn=Domain Computers,cn=groups,dc=ucs,dc=test"}
+        options: {}
+
+  linux_bremen_primary_group_domain_admins:
+    kind: udm:module:computers/linux
+    id: cn=client1,cn=computers,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=client1,cn=computers,ou=bremen,dc=ucs,dc=test
+      objectType: computers/linux
+      position: cn=computers,ou=bremen,dc=ucs,dc=test
+      properties: {name: client1, primaryGroup: "cn=Domain Computers,cn=groups,dc=ucs,dc=test"}
+      options: {}
+      roles: []
+      new:
+        dn: cn=client1,cn=computers,ou=bremen,dc=ucs,dc=test
+        objectType: computers/linux
+        position: cn=computers,ou=bremen,dc=ucs,dc=test
+        properties: {name: client1, primaryGroup: "cn=Domain Admins,cn=groups,dc=ucs,dc=test"}
+        options: {}

@@ -1,0 +1,53 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+resources:
+  user_bremen:
+    kind: udm:module:users/user
+    id: "uid=alice,cn=users,ou=bremen,dc=ucs,dc=test"
+    attr:
+      dn: "uid=alice,cn=users,ou=bremen,dc=ucs,dc=test"
+      objectType: users/user
+      position: cn=users,ou=bremen,dc=ucs,dc=test
+      properties: {username: alice}
+      options: {}
+
+  user_base:
+    kind: udm:module:users/user
+    id: "uid=dave,cn=users,dc=ucs,dc=test"
+    attr:
+      dn: "uid=dave,cn=users,dc=ucs,dc=test"
+      objectType: users/user
+      position: cn=users,dc=ucs,dc=test
+      properties: {username: dave}
+      options: {}
+
+  user_berlin:
+    kind: udm:module:users/user
+    id: "uid=carol,cn=users,ou=berlin,dc=ucs,dc=test"
+    attr:
+      dn: "uid=carol,cn=users,ou=berlin,dc=ucs,dc=test"
+      objectType: users/user
+      position: cn=users,ou=berlin,dc=ucs,dc=test
+      properties: {username: carol}
+      options: {}
+
+  group_bremen:
+    kind: udm:module:groups/group
+    id: "cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test"
+    attr:
+      dn: "cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test"
+      objectType: groups/group
+      position: cn=groups,ou=bremen,dc=ucs,dc=test
+      properties: {name: staff}
+      options: {}
+
+  group_berlin:
+    kind: udm:module:groups/group
+    id: "cn=staff,cn=groups,ou=berlin,dc=ucs,dc=test"
+    attr:
+      dn: "cn=staff,cn=groups,ou=berlin,dc=ucs,dc=test"
+      objectType: groups/group
+      position: cn=groups,ou=berlin,dc=ucs,dc=test
+      properties: {name: staff}
+      options: {}

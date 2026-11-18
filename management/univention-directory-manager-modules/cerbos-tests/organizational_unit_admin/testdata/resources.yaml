@@ -261,3 +261,73 @@ resources:
       position: cn=users,ou=de,ou=berlin,dc=ucs,dc=test
       properties: {username: grace}
       options: {}
+
+  search_users_from_ldap_base:
+    kind: udm:module:users/user
+    id: dc=ucs,dc=test
+    attr:
+      dn: dc=ucs,dc=test
+      objectType: users/user
+      position: dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "dc=ucs,dc=test", scope: sub}
+
+  search_users_from_cn_users_bremen:
+    kind: udm:module:users/user
+    id: cn=users,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=users,ou=bremen,dc=ucs,dc=test
+      objectType: users/user
+      position: ou=bremen,dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "cn=users,ou=bremen,dc=ucs,dc=test", scope: sub}
+
+  search_groups_from_ldap_base:
+    kind: udm:module:groups/group
+    id: dc=ucs,dc=test
+    attr:
+      dn: dc=ucs,dc=test
+      objectType: groups/group
+      position: dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "dc=ucs,dc=test", scope: sub}
+
+  search_windows_computers_from_ldap_base:
+    kind: udm:module:computers/windows
+    id: dc=ucs,dc=test
+    attr:
+      dn: dc=ucs,dc=test
+      objectType: computers/windows
+      position: dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "dc=ucs,dc=test", scope: sub}
+
+  search_desktop_policies_from_ldap_base:
+    kind: udm:module:policies/desktop
+    id: dc=ucs,dc=test
+    attr:
+      dn: dc=ucs,dc=test
+      objectType: policies/desktop
+      position: dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "dc=ucs,dc=test", scope: sub}

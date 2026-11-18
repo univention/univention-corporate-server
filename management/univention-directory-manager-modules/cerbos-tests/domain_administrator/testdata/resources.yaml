@@ -1,0 +1,161 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Resources.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+resources:
+  ldap_base:
+    kind: udm:module:container/dc
+    id: "dc=ucs,dc=test"
+    attr:
+      dn: "dc=ucs,dc=test"
+      objectType: container/dc
+      position: dc=ucs,dc=test
+      properties: {name: ucs}
+      options: {}
+
+  ou_bremen:
+    kind: udm:module:container/ou
+    id: "ou=bremen,dc=ucs,dc=test"
+    attr:
+      dn: "ou=bremen,dc=ucs,dc=test"
+      objectType: container/ou
+      position: dc=ucs,dc=test
+      properties: {name: bremen}
+      options: {}
+
+  cn_users_base:
+    kind: udm:module:container/cn
+    id: "cn=users,dc=ucs,dc=test"
+    attr:
+      dn: "cn=users,dc=ucs,dc=test"
+      objectType: container/cn
+      position: dc=ucs,dc=test
+      properties: {name: users}
+      options: {}
+
+  user_bremen:
+    kind: udm:module:users/user
+    id: "uid=alice,cn=users,ou=bremen,dc=ucs,dc=test"
+    attr:
+      dn: "uid=alice,cn=users,ou=bremen,dc=ucs,dc=test"
+      objectType: users/user
+      position: cn=users,ou=bremen,dc=ucs,dc=test
+      properties: {username: alice, uidNumber: 2001}
+      options: {}
+
+  user_base:
+    kind: udm:module:users/user
+    id: "uid=dave,cn=users,dc=ucs,dc=test"
+    attr:
+      dn: "uid=dave,cn=users,dc=ucs,dc=test"
+      objectType: users/user
+      position: cn=users,dc=ucs,dc=test
+      properties: {username: dave, uidNumber: 2002}
+      options: {}
+
+  user_uid_number_zero:
+    kind: udm:module:users/user
+    id: "uid=root,cn=users,dc=ucs,dc=test"
+    attr:
+      dn: "uid=root,cn=users,dc=ucs,dc=test"
+      objectType: users/user
+      position: cn=users,dc=ucs,dc=test
+      properties: {username: root, uidNumber: 0}
+      options: {}
+
+  group_domain_admins:
+    kind: udm:module:groups/group
+    id: "cn=Domain Admins,cn=groups,dc=ucs,dc=test"
+    attr:
+      dn: "cn=Domain Admins,cn=groups,dc=ucs,dc=test"
+      objectType: groups/group
+      position: cn=groups,dc=ucs,dc=test
+      properties: {name: "Domain Admins"}
+      options: {}
+
+  group_bremen:
+    kind: udm:module:groups/group
+    id: "cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test"
+    attr:
+      dn: "cn=staff,cn=groups,ou=bremen,dc=ucs,dc=test"
+      objectType: groups/group
+      position: cn=groups,ou=bremen,dc=ucs,dc=test
+      properties: {name: staff}
+      options: {}
+
+  windows_computer_bremen:
+    kind: udm:module:computers/windows
+    id: "cn=pc1,cn=computers,ou=bremen,dc=ucs,dc=test"
+    attr:
+      dn: "cn=pc1,cn=computers,ou=bremen,dc=ucs,dc=test"
+      objectType: computers/windows
+      position: cn=computers,ou=bremen,dc=ucs,dc=test
+      properties: {name: pc1}
+      options: {}
+
+  dns_host_record:
+    kind: udm:module:dns/host_record
+    id: "relativeDomainName=client1,zoneName=ucs.test,cn=dns,dc=ucs,dc=test"
+    attr:
+      dn: "relativeDomainName=client1,zoneName=ucs.test,cn=dns,dc=ucs,dc=test"
+      objectType: dns/host_record
+      position: zoneName=ucs.test,cn=dns,dc=ucs,dc=test
+      properties: {name: client1}
+      options: {}
+
+  policy_desktop:
+    kind: udm:module:policies/desktop
+    id: "cn=default,cn=desktop,cn=policies,dc=ucs,dc=test"
+    attr:
+      dn: "cn=default,cn=desktop,cn=policies,dc=ucs,dc=test"
+      objectType: policies/desktop
+      position: cn=desktop,cn=policies,dc=ucs,dc=test
+      properties: {name: default}
+      options: {}
+
+  mail_domain:
+    kind: udm:module:mail/domain
+    id: "cn=example.org,cn=domain,cn=mail,dc=ucs,dc=test"
+    attr:
+      dn: "cn=example.org,cn=domain,cn=mail,dc=ucs,dc=test"
+      objectType: mail/domain
+      position: cn=domain,cn=mail,dc=ucs,dc=test
+      properties: {name: example.org}
+      options: {}
+
+  extended_attribute:
+    kind: udm:module:settings/extended_attribute
+    id: "cn=myattr,cn=custom attributes,cn=univention,dc=ucs,dc=test"
+    attr:
+      dn: "cn=myattr,cn=custom attributes,cn=univention,dc=ucs,dc=test"
+      objectType: settings/extended_attribute
+      position: cn=custom attributes,cn=univention,dc=ucs,dc=test
+      properties: {name: myattr}
+      options: {}
+
+  search_users_from_ldap_base:
+    kind: udm:module:users/user
+    id: "dc=ucs,dc=test"
+    attr:
+      dn: "dc=ucs,dc=test"
+      objectType: users/user
+      position: dc=ucs,dc=test
+      properties: {}
+      options: {}
+      roles: []
+      policies: null
+      uuid: null
+      search: {base: "dc=ucs,dc=test", scope: sub}
+
+  search_groups_from_ldap_base:
+    kind: udm:module:groups/group
+    id: "dc=ucs,dc=test"
+    attr:
+      dn: "dc=ucs,dc=test"
+      objectType: groups/group
+      position: dc=ucs,dc=test
+      properties: {}
+      options: {}
+      roles: []
+      policies: null
+      uuid: null
+      search: {base: "dc=ucs,dc=test", scope: sub}

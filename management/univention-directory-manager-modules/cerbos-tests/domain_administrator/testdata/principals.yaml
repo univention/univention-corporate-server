@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+principals:
+  domain_admin:
+    id: "uid=Administrator,cn=users,dc=ucs,dc=test"
+    roles: ["udm:default-roles:domain-administrator"]
+    attr: {}
+
+  domain_admin_and_ou_admin:
+    id: "uid=Administrator,cn=users,dc=ucs,dc=test"
+    roles: ["udm:default-roles:domain-administrator", "udm:default-roles:organizational-unit-admin"]
+    attr:
+      context_roles:
+        - {role: "udm:default-roles:organizational-unit-admin", position: "ou=bremen,dc=ucs,dc=test"}
+
+  domain_admin_short_role_name:
+    id: "uid=Administrator,cn=users,dc=ucs,dc=test"
+    roles: ["domain-admin"]
+    attr: {}
+
+  domain_admin_without_namespace:
+    id: "uid=Administrator,cn=users,dc=ucs,dc=test"
+    roles: ["domain-administrator"]
+    attr: {}

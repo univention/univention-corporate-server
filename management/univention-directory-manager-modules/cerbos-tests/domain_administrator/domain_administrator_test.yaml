@@ -1,0 +1,359 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+name: DomainAdministrator
+description: Permissions of udm:default-roles:domain-administrator from the generated resource policies.
+
+tests:
+  - name: Manages objects of every type everywhere
+    input:
+      principals: [domain_admin]
+      resources: [ldap_base, ou_bremen, cn_users_base, group_domain_admins, group_bremen, windows_computer_bremen, dns_host_record, policy_desktop, mail_domain, extended_attribute]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:remove
+        - udm:property:name:search
+        - udm:property:name:read
+        - udm:property:name:write
+    expected:
+      - principal: domain_admin
+        resource: ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:name:read: EFFECT_ALLOW
+          udm:property:name:write: EFFECT_ALLOW
+      - principal: domain_admin
+        resource: ou_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:name:read: EFFECT_ALLOW
+          udm:property:name:write: EFFECT_ALLOW
+      - principal: domain_admin
+        resource: cn_users_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:name:read: EFFECT_ALLOW
+          udm:property:name:write: EFFECT_ALLOW
+      - principal: domain_admin
+        resource: group_domain_admins
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:name:read: EFFECT_ALLOW
+          udm:property:name:write: EFFECT_ALLOW
+      - principal: domain_admin
+        resource: group_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:name:read: EFFECT_ALLOW
+          udm:property:name:write: EFFECT_ALLOW
+      - principal: domain_admin
+        resource: windows_computer_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:name:read: EFFECT_ALLOW
+          udm:property:name:write: EFFECT_ALLOW
+      - principal: domain_admin
+        resource: dns_host_record
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:name:read: EFFECT_ALLOW
+          udm:property:name:write: EFFECT_ALLOW
+      - principal: domain_admin
+        resource: policy_desktop
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:name:read: EFFECT_ALLOW
+          udm:property:name:write: EFFECT_ALLOW
+      - principal: domain_admin
+        resource: mail_domain
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:name:read: EFFECT_ALLOW
+          udm:property:name:write: EFFECT_ALLOW
+      - principal: domain_admin
+        resource: extended_attribute
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:name:read: EFFECT_ALLOW
+          udm:property:name:write: EFFECT_ALLOW
+
+  - name: Manages users everywhere, including rename, move and reports
+    input:
+      principals: [domain_admin]
+      resources: [user_bremen, user_base]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:remove
+        - udm:object:rename
+        - udm:object:move
+        - udm:object:report-create
+        - udm:property:username:search
+        - udm:property:username:read
+        - udm:property:username:write
+    expected:
+      - principal: domain_admin
+        resource: user_bremen
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:object:rename: EFFECT_ALLOW
+          udm:object:move: EFFECT_ALLOW
+          udm:object:report-create: EFFECT_ALLOW
+          udm:property:username:search: EFFECT_ALLOW
+          udm:property:username:read: EFFECT_ALLOW
+          udm:property:username:write: EFFECT_ALLOW
+      - principal: domain_admin
+        resource: user_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:remove: EFFECT_ALLOW
+          udm:object:rename: EFFECT_ALLOW
+          udm:object:move: EFFECT_ALLOW
+          udm:object:report-create: EFFECT_ALLOW
+          udm:property:username:search: EFFECT_ALLOW
+          udm:property:username:read: EFFECT_ALLOW
+          udm:property:username:write: EFFECT_ALLOW
+
+  - name: Reads and writes sensitive properties
+    input:
+      principals: [domain_admin]
+      resources: [user_base]
+      actions:
+        - udm:property:password:write
+        - udm:property:guardianRoles:read
+        - udm:property:guardianRoles:write
+        - udm:property:guardianInheritedRoles:read
+    expected:
+      - principal: domain_admin
+        resource: user_base
+        actions:
+          udm:property:password:write: EFFECT_ALLOW
+          udm:property:guardianRoles:read: EFFECT_ALLOW
+          udm:property:guardianRoles:write: EFFECT_ALLOW
+          udm:property:guardianInheritedRoles:read: EFFECT_ALLOW
+
+  - name: Gets none of the hiding actions, so UDM hides no property
+    input:
+      principals: [domain_admin]
+      resources: [user_base, group_domain_admins]
+      actions:
+        - udm:property:guardianRoles:none
+        - udm:property:guardianRoles:readonly
+        - udm:property:guardianRoles:writeonly
+        - udm:property:password:none
+        - udm:property:password:writeonly
+        - udm:property:name:none
+        - udm:property:name:readonly
+    expected:
+      - principal: domain_admin
+        resource: user_base
+        actions:
+          udm:property:guardianRoles:none: EFFECT_DENY
+          udm:property:guardianRoles:readonly: EFFECT_DENY
+          udm:property:guardianRoles:writeonly: EFFECT_DENY
+          udm:property:password:none: EFFECT_DENY
+          udm:property:password:writeonly: EFFECT_DENY
+          udm:property:name:none: EFFECT_DENY
+          udm:property:name:readonly: EFFECT_DENY
+      - principal: domain_admin
+        resource: group_domain_admins
+        actions:
+          udm:property:guardianRoles:none: EFFECT_DENY
+          udm:property:guardianRoles:readonly: EFFECT_DENY
+          udm:property:guardianRoles:writeonly: EFFECT_DENY
+          udm:property:password:none: EFFECT_DENY
+          udm:property:password:writeonly: EFFECT_DENY
+          udm:property:name:none: EFFECT_DENY
+          udm:property:name:readonly: EFFECT_DENY
+
+  - name: Cannot manage a user with UID number 0
+    input:
+      principals: [domain_admin]
+      resources: [user_uid_number_zero]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:modify
+        - udm:object:remove
+        - udm:property:username:read
+        - udm:property:username:write
+    expected:
+      - principal: domain_admin
+        resource: user_uid_number_zero
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:property:username:read: EFFECT_DENY
+          udm:property:username:write: EFFECT_DENY
+
+  - name: Searches users and groups from the LDAP base by any property
+    input:
+      principals: [domain_admin]
+      resources: [search_users_from_ldap_base, search_groups_from_ldap_base]
+      actions:
+        - udm:object:search
+        - udm:property:username:search
+        - udm:property:name:search
+        - udm:property:guardianRoles:search
+    expected:
+      - principal: domain_admin
+        resource: search_users_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:property:username:search: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:guardianRoles:search: EFFECT_ALLOW
+      - principal: domain_admin
+        resource: search_groups_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:property:username:search: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:guardianRoles:search: EFFECT_ALLOW
+
+  - name: A second role does not hide properties from a domain administrator
+    input:
+      principals: [domain_admin_and_ou_admin]
+      resources: [user_bremen, user_base]
+      actions:
+        - udm:object:read
+        - udm:object:modify
+        - udm:property:guardianRoles:read
+        - udm:property:guardianRoles:write
+        - udm:property:password:write
+        - udm:property:guardianRoles:none
+        - udm:property:guardianInheritedRoles:none
+        - udm:property:password:writeonly
+    expected:
+      - principal: domain_admin_and_ou_admin
+        resource: user_bremen
+        actions:
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:property:guardianRoles:read: EFFECT_ALLOW
+          udm:property:guardianRoles:write: EFFECT_ALLOW
+          udm:property:password:write: EFFECT_ALLOW
+          udm:property:guardianRoles:none: EFFECT_DENY
+          udm:property:guardianInheritedRoles:none: EFFECT_DENY
+          udm:property:password:writeonly: EFFECT_DENY
+      - principal: domain_admin_and_ou_admin
+        resource: user_base
+        actions:
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:property:guardianRoles:read: EFFECT_ALLOW
+          udm:property:guardianRoles:write: EFFECT_ALLOW
+          udm:property:password:write: EFFECT_ALLOW
+          udm:property:guardianRoles:none: EFFECT_DENY
+          udm:property:guardianInheritedRoles:none: EFFECT_DENY
+          udm:property:password:writeonly: EFFECT_DENY
+
+  - name: Role names without the full namespace grant nothing
+    input:
+      principals: [domain_admin_short_role_name, domain_admin_without_namespace]
+      resources: [user_base, group_domain_admins, ldap_base]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:modify
+    expected:
+      - principal: domain_admin_short_role_name
+        resource: user_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+      - principal: domain_admin_short_role_name
+        resource: group_domain_admins
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+      - principal: domain_admin_short_role_name
+        resource: ldap_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+      - principal: domain_admin_without_namespace
+        resource: user_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+      - principal: domain_admin_without_namespace
+        resource: group_domain_admins
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+      - principal: domain_admin_without_namespace
+        resource: ldap_base
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY

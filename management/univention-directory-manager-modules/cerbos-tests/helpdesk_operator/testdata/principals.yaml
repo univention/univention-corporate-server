@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+principals:
+  helpdesk_bremen:
+    id: uid=helpdesk,cn=users,dc=ucs,dc=test
+    roles: ["udm:default-roles:helpdesk-operator"]
+    attr:
+      context_roles:
+        - {role: "udm:default-roles:helpdesk-operator", position: "ou=bremen,dc=ucs,dc=test"}
+
+  helpdesk_team_bremen:
+    id: uid=helpdesk,cn=users,dc=ucs,dc=test
+    roles: ["udm:default-roles:helpdesk-operator"]
+    attr:
+      context_roles:
+        - {role: "udm:default-roles:helpdesk-operator", position: "ou=team,ou=bremen,dc=ucs,dc=test"}
+
+  helpdesk_no_context:
+    id: uid=helpdesk,cn=users,dc=ucs,dc=test
+    roles: ["udm:default-roles:helpdesk-operator"]
+    attr: {}
+
+  helpdesk_context_of_other_role:
+    id: uid=helpdesk,cn=users,dc=ucs,dc=test
+    roles: ["udm:default-roles:helpdesk-operator"]
+    attr:
+      context_roles:
+        - {role: "udm:default-roles:organizational-unit-admin", position: "ou=bremen,dc=ucs,dc=test"}

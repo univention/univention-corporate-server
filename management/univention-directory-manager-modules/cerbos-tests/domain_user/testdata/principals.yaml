@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestFixture/Principals.schema.json
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+principals:
+  alice:
+    id: "uid=alice,cn=users,ou=bremen,dc=ucs,dc=test"
+    roles: ["udm:default-roles:domain-user"]
+    attr: {}
+
+  alice_other_spelling:
+    id: "UID=alice, CN=users, OU=bremen, DC=ucs, DC=test"
+    roles: ["udm:default-roles:domain-user"]
+    attr: {}
+
+  alice_other_value_case:
+    id: "uid=Alice,cn=users,ou=bremen,dc=ucs,dc=test"
+    roles: ["udm:default-roles:domain-user"]
+    attr: {}
+
+  alice_without_role:
+    id: "uid=alice,cn=users,ou=bremen,dc=ucs,dc=test"
+    roles: ["udm:default-roles:unknown"]
+    attr: {}
