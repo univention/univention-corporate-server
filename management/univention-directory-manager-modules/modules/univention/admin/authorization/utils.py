@@ -16,7 +16,7 @@ def udm_property_action(prop: str, action: str) -> str:
 
 def udm_property_action_wildcards(prop: str, action: str) -> str:
     prop = prop.replace(':', '-')
-    action = action.replace(':', '-').replace('*', '-')
+    action = action.replace(':', '-')  # .replace('*', '-')
     return f'udm:property:{prop}:{action}'
 
 
