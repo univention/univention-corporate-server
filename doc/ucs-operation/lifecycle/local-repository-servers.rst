@@ -317,7 +317,7 @@ when you configure components.
 :numref:`lifecycle-local-repository-verify-figure`
 shows how the repository server URL appears in the file.
 
-.. code-block:: text
+.. code-block:: debcontrol
    :caption: Repository server URL in :file:`sources.list.d` file (excerpt)
    :name: lifecycle-local-repository-verify-figure
 
