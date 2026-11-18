@@ -36,7 +36,7 @@ def main(args):
     umc_policies = udm.get('policies/umc')
     mail_domain = udm.get('mail/domain')
     try:
-        MAIL_DOMAIN = next(mail_domain.search(opened=True)).properties['name']
+        MAIL_DOMAIN = next(mail_domain.search(opened=True), None).properties['name']
     except AttributeError:
         pass
 

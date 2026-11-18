@@ -47,7 +47,7 @@ def main():
     )
 
     try:
-        MAIL_DOMAIN = next(mail_domain.search()).props.name
+        MAIL_DOMAIN = next(mail_domain.search(), None).props.name
     except AttributeError:
         pass
 
