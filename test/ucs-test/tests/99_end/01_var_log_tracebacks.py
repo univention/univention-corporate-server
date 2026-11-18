@@ -94,20 +94,28 @@ def test_fetch_logfiles_on_dc_master(ucr, testcase=None):  # noqa: PT028
         fd.flush()
         try:
             cmd_install = """univention-ssh %s root@%s '[ -e %s ] || univention-install -y ucs-test-end'""" % (shlex.quote(fd.name), shlex.quote(ucr['ldap/master']), shlex.quote(shlex.quote(testpath)))
-            subprocess.check_output(cmd_install, shell=True)
+            subprocess.check_output(cmd_install, shell=True, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as exc:
             print(cmd_install)
             if exc.output:
                 print(exc.output.decode('UTF-8', 'replace'))
-            pytest.fail(repr((cmd_install, exc.output.decode('UTF-8', 'replace'))), pytrace=False)
+            pytest.fail(
+                'Failed to prepare %s:\n%s' % (ucr['ldap/master'], exc.output.decode('UTF-8', 'replace') if exc.output else repr(exc)),
+                pytrace=False,
+            )
 
         try:
             cmd_test = """univention-ssh %s root@%s 'UCS_TEST_REMOTE=1 %s -i -f'""" % (shlex.quote(fd.name), shlex.quote(ucr['ldap/master']), shlex.quote(shlex.quote(testpath)))
-            subprocess.check_call(cmd_test, shell=True)
+            subprocess.check_output(cmd_test, shell=True, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as exc:
             print(cmd_test)
-            if exc.output:
-                print(exc.output.decode('UTF-8', 'replace'))
-            if exc.returncode:
-                pytest.fail(repr((cmd_test, exc.returncode)), pytrace=False)
+            output = exc.output.decode('UTF-8', 'replace') if exc.output else ''
+            if output:
+                print(output)
+            if 'logfiles contain tracebacks' in output:
+                pytest.fail('logfiles contain tracebacks on %s' % ucr['ldap/master'], pytrace=False)
+            pytest.fail(
+                'Failed to fetch or run traceback test on %s:\n%s' % (ucr['ldap/master'], output or repr(exc)),
+                pytrace=False,
+            )
         # TODO: detect skipped exit code
