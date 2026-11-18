@@ -265,34 +265,34 @@ class UniventionDirectoryManagerPolicies:
         pass  # TODO: write to _schemas/resources/<resource>.json
 
     def generate_roles_from_acl(self):
-        """
-        Compile all DSL files and write derived-role definitions.
-
-        Resource-policy rules are returned and merged with module introspection
-        later, so the final policy tree is produced in one atomic replacement.
-        """
+        """Collect all DSL grants before writing one role policy per role."""
         compiled = {'imports': {}, 'resourceRules': {}, 'configs': []}
         derived_dir = self.output_root / 'derived_roles'
         derived_dir.mkdir(parents=True, exist_ok=True)
         (self.output_root / 'role_policies').mkdir(parents=True, exist_ok=True)
         (self.output_root / 'variables').mkdir(parents=True, exist_ok=True)
 
+        role_rules = {}
+        role_sources = {}
+        variables = {}
         for config in sorted(Path(self.args.config_dir).glob('*.policy')):
             conf = UDMAuthorizationConfig(config, strict=self.args.strict)
             conf.parse()
             data = conf.to_policy_data(commented=False)  # TODO: enable comments again
-            self.generate_variables(data['variables'])
 
-            for role, role_policy in sorted(data['roles'].items()):
+            for name, expr in data['variables'].items():
+                if name in variables and variables[name] != expr:
+                    raise ValueError(f'Conflicting CEL variable {name!r} in {config}')
+                variables[name] = expr
+
+            for role, rules in data['roles'].items():
                 if role == DOMAIN_ADMIN_ROLE:
-                    # The domain administrator has its own unconditional policy.
-                    # Do not let DSL file order override the generated policy.
+                    # the domain administrator has its own unconditional policy.
+                    # do not let DSL file order override the generated policy.
                     log.info('Skipping DSL rules for the domain administrator in %s', config)
                     continue
-                document = conf._role_policy_document(role, role_policy)
-                path = self.output_root / 'role_policies' / f'{sanitize_filename(role)}.yaml'
-                path.write_text(CERBOS_SCHEMA + yaml.dump(document, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))  # TODO: use upstream YAML writers with comments
-                log.info('Wrote Cerbos role policy: %s', path.relative_to(self.output_root))
+                role_rules.setdefault(role, []).extend(rules)
+                role_sources.setdefault(role, []).append(str(config))
 
             if data['derivedRoles']:
                 document = conf._derived_roles_document(data['derivedRoles'])
@@ -304,10 +304,82 @@ class UniventionDirectoryManagerPolicies:
                 compiled['resourceRules'].setdefault(resource, []).extend(rules)
                 if data['derivedRoles'] and any(rule.get('derivedRoles') for rule in rules):
                     compiled['imports'].setdefault(resource, set()).add(data['derivedRoleSet'])
-
             compiled['configs'].append(config.stem)
 
+        # export all variables once; generating per file previously discarded
+        # variables referenced by rules originating from earlier DSL files.
+        self.generate_variables(variables)
+
+        for role, rules in sorted(role_rules.items()):
+            document = {
+                'apiVersion': 'api.cerbos.dev/v1',
+                'description': f'Automatically generated UDM role policy for {role}.',
+                'disabled': False,
+                'rolePolicy': {
+                    'role': role,
+                    'version': 'default',
+                    'variables': {'import': ['udm_variables']},
+                    'parentRoles': [ROLE_POLICY_PARENT],
+                    'rules': self._merge_role_rules(rules),
+                },
+                'metadata': {
+                    'sourceFile': ', '.join(dict.fromkeys(role_sources[role])),
+                    'annotations': {},
+                },
+            }
+            path = self.output_root / 'role_policies' / f'{sanitize_filename(role)}.yaml'
+            path.write_text(CERBOS_SCHEMA + yaml.dump(document, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))
+            log.info('Wrote Cerbos role policy: %s', path.relative_to(self.output_root))
+
         return compiled
+
+    @staticmethod
+    def _merge_role_rules(rules):
+        """
+        Merge grants by (resource, action), ORing alternative conditions.
+
+        Preserve AND clauses inside each original condition. A grant without
+        a condition makes that action unconditional for its resource.
+        """
+        grants = {}
+        for rule in rules:
+            resource = rule['resource']
+            match = rule.get('condition', {}).get('match')
+            for action in rule['allowActions']:
+                grants.setdefault((resource, action), []).append(match)
+
+        # in the generated representation, actions sharing a condition can
+        # occupy one resource block. Never combine different action conditions.
+        grouped = {}
+        for (resource, action), matches in grants.items():
+            if any(match is None for match in matches):
+                condition = None
+            else:
+                # flatten ORs produced by an individual DSL file and remove
+                # duplicates across files, without modifying nested ANDs.
+                alternatives = []
+                for match in matches:
+                    if set(match) == {'any'} and set(match['any']) == {'of'}:
+                        candidates = match['any']['of']
+                    else:
+                        candidates = [match]
+                    for candidate in candidates:
+                        if candidate not in alternatives:
+                            alternatives.append(candidate)
+                condition = alternatives[0] if len(alternatives) == 1 else {'any': {'of': alternatives}}
+            key = (resource, yaml.safe_dump(condition, sort_keys=True))
+            grouped.setdefault(key, {'resource': resource, 'condition': condition, 'actions': set()})['actions'].add(action)
+
+        merged = []
+        for group in grouped.values():
+            rule = {
+                'resource': group['resource'],
+                'allowActions': sorted(group['actions']),
+            }
+            if group['condition'] is not None:
+                rule['condition'] = {'match': group['condition']}
+            merged.append(rule)
+        return merged
 
     def generate_domain_administrator_role_policy(self):
         """
