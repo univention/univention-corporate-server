@@ -10,3 +10,6 @@ desc: |
    `setupcon` created its temporary file in `/tmp` while that directory
    was cleaned. It now uses `/run` instead.
 bug: [59596]
+erratum: 687
+announced: 2026-11-18
+support: core
