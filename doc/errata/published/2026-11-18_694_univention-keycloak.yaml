@@ -15,3 +15,6 @@ desc: |
    claims, and custom access token audiences. Client scopes can now also be
    assigned directly to OIDC clients as default or optional scopes.
 bug: [60123, 57635]
+erratum: 694
+announced: 2026-11-18
+support: core
