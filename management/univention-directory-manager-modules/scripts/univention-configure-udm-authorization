@@ -14,6 +14,7 @@ The script writes Cerbos policy files below /usr/share/univention-guardian-serve
 """
 
 import argparse
+import subprocess
 import logging
 import shutil
 import tarfile
@@ -35,6 +36,9 @@ log = logging.getLogger('ACL').getChild(__name__)
 CERBOS_SCHEMA = '# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json\n\n'
 POLICY_ROOT = Path('/usr/share/univention-guardian-server/policies/udm')
 POLICY_TMP = Path('/var/lib/univention-directory-manager-modules/policies/')
+TEST_ROOT = Path('/usr/share/univention-directory-manager-modules/cerbos-tests')
+TEST_FIXTURE_BASE = 'dc=ucs,dc=test'
+CERBOS_IMAGE = 'gitregistry.knut.univention.de/univention/dev/projects/authorization-engine/cerbos/cerbos:branch-fbotner-1-ldap-dn'
 REPORT_MODULES = {'users/user', 'groups/group'}
 DOMAIN_ADMIN_ROLE = 'udm:default-roles:domain-administrator'
 # '*' would also allow the restricting none/writeonly/readonly permissions, which hide every property
@@ -67,6 +71,9 @@ class UniventionDirectoryManagerPolicies:
         self.args = self.parse_args(args)
 
     def execute(self):
+        if self.args.action == 'test':
+            return self.run_tests()
+
         output_dir = Path(self.args.output_dir)
         POLICY_TMP.mkdir(exist_ok=True)
         with TemporaryDirectory(
@@ -107,7 +114,21 @@ class UniventionDirectoryManagerPolicies:
         subparser.set_defaults(func=self.generate_all)
         subparser.add_argument('--config-dir', default='/usr/share/univention-directory-manager-modules/policies/')
         subparser.add_argument('--archive', help='Also write the generated policy tree as a gzip-compressed tar archive')
-        subparser.add_argument('--strict', action='store_true')
+        subparser.add_argument('--strict', dest='strict', action='store_true', default=True)
+        subparser.add_argument('--unstrict', dest='strict', action='store_false')
+        subparser.add_argument('--exclude-tests', action='store_true', help='Do not include installed-policy test suites in the generated bundle')
+        subparser.add_argument('--test-dir', type=Path, default=TEST_ROOT, help='Directory containing packaged Cerbos test suites')
+
+        subparser = subparsers.add_parser('test', help='Generate temporary bundles and execute Cerbos policy tests')
+        subparser.set_defaults(func=self.run_tests)
+        subparser.add_argument('--config-dir', default='/usr/share/univention-directory-manager-modules/policies/')
+        subparser.add_argument('--test-dir', type=Path, default=TEST_ROOT)
+        subparser.add_argument('--strict', dest='strict', action='store_true', default=True)
+        subparser.add_argument('--unstrict', dest='strict', action='store_false', help='Disable Cerbos strict evaluation and DSL strict checking')
+        subparser.add_argument('--runner', choices=('docker', 'local'), default='docker', help='Run Cerbos via Docker (default) or a local binary')
+        subparser.add_argument('--image', default=CERBOS_IMAGE, help='Docker image containing the Cerbos ldapDN extension')
+        subparser.add_argument('--cerbos-binary', default='cerbos', help='Local Cerbos binary for --runner=local')
+        subparser.add_argument('--test-filter', help='Forward a Cerbos test filter to cerbos compile')
 
         subparser = subparsers.add_parser('prune')
         subparser.set_defaults(func=self.prune)
@@ -143,6 +164,99 @@ class UniventionDirectoryManagerPolicies:
         compiled = self.generate_roles_from_acl()
         self.generate_resource_policies(compiled)
         self.generate_domain_administrator_role_policy()
+        if not getattr(self.args, 'exclude_tests', False) and self.args.action == 'generate':
+            suites = self._discover_test_suites(self.args.test_dir)
+            self._copy_test_suites([suite for suite in suites if not list(suite.glob('*.policy'))])
+
+    @staticmethod
+    def _discover_test_suites(test_dir):
+        root = Path(test_dir)
+        if not root.exists():
+            log.info('No Cerbos test suites found under %s', root)
+            return []
+        return sorted(path for path in root.iterdir() if path.is_dir())
+
+    def _copy_test_suites(self, suites):
+        """Copy test fixtures, never test-specific DSL policies, into a bundle."""
+        if not suites:
+            return
+
+        dest = self.output_root / '_tests'
+        dest.mkdir(parents=True, exist_ok=True)
+        ldap_base = ucr.get('ldap/base') or TEST_FIXTURE_BASE
+        for suite in suites:
+            target = dest / suite.name
+            shutil.copytree(suite, target)
+            for path in target.rglob('*.policy'):
+                path.unlink()
+            if ldap_base != TEST_FIXTURE_BASE:
+                for path in target.rglob('*.yaml'):
+                    content = path.read_text()
+                    path.write_text(content.replace(TEST_FIXTURE_BASE, ldap_base))
+
+    def _compile_tests(self, tree):
+        """Compile a temporary tree, using the same Cerbos CLI as the old runner."""
+        if self.args.runner == 'docker':
+            command = [
+                'docker', 'run', '--rm', '--volume', f'{tree}:/policies:ro',
+                '--entrypoint', '/cerbos', self.args.image, 'compile',
+            ]
+            policy_dir = '/policies'
+        else:
+            command = [self.args.cerbos_binary, 'compile']
+            policy_dir = str(tree)
+
+        if self.args.strict:
+            command.append('--strict-evaluation')
+
+        if self.args.test_filter:
+            command.extend(['--test-filter', self.args.test_filter])
+
+        command.append(policy_dir)
+        log.info('Running Cerbos tests: %s', tree)
+
+        try:
+            return subprocess.run(command, check=False).returncode
+        except FileNotFoundError as exc:
+            raise SystemExit(f'error: executable not found: {exc.filename}') from exc
+
+    def run_tests(self):
+        """Test installed policies and each suite with its own DSL in isolation."""
+        suites = self._discover_test_suites(self.args.test_dir)
+        if not suites:
+            raise SystemExit(f'error: no test suites found in {self.args.test_dir}')
+
+        installed = []
+        isolated = []
+        for suite in suites:
+            (isolated if list(suite.glob('*.policy')) else installed).append(suite)
+
+        POLICY_TMP.mkdir(parents=True, exist_ok=True)
+        result = 0
+        with TemporaryDirectory(dir=POLICY_TMP, prefix='.udm-cerbos-tests-') as tmp:
+            workdir = Path(tmp)
+            runs = ([('installed', installed, Path(self.args.config_dir))] if installed else [])
+            runs.extend((f'isolated-{suite.name}', [suite], suite) for suite in isolated)
+
+            for name, selected, config_dir in runs:
+                print(f'== Cerbos tests: {name}', flush=True)
+                self.output_root = workdir / name
+                self.output_root.mkdir()
+                original_config_dir = self.args.config_dir
+
+                try:
+                    self.args.config_dir = str(config_dir)
+                    self.generate_all()
+                finally:
+                    self.args.config_dir = original_config_dir
+
+                self._copy_test_suites(selected)
+                code = self._compile_tests(self.output_root)
+                if code:
+                    result = code
+
+        if result:
+            raise SystemExit(result)
 
     def generate_principal_schema(self):
         pass  # TODO: write to _schemas/principal.json
