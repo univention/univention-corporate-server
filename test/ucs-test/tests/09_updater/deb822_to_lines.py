@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
 """Print APT sources in the one-line format: DEB822 `*.sources` files are expanded, comments are kept."""
 
 import io
