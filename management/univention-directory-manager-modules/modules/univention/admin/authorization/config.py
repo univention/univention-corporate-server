@@ -109,6 +109,7 @@ RESOURCE_DN = 'request.resource.attr.dn'
 RESOURCE_POSITION = 'request.resource.attr.position'
 CONTEXT_ROLES = 'request.principal.attr.context_roles'
 POLICY_ROOT = '/usr/share/univention-guardian-server/policies/udm'
+ROLE_POLICY_PARENT = 'udm:super-admin'
 
 
 def sanitize_filename(name):
@@ -548,7 +549,7 @@ class UDMAuthorizationConfig:
                     'import': ['udm_variables'],
                 },
                 # 'scope': '',
-                'parentRoles': ['role-allow-role-policy-actions'],
+                'parentRoles': [ROLE_POLICY_PARENT],
                 'rules': _policy_seq(rules, commented),
             }, commented),
             'metadata': {
