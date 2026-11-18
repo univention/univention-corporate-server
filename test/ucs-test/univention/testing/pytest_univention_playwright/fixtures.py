@@ -22,7 +22,9 @@ from univention.testing.browser.sidemenu import SideMenuLicense, SideMenuUser
 from univention.testing.browser.suggestion import AppCenterCacheTest
 from univention.testing.browser.univentionconfigurationregistry import UniventionConfigurationRegistry
 
-from . import check_for_backtrace, save_screenshot, save_trace
+from . import (
+    capture_javascript_diagnostics, check_for_backtrace, print_javascript_diagnostics, save_screenshot, save_trace,
+)
 
 
 if TYPE_CHECKING:
@@ -151,6 +153,7 @@ def setup_browser_context(context, start_tracing=True):
     expect.set_options(timeout=30 * 1000)
     if start_tracing:
         context.tracing.start(screenshots=True, snapshots=True, sources=True)
+    context.on('page', capture_javascript_diagnostics)
     page = context.new_page()
     return page
 
@@ -216,6 +219,7 @@ def teardown_umc_browser_test(
             save_trace(context, request.node.name, Path('browser').resolve(), ucr, timestamp=failure_timestamp)
             for i, p in enumerate(page):
                 save_screenshot(p, request.node.name, Path('browser'), ucr, i, timestamp=failure_timestamp)
+                print_javascript_diagnostics(p, page_index=i)
                 check_for_backtrace(p, page_index=i)
         else:
             context.tracing.stop()
