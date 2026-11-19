@@ -28,12 +28,12 @@ dependencies = [
     "unidecode",
     "univention-admin-diary",
     "univention-authorization",
+    "univention-python-heimdal",
     "univention-config-registry",
     "univention-debug-python",
     "univention-lib",
     "univention-licence-python",
     "univention-python",
-    "univention-python-heimdal",
 ]
 maintainers = [
     { name = "Univention GmbH", email = "packages@univention.de" },
