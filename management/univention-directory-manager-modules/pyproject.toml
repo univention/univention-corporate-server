@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "univention-directory-manager-modules"
+version = "18.0.1"
+description = "Univention Directory Manager modules"
+license = "AGPL-3.0-only"
+requires-python = ">= 3.11"
+dependencies = [
+    "bcrypt",
+    "dnspython",
+    "email-validator",
+    "lark",
+    "M2Crypto",
+    "passlib",
+    "pillow",
+    "python-dateutil",
+    "python-debian",
+    "python-ldap",
+    "python-magic",
+    "PyYAML",
+    "tzlocal",
+    "unidecode",
+    "univention-admin-diary",
+    "univention-authorization",
+    "univention-config-registry",
+    "univention-debug-python",
+    "univention-lib",
+    "univention-licence-python",
+    "univention-python",
+    "univention-python-heimdal",
+]
+maintainers = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+
+[project.urls]
+Homepage = "https://www.univention.de/"
+
+[tool.setuptools.packages.find]
+where = ["modules"]
+include = ["univention.admin*", "univention.udm*"]
