@@ -19,6 +19,11 @@ univention-config-registry set \
 	umc/module/debug/level?2 \
 	umc/module/timeout?600
 
+# enable host name check of the HTTP Referer header on new installations only
+if [ "$1" = "configure" ] && [ -z "$2" ]; then
+	univention-config-registry set umc/http/referer/check-host?true
+fi
+
 create_logfile /var/log/univention/ec2.log "root:adm" 640
 
 # create UMC ACLs for user root

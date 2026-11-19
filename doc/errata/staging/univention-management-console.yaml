@@ -6,6 +6,12 @@ src: univention-management-console
 fix: 14.7.6
 desc: |
  This update addresses the following issue:
- * Security protections for the HTTP Referer header now correctly check the
-   hostname.
+ * The security protections for the HTTP Referer header now also check the
+   host name. To not break existing setups which access UMC through a
+   reverse proxy, requests with a non-matching host name are only rejected
+   if the new UCR variable `umc/http/referer/check-host` is set to `true`,
+   which is the default on new installations. The check will be enabled
+   by default in a future UCS release. Reverse proxies which rewrite the
+   HTTP Host header can be allowed with the new UCR variable
+   `umc/http/referer/allowed-hosts`.
 bug: [59997]

@@ -221,3 +221,18 @@ Min=0
 Max=3600
 Default=180
 Categories=management-umc
+
+[umc/http/referer/allowed-hosts]
+Description[de]=Zusätzliche Hostnamen, die im HTTP-Referer-Header von Anfragen an UMC-Module erlaubt sind, als kommagetrennte Liste, optional mit Port (z.B. "proxy.example.com,proxy.example.com:8443"). Wird benötigt, wenn UMC über einen Reverse-Proxy erreichbar ist, der den Host-Header umschreibt. Der Hostname der jeweiligen Anfrage ist immer erlaubt. Die Prüfung des Hostnamens wird nur erzwungen, wenn "umc/http/referer/check-host" aktiviert ist. Änderungen werden nach einem Neustart des UMC-Servers wirksam.
+Description[en]=Additional host names allowed in the HTTP Referer header of requests to UMC modules, as comma separated list, optionally with port (e.g. "proxy.example.com,proxy.example.com:8443"). Required if UMC is accessed through a reverse proxy which rewrites the Host header. The host name of the request itself is always allowed. The host name check is only enforced if "umc/http/referer/check-host" is enabled. Changes take effect after restarting the UMC server.
+Type=list
+Separator=,
+Elementtype=str
+Categories=management-umc
+
+[umc/http/referer/check-host]
+Description[de]=Wenn aktiviert, werden Anfragen an UMC-Module abgelehnt, deren HTTP-Referer-Header einen anderen Hostnamen als die Anfrage selbst oder einen in "umc/http/referer/allowed-hosts" erlaubten Hostnamen enthält. Wenn deaktiviert, werden solche Anfragen nur protokolliert. Bei Neuinstallationen ist die Variable aktiviert. In einem zukünftigen UCS-Release wird die Prüfung standardmäßig aktiviert. Änderungen werden nach einem Neustart des UMC-Servers wirksam.
+Description[en]=If enabled, requests to UMC modules are rejected if their HTTP Referer header contains a host name other than the one of the request itself or one allowed in "umc/http/referer/allowed-hosts". If disabled, such requests are only logged. The variable is enabled on new installations. In a future UCS release the check will be enabled by default. Changes take effect after restarting the UMC server.
+Type=bool
+Default=false
+Categories=management-umc

@@ -1,6 +1,9 @@
 univention-management-console (14.7.6) unstable; urgency=medium
 
-  * Bug #59997: fix hostname check of Referer security check
+  * Bug #59997: check the host name of the Referer HTTP header; enforced
+    only if umc/http/referer/check-host is enabled (default on new
+    installations), additional hosts, e.g. of reverse proxies,
+    can be allowed by setting umc/http/referer/allowed-hosts
 
  -- Florian Best <best@univention.de>  Wed, 18 Nov 2026 10:19:47 +0300
 

@@ -89,6 +89,7 @@ import ldap
 
 import univention.admin.uexceptions as udm_errors
 from univention.lib.i18n import I18N_Error, Locale, Translation
+from univention.management.console.config import ucr
 from univention.management.console.error import (
     LDAP_ConnectionFailed, LDAP_ServerDown, NotAcceptable, UMC_Error, Unauthorized,
 )
@@ -256,10 +257,16 @@ class Base(Translation):
 
         if getattr(function, 'referer_protection', True) and request.headers.get('Referer'):
             referer = urlparse(request.headers['Referer'])
-            host = request._request_handler.request.host.lower()
-            if host not in (referer.netloc.lower(), (referer.hostname or '').lower()) or not referer.path.startswith('/univention/'):
-                MODULE.warning('HTTP Referer does not match', referer=repr(referer), host=host)
+            if not referer.path.startswith('/univention/'):
+                MODULE.warning('HTTP Referer path does not start with /univention/', referer=repr(referer))
                 raise UMC_Error(self._('The "Referer" HTTP header must start with "/univention/".'), status=503)
+            host = request._request_handler.request.host.lower()
+            allowed_hosts = {host, *filter(None, re.split(r'[\s,]+', ucr.get('umc/http/referer/allowed-hosts', '').lower()))}
+            if allowed_hosts.isdisjoint({referer.netloc.lower(), (referer.hostname or '').lower()}):
+                enforced = ucr.is_true('umc/http/referer/check-host', False)
+                MODULE.warning('HTTP Referer host does not match', referer=repr(referer), host=host, allowed_hosts=sorted(allowed_hosts), enforced=enforced)
+                if enforced:
+                    raise UMC_Error(self._('The host of the "Referer" HTTP header does not match the requested host. If UMC is accessed through a reverse proxy, its host name must be added to the UCR variable "umc/http/referer/allowed-hosts".'), status=503)
 
         content_type = request.headers.get('Content-Type', '')
         allowed_content_types = ('application/json', 'application/x-www-form-urlencoded', 'multipart/form-data')

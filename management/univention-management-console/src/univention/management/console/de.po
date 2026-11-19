@@ -322,6 +322,17 @@ msgstr "Angegebene Sprache ist nicht verfügbar"
 msgid "The \"Referer\" HTTP header must start with \"/univention/\"."
 msgstr "Der \"Referer\" HTTP-Header muss mit \"/univention/\" beginnen."
 
+#: src/univention/management/console/base.py:266
+msgid ""
+"The host of the \"Referer\" HTTP header does not match the requested host. If "
+"UMC is accessed through a reverse proxy, its host name must be added to the "
+"UCR variable \"umc/http/referer/allowed-hosts\"."
+msgstr ""
+"Der Host des \"Referer\" HTTP-Headers stimmt nicht mit dem angefragten Host "
+"überein. Wenn UMC über einen Reverse-Proxy aufgerufen wird, muss dessen "
+"Hostname zur UCR-Variable \"umc/http/referer/allowed-hosts\" hinzugefügt "
+"werden."
+
 #: src/univention/management/console/oidc.py:103
 msgid ""
 "The OpenID Provider is not available. This might be a misconfiguration."
