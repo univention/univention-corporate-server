@@ -1,0 +1,16 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-telemetry
+fix: 0.3.0
+desc: |
+ This update addresses the following issues:
+ * The telemetry sender is now enabled by default. Once a day, the Primary
+   Directory Node sends basic information about the installation to
+   Univention: the UCS version, the number of users, the user limit of the
+   license and the UUID of the license. If the UCR variable
+   `telemetry/enabled` has already been set to `false`, the transmission
+   remains disabled. It can be disabled at any time by setting
+   `telemetry/enabled` to `false`.
+bug: [60162]

@@ -1,8 +1,13 @@
-univention-telemetry (0.3.0) UNRELEASED; urgency=medium
+univention-telemetry (0.3.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:43 +0300
+  [ Christian Castens ]
+  * Bug #60162: enable the telemetry sender by default and make it more
+    robust
+
+ -- Christian Castens <castens@univention.de>  Thu, 19 Nov 2026 17:24:08 +0100
 
 univention-telemetry (0.2.0) UNRELEASED; urgency=medium
 
