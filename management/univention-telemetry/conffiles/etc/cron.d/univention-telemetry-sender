@@ -3,7 +3,7 @@
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 @!@
-if configRegistry.is_true('telemetry/enabled', False) and configRegistry.get('server/role') == 'domaincontroller_master':
+if configRegistry.is_true('telemetry/enabled', True) and configRegistry.get('server/role') == 'domaincontroller_master':
     script = "/usr/share/univention-telemetry/univention-telemetry-sender"
     interval = configRegistry.get("telemetry/cron", "0 2 * * *")
     logfile = '/var/log/univention/telemetry-sender.log'
