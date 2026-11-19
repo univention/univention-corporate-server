@@ -1,3 +1,9 @@
+ucs-test (12.7.20) unstable; urgency=medium
+
+  * Bug #60135: ipptool test for cups
+
+ -- Arvid Requate <requate@univention.de>  Thu, 19 Nov 2026 23:17:47 +0100
+
 ucs-test (12.7.19) unstable; urgency=medium
 
   * Bug #60153: add missing univentionObjectIdentifier
