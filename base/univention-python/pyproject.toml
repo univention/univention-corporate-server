@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "univention-python"
-version = "0.0.0"
+dynamic = ["version"]
 description = "Univention Python"
 license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
@@ -24,4 +24,5 @@ maintainers = [
 Homepage = "https://www.univention.de/"
 
 [tool.setuptools]
-package-dir = { "" = "modules" }
+packages = ["univention"]
+package-dir = { "univention" = "modules" }
