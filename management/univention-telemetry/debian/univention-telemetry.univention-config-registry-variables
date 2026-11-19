@@ -2,7 +2,7 @@
 Description[de]=Aktiviert die tägliche Übermittlung von Telemetriedaten an Univention.
 Description[en]=Enables the daily transmission of telemetry data to Univention.
 Type=bool
-Default=false
+Default=true
 Categories=telemetry
 
 [telemetry/cron]
