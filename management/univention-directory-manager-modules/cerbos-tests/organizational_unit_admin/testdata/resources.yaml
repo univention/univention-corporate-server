@@ -331,3 +331,135 @@ resources:
       policies: null
       uuid: null
       search: {base: "dc=ucs,dc=test", scope: sub}
+
+  search_mail_domains_from_ldap_base:
+    kind: udm:module:mail/domain
+    id: dc=ucs,dc=test
+    attr:
+      dn: dc=ucs,dc=test
+      objectType: mail/domain
+      position: dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "dc=ucs,dc=test", scope: sub}
+
+  search_mail_domains_from_cn_mail:
+    kind: udm:module:mail/domain
+    id: cn=mail,dc=ucs,dc=test
+    attr:
+      dn: cn=mail,dc=ucs,dc=test
+      objectType: mail/domain
+      position: dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "cn=mail,dc=ucs,dc=test", scope: sub}
+
+  search_mail_domains_from_cn_domain_mail:
+    kind: udm:module:mail/domain
+    id: cn=domain,cn=mail,dc=ucs,dc=test
+    attr:
+      dn: cn=domain,cn=mail,dc=ucs,dc=test
+      objectType: mail/domain
+      position: cn=mail,dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "cn=domain,cn=mail,dc=ucs,dc=test", scope: sub}
+
+  search_mail_domains_from_ou_bremen:
+    kind: udm:module:mail/domain
+    id: ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: ou=bremen,dc=ucs,dc=test
+      objectType: mail/domain
+      position: dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "ou=bremen,dc=ucs,dc=test", scope: sub}
+
+  usertemplate_global:
+    kind: udm:module:settings/usertemplate
+    id: cn=staff,cn=templates,cn=univention,dc=ucs,dc=test
+    attr:
+      dn: cn=staff,cn=templates,cn=univention,dc=ucs,dc=test
+      objectType: settings/usertemplate
+      position: cn=templates,cn=univention,dc=ucs,dc=test
+      properties: {name: staff}
+      options: {}
+
+  usertemplate_in_bremen:
+    kind: udm:module:settings/usertemplate
+    id: cn=staff,ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: cn=staff,ou=bremen,dc=ucs,dc=test
+      objectType: settings/usertemplate
+      position: ou=bremen,dc=ucs,dc=test
+      properties: {name: staff}
+      options: {}
+
+  search_usertemplates_from_ldap_base:
+    kind: udm:module:settings/usertemplate
+    id: dc=ucs,dc=test
+    attr:
+      dn: dc=ucs,dc=test
+      objectType: settings/usertemplate
+      position: dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "dc=ucs,dc=test", scope: sub}
+
+  search_usertemplates_from_cn_univention:
+    kind: udm:module:settings/usertemplate
+    id: cn=univention,dc=ucs,dc=test
+    attr:
+      dn: cn=univention,dc=ucs,dc=test
+      objectType: settings/usertemplate
+      position: dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "cn=univention,dc=ucs,dc=test", scope: sub}
+
+  search_usertemplates_from_cn_templates:
+    kind: udm:module:settings/usertemplate
+    id: cn=templates,cn=univention,dc=ucs,dc=test
+    attr:
+      dn: cn=templates,cn=univention,dc=ucs,dc=test
+      objectType: settings/usertemplate
+      position: cn=univention,dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "cn=templates,cn=univention,dc=ucs,dc=test", scope: sub}
+
+  search_usertemplates_from_ou_bremen:
+    kind: udm:module:settings/usertemplate
+    id: ou=bremen,dc=ucs,dc=test
+    attr:
+      dn: ou=bremen,dc=ucs,dc=test
+      objectType: settings/usertemplate
+      position: dc=ucs,dc=test
+      roles: []
+      properties: {}
+      options: {}
+      policies: null
+      uuid: null
+      search: {base: "ou=bremen,dc=ucs,dc=test", scope: sub}
