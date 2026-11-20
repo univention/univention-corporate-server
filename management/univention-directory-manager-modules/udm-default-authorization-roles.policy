@@ -166,6 +166,12 @@ access by role="udm:default-roles:organizational-unit-admin"
     grant actions="search,read"
     grant properties="*" permission="read"
 
+  to objecttype="settings/usertemplate" position.subtree="cn=templates,cn=univention,{ldap/base}"
+    name="allow-global-settings-usertemplate-read" description="Allow to read settings/usertemplate in global settings container"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
   to objecttype="users/user"
     name="allow-user-reports-creation" description="Allow to create users/user reports"
 
