@@ -77,7 +77,7 @@ class UniventionDirectoryManagerRoles:
 
         subparser = subparsers.add_parser('create-default-roles')
         subparser.set_defaults(func=self.create_default_roles)
-        subparser.add_argument('--config', default='/usr/share/univention-directory-manager-modules/udm-default-authorization-roles.policy', type=argparse.FileType('r'))
+        subparser.add_argument('--config', default='/usr/share/univention-directory-manager-modules/local-udm-default-authorization-roles.policy', type=argparse.FileType('r'))
         subparser.add_argument('--remove', action='store_true')
         subparser.add_argument('--strict', action='store_true')
 
