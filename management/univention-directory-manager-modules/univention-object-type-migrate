@@ -2,41 +2,20 @@
 # SPDX-FileCopyrightText: 2005-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-"""Migration tool for `univentionObjectType`"""
-
+"""Set missing univentionObjectType attributes on UDM objects."""
 
 import argparse
 import sys
-from collections.abc import Callable
 
-import univention.uldap
+import ldap
+
+import univention.admin.uexceptions
+from univention.admin.modules import identify, update
+from univention.admin.uldap import getAdminConnection
 from univention.config_registry import ucr
 
 
-def buildModuleIdentifyMapping() -> dict[str, Callable]:
-    import univention.admin.modules
-    univention.admin.modules.update()
-    return {
-        name: module.identify
-        for (name, module) in univention.admin.modules.modules.items()
-        if hasattr(module, 'identify')
-    }
-
-
-def parseOptions() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description='Set the attribute univentionObjectType for each directory object')
-    parser.add_argument('--verbose', action='store_true', default=False, help='do not hide warnings for unmatched component objects')
-    parser.add_argument('-v', '--verify', action='store_true', default=False, help='check objects with already set univentionObjectType')
-    parser.add_argument('-b', '--base', default='', help='only modify objects at or below SEARCHBASE', metavar='SEARCHBASE')
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('-n', '--no-action', dest='action', action='store_false', help='do not modify the directory, show what would have been done')
-    group.add_argument('-a', '--action', dest='action', action='store_true', help='do modify the directory')
-
-    options = parser.parse_args()
-    return options
-
-
-def warningSupressed(dn: str, attributes: dict[str, list[bytes]]) -> bool:
+def warning_suppressed(dn: str, attributes: dict[str, list[bytes]]) -> bool:
     # cn=admin,$ldap_base cn=backup,$ldap_base
     ocs = set(attributes['objectClass'])
     if set(attributes.keys()) == {'objectClass', 'userPassword', 'cn', 'sn'} and ocs == {b'top', b'person'}:
@@ -48,99 +27,69 @@ def warningSupressed(dn: str, attributes: dict[str, list[bytes]]) -> bool:
     if ocs == {b'top', b'person', b'krb5Principal', b'krb5KDCEntry'}:
         return True
     # samba idmap objects
-    if ocs == {b'sambaIdmapEntry', b'sambaSidEntry'}:
-        return True
-    # old (2.4) Kolab objects
-    if b'kolabSharedFolder' in ocs:
-        return True
-    if b'univentionKolabGroup' in ocs:
-        return True
-    # old (2.4) UMC ACLs
-    if b'univentionConsoleACL' in ocs:
-        return True
-    if b'univentionConsoleOperations' in ocs:
-        return True
-    if b'univentionPolicyConsoleAccess' in ocs:
-        return True
-    # old (2.4) UDM visibility settings
-    if b'univentionPolicyAdminSettings' in ocs:
-        return True
-    if b'univentionAdminUserSettings' in ocs:
-        return True
-    return warningHidden(dn, attributes)
+    return ocs == {b'sambaIdmapEntry', b'sambaSidEntry'}
 
 
-def warningHidden(dn: str, attributes: dict[str, list[bytes]]) -> bool:
-    ocs = set(attributes['objectClass'])
-    if warningHidden.verbose:
-        return False
-    if b'univentionCitrixUserSessionsClass' in ocs:
-        return True
-    if b'univentionPolicyThinClientUser' in ocs:
-        return True
-    if b'univentionThinClientSession' in ocs:
-        return True
-    return b'univentionThinClientAutostart' in ocs
+def main(args: argparse.Namespace) -> bool:
+    errors_occurred = False
+    search_filter = '(objectClass=*)' if args.verify else '(!(objectClass=univentionObject))'
+    update()
 
+    ldap_connection, _po = getAdminConnection()
+    if args.action is not True:
+        ldap_connection.modify = lambda dn, changes: sys.stdout.write('Would modify %r\n' % (dn, ))
 
-warningHidden.verbose = False  # type: ignore
-
-
-def main(options: argparse.Namespace) -> bool:
-    errorsOccurred = False
-    searchFilter = '(objectClass=*)' if options.verify else '(!(objectClass=univentionObject))'
-    moduleIdentify = buildModuleIdentifyMapping()
-    uldap = univention.uldap.getAdminConnection()
-    if options.action is not True:
-        uldap.modify = lambda dn, changes: sys.stdout.write('Would modify %r\n' % (dn, ))
-    warningHidden.verbose = options.verbose
-
-    for (dn, attributes) in uldap.search(filter=searchFilter, base=options.base, attr=['*', 'entryUUID']):
+    for dn, attributes in ldap_connection.search(filter=search_filter, base=args.base, attr=['*', 'entryUUID']):
         if dn.endswith(',cn=temporary,cn=univention,%s' % ucr.get('ldap/base')):
             continue
-        matches = [
-            module
-            for (module, identify) in moduleIdentify.items()
-            if identify(dn, attributes)
-        ]
-        if 'kerberos/kdcentry' in matches:
-            continue
-        if 'container/dc' in matches and ('container/ou' in matches or 'container/cn' in matches):
-            # container/dc has priority (ldapbase ou=/cn= has multiple matches)
-            matches = ['container/dc']
 
-        if len(matches) == 1:
-            if b'univentionObject' not in attributes['objectClass']:
-                try:
-                    changes = [
-                        ('objectClass', attributes['objectClass'], attributes['objectClass'] + [b'univentionObject']),
-                        ('univentionObjectType', [], [matches[0].encode('UTF-8')]),
-                    ]
-                    if 'univentionObjectIdentifier' not in attributes:
-                        changes.append(('univentionObjectIdentifier', [], attributes['entryUUID']))
-                    uldap.modify(dn, changes)
-                except univention.uldap.ldap.INVALID_SYNTAX as e:
-                    # this error should not happen, in case it does, it is an indicator that
-                    # LDAP schema extensions are missing (Bug #26304)
-                    print('ERROR: Could not set univentionObjectType! (%s)\nIt seems that the corresponding LDAP schema extensions are not installed correctly.' % e, file=sys.stderr)
-                    return False
-            elif attributes['univentionObjectType'][0].decode('utf-8') != matches[0]:
-                errorsOccurred = True
-                print('Mismatch for %r: univentionObjectType is %r but should be %r!' % (dn, attributes['univentionObjectType'][0].decode('utf-8'), matches), file=sys.stderr)
-        elif len(matches) > 1:
-            raise ValueError('Multiple matches for %r: %r!' % (dn, matches))
-        else:
-            if not warningSupressed(dn, attributes):
+        modules = identify(dn, attributes)
+        if not modules or any(module.module == 'kerberos/kdcentry' for module in modules):  # Bug #47846
+            if not warning_suppressed(dn, attributes):
                 print('Warning: No match for %r' % (dn, ), file=sys.stderr)
-                if options.verbose:
+                if args.verbose:
                     for attr in ('objectClass', 'univentionObjectType'):
                         for value in attributes.get(attr, []):
-                            print('\t%s: %s' % (attr, value))
+                            print('\t%s: %s' % (attr, value.decode('UTF-8')))
+            continue
 
-    return not errorsOccurred
+        new_object_classes = attributes['objectClass'][:]
+        changes = []
+        if b'univentionObject' not in new_object_classes:
+            new_object_classes.append(b'univentionObject')
+            changes = [
+                ('objectClass', attributes['objectClass'], new_object_classes),
+                ('univentionObjectType', [], [modules[0].module.encode('UTF-8')]),
+            ]
+
+        if not attributes.get('univentionObjectIdentifier'):
+            changes.append(('univentionObjectIdentifier', [], attributes['entryUUID']))
+
+        if len(modules) > 1:
+            print('Warning: UDM identified multiple object types for %s: %s - using the first' % (dn, modules), file=sys.stderr)
+            errors_occurred = True
+
+        if changes:
+            try:
+                ldap_connection.modify(dn, changes)
+            except univention.admin.uexceptions.ldapError as exc:
+                if not isinstance(exc.original_exception, ldap.INVALID_SYNTAX):
+                    raise
+                # This indicates that LDAP schema extensions are missing (Bug #26304)
+                print('ERROR: Could not set univentionObjectType! (%s)\nIt seems that the corresponding LDAP schema extensions are not installed correctly.' % exc, file=sys.stderr)
+                errors_occurred = True
+
+    return errors_occurred
 
 
 if __name__ == "__main__":
-    options = parseOptions()
-    if not main(options):
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description='Set the attribute univentionObjectType for each directory object')
+    parser.add_argument('--verbose', action='store_true', default=False, help='do not hide warnings for unmatched component objects')
+    parser.add_argument('-v', '--verify', action='store_true', default=False, help='check objects with already set univentionObjectType')
+    parser.add_argument('-b', '--base', default='', help='only modify objects at or below SEARCHBASE', metavar='SEARCHBASE')
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('-n', '--no-action', dest='action', action='store_false', help='do not modify the directory, show what would have been done')
+    group.add_argument('-a', '--action', dest='action', action='store_true', help='do modify the directory')
+
+    args = parser.parse_args()
+    sys.exit(int(main(args)))
