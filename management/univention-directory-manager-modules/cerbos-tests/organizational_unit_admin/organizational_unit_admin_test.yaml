@@ -824,3 +824,98 @@ tests:
         resource: group_berlin
         actions:
           udm:property:name:search: EFFECT_DENY
+
+  - name: Starts a mail domain search from the LDAP base or the global mail domain container
+    input:
+      principals: [ou_admin_bremen]
+      resources: [search_mail_domains_from_ldap_base, search_mail_domains_from_cn_mail, search_mail_domains_from_cn_domain_mail]
+      actions:
+        - udm:object:search
+    expected:
+      - principal: ou_admin_bremen
+        resource: search_mail_domains_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+      - principal: ou_admin_bremen
+        resource: search_mail_domains_from_cn_mail
+        actions:
+          udm:object:search: EFFECT_ALLOW
+      - principal: ou_admin_bremen
+        resource: search_mail_domains_from_cn_domain_mail
+        actions:
+          udm:object:search: EFFECT_ALLOW
+
+  - name: Cannot start a mail domain search outside the global mail domain container and its parents
+    input:
+      principals: [ou_admin_bremen]
+      resources: [search_mail_domains_from_ou_bremen]
+      actions:
+        - udm:object:search
+    expected:
+      - principal: ou_admin_bremen
+        resource: search_mail_domains_from_ou_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+
+  - name: Reads user templates in the global template container only
+    input:
+      principals: [ou_admin_bremen]
+      resources: [usertemplate_global, usertemplate_in_bremen]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:remove
+        - udm:object:move
+    expected:
+      - principal: ou_admin_bremen
+        resource: usertemplate_global
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+      - principal: ou_admin_bremen
+        resource: usertemplate_in_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+          udm:object:move: EFFECT_DENY
+
+  - name: Starts a user template search from the LDAP base or the global template container
+    input:
+      principals: [ou_admin_bremen]
+      resources: [search_usertemplates_from_ldap_base, search_usertemplates_from_cn_univention, search_usertemplates_from_cn_templates]
+      actions:
+        - udm:object:search
+    expected:
+      - principal: ou_admin_bremen
+        resource: search_usertemplates_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+      - principal: ou_admin_bremen
+        resource: search_usertemplates_from_cn_univention
+        actions:
+          udm:object:search: EFFECT_ALLOW
+      - principal: ou_admin_bremen
+        resource: search_usertemplates_from_cn_templates
+        actions:
+          udm:object:search: EFFECT_ALLOW
+
+  - name: Cannot start a user template search outside the global template container and its parents
+    input:
+      principals: [ou_admin_bremen]
+      resources: [search_usertemplates_from_ou_bremen]
+      actions:
+        - udm:object:search
+    expected:
+      - principal: ou_admin_bremen
+        resource: search_usertemplates_from_ou_bremen
+        actions:
+          udm:object:search: EFFECT_DENY
