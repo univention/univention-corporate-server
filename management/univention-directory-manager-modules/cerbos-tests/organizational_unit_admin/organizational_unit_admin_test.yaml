@@ -919,3 +919,39 @@ tests:
         resource: search_usertemplates_from_ou_bremen
         actions:
           udm:object:search: EFFECT_DENY
+
+  - name: Reads the settings containers of the global user templates only
+    input:
+      principals: [ou_admin_bremen]
+      resources: [settings_cn_univention, settings_cn_templates, settings_cn_other]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:create
+        - udm:object:modify
+        - udm:object:remove
+    expected:
+      - principal: ou_admin_bremen
+        resource: settings_cn_univention
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+      - principal: ou_admin_bremen
+        resource: settings_cn_templates
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
+      - principal: ou_admin_bremen
+        resource: settings_cn_other
+        actions:
+          udm:object:search: EFFECT_DENY
+          udm:object:read: EFFECT_DENY
+          udm:object:create: EFFECT_DENY
+          udm:object:modify: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY

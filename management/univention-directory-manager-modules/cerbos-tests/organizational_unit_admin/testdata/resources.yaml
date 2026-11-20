@@ -463,3 +463,33 @@ resources:
       policies: null
       uuid: null
       search: {base: "ou=bremen,dc=ucs,dc=test", scope: sub}
+
+  settings_cn_univention:
+    kind: udm:module:settings/cn
+    id: cn=univention,dc=ucs,dc=test
+    attr:
+      dn: cn=univention,dc=ucs,dc=test
+      objectType: settings/cn
+      position: dc=ucs,dc=test
+      properties: {name: univention}
+      options: {}
+
+  settings_cn_templates:
+    kind: udm:module:settings/cn
+    id: cn=templates,cn=univention,dc=ucs,dc=test
+    attr:
+      dn: cn=templates,cn=univention,dc=ucs,dc=test
+      objectType: settings/cn
+      position: cn=univention,dc=ucs,dc=test
+      properties: {name: templates}
+      options: {}
+
+  settings_cn_other:
+    kind: udm:module:settings/cn
+    id: cn=other,cn=univention,dc=ucs,dc=test
+    attr:
+      dn: cn=other,cn=univention,dc=ucs,dc=test
+      objectType: settings/cn
+      position: cn=univention,dc=ucs,dc=test
+      properties: {name: other}
+      options: {}
