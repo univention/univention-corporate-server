@@ -1,0 +1,92 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: "Ignored group member added only in Samba/AD is preserved on UCS group reconciliation"
+## exposure: dangerous
+## tags:
+##  - basic
+## packages:
+## - univention-s4-connector
+## bugs:
+##  - 60029
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/udm.sh
+. "$TESTLIBPATH/udm.sh" || exit 137
+# shellcheck source=../../lib/random.sh
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+UDM_groups_group_name="$(random_chars)"
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_lastname="$(random_chars)"
+UDM_users_user_password="U$(random_chars)123"
+
+AD_GROUP_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
+AD_USER_DN="CN=$UDM_users_user_username,CN=Users,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+function cleanup {
+	connector_mapping_restore
+	udm_remove "users/user"
+	udm_remove "groups/group"
+	ad_wait_for_synchronization
+	ad_set_sync_mode "$SYNCMODE"
+}
+
+trap cleanup EXIT
+
+ad_set_sync_mode "sync"
+systemctl restart univention-s4-connector
+
+section "Create UCS user and group, wait for both to sync to Samba/AD"
+
+udm_create "groups/group" || fail_fast 110
+udm_create "users/user" || fail_fast 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_GROUP_DN"; fail_bool 0 110
+ad_exists "$AD_USER_DN"; fail_bool 0 110
+
+section "Mark user as ignored in the connector and restart"
+
+# group_members_sync_from_ucs checks _ignore_object against the S4-side object.
+# The default ignore_filter already uses (CN=...) entries for the S4 side, so we
+# extend it with (CN=USERNAME) which matches the Samba user's cn attribute.
+cat > /etc/univention/connector/s4/localmapping.py <<EOF
+def mapping_hook(s4_mapping):
+    f = s4_mapping['user'].ignore_filter
+    s4_mapping['user'].ignore_filter = f[:-1] + '(CN=${UDM_users_user_username}))'
+    return s4_mapping
+EOF
+systemctl restart univention-s4-connector
+sleep 3
+
+section "Stop connector, add ignored user only to Samba group, then modify the UCS group"
+
+ad_connector_stop
+
+ad_append_to_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
+
+# Sanity-check the pre-resync state: user is in Samba group but not in UCS group
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" "uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 1 110
+
+# Modify the UCS group description to queue a sync event for this group
+udm_modify "groups/group" "" "" "" "" \
+	--set description="$(random_chars)" || fail_test 110
+
+section "Start connector and verify the ignored user is still in the Samba group"
+
+ad_connector_start
+ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
+
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains_ignore_case "users" "uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 1 110
+
+exit "$RETVAL"

@@ -1,3 +1,9 @@
+ucs-test (12.7.20) unstable; urgency=medium
+
+  * Bug 60029: add test for group sync reconciliation
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Fri, 20 Nov 2026 13:19:13 +0100
+
 ucs-test (12.7.19) unstable; urgency=medium
 
   * Bug #60153: add missing univentionObjectIdentifier
