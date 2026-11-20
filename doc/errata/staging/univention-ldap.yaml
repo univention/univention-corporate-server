@@ -8,4 +8,7 @@ desc: |
  This update addresses the following issue:
  * LDAP access control rules have been optimized to reduce CPU usage during
    LDAP operations.
-bug: [60001]
+ * The initial Core Edition license now receives a
+   `univentionObjectIdentifier`, allowing it to be identified consistently as
+   a raw LDAP object.
+bug: [60001, 60153]
