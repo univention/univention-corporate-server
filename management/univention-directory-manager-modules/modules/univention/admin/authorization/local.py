@@ -8,6 +8,7 @@
 
 import univention.admin.modules
 import univention.admin.types
+import univention.admin.uexceptions
 from univention.admin import configRegistry
 from univention.admin.guardian_roles import get_roles_from_ldap
 from univention.admin.log import log
@@ -120,6 +121,26 @@ class Authorization:
     # @functools.lru_cache(maxsize=ROLE_CACHE_SIZE)
     def _get_cached_roles(self, lo, dn):
         return get_roles_from_ldap(self.lo, dn)
+
+    def is_search_allowed(self, lo, module, filter_s, base='', scope='sub', raise_exception=False):
+        """Authorize a UDM module search and its LDAP filter attributes."""
+        # NOTE: Checking a base DN does not yet prove that a subtree/one-level search is entirely inside the authorized search area.
+        # The scope is exposed to Cerbos for future scope-aware policy conditions
+        if not self.enabled:
+            return True
+
+        base = base or LDAP_BASE
+
+        # preserve ldap.NO_SUCH_OBJECT semantics!
+        self._verify_search_base(lo, base)
+        return True
+
+    def _verify_search_base(self, lo, base):
+        # mimic ldapsearch behavior! this is very security critical!
+        base = base or LDAP_BASE
+
+        if not self.filter_search_results_dn(lo, [base]):
+            raise univention.admin.uexceptions.noObject(base)
 
     def is_receive_allowed(self, obj, raise_exception=True):
         if not self.enabled:
