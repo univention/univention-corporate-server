@@ -36,6 +36,9 @@
 condition "is-self"
   expr="ldapDN(request.principal.id) == ldapDN(request.resource.id)"
 
+condition "is-self-or-ancestor"
+  expr="ldapDN(request.resource.id).scopeSubtree(ldapDN(request.principal.id))"
+
 # access by role="*"
 #   to objecttype="*"
 #     grant properties="guardianRoles" permission="readonly"
@@ -51,6 +54,12 @@ access by role="udm:default-roles:domain-user"
 
     grant actions="search,read"
     grant properties="*" permission="read"
+
+  to objecttype="users/user" if="is-self-or-ancestor"
+    name="allow-user-self-search" description="Allow searching for the own object, starting from any of its parents"
+
+    grant actions="search"
+    grant properties="*" permission="search"
 
 # Self service permissions
 access by role="udm:default-roles:self-service-profile"
@@ -153,8 +162,8 @@ access by role="udm:default-roles:organizational-unit-admin"
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="firstname,lastname,username" permission="write"
     grant properties="password,serviceSpecificPassword" permission="writeonly"
-    grant properties="guardianRoles" permission="none"
-    grant properties="guardianInheritedRoles" permission="none"
+    grant properties="guardianRoles" permission="readonly"
+    grant properties="guardianInheritedRoles" permission="readonly"
     grant properties="*" permission="write"
 
   # group permissions in OU
@@ -163,7 +172,7 @@ access by role="udm:default-roles:organizational-unit-admin"
 
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="name" permission="write"
-    grant properties="guardianMemberRoles" permission="none"
+    grant properties="guardianMemberRoles" permission="readonly"
     grant properties="*" permission="write"
 
   # example to allow only write to certain property values (must remove the above rule=none):
