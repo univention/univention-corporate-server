@@ -8,7 +8,7 @@ tests:
   - name: Manages objects of every type everywhere
     input:
       principals: [domain_admin]
-      resources: [ldap_base, ou_bremen, cn_users_base, group_domain_admins, group_bremen, windows_computer_bremen, dns_host_record, policy_desktop, mail_domain, extended_attribute]
+      resources: [ou_bremen, cn_users_base, group_domain_admins, group_bremen, windows_computer_bremen, dns_host_record, policy_desktop, mail_domain, extended_attribute]
       actions:
         - udm:object:search
         - udm:object:read
@@ -19,17 +19,6 @@ tests:
         - udm:property:name:read
         - udm:property:name:write
     expected:
-      - principal: domain_admin
-        resource: ldap_base
-        actions:
-          udm:object:search: EFFECT_ALLOW
-          udm:object:read: EFFECT_ALLOW
-          udm:object:create: EFFECT_ALLOW
-          udm:object:modify: EFFECT_ALLOW
-          udm:object:remove: EFFECT_ALLOW
-          udm:property:name:search: EFFECT_ALLOW
-          udm:property:name:read: EFFECT_ALLOW
-          udm:property:name:write: EFFECT_ALLOW
       - principal: domain_admin
         resource: ou_bremen
         actions:
@@ -126,6 +115,32 @@ tests:
           udm:object:create: EFFECT_ALLOW
           udm:object:modify: EFFECT_ALLOW
           udm:object:remove: EFFECT_ALLOW
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:name:read: EFFECT_ALLOW
+          udm:property:name:write: EFFECT_ALLOW
+
+  - name: Changes the LDAP base, but cannot create or remove it
+    input:
+      principals: [domain_admin]
+      resources: [ldap_base]
+      actions:
+        - udm:object:search
+        - udm:object:read
+        - udm:object:modify
+        - udm:object:create
+        - udm:object:remove
+        - udm:property:name:search
+        - udm:property:name:read
+        - udm:property:name:write
+    expected:
+      - principal: domain_admin
+        resource: ldap_base
+        actions:
+          udm:object:search: EFFECT_ALLOW
+          udm:object:read: EFFECT_ALLOW
+          udm:object:modify: EFFECT_ALLOW
+          udm:object:create: EFFECT_DENY
+          udm:object:remove: EFFECT_DENY
           udm:property:name:search: EFFECT_ALLOW
           udm:property:name:read: EFFECT_ALLOW
           udm:property:name:write: EFFECT_ALLOW
