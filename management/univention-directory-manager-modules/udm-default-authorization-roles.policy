@@ -116,6 +116,22 @@ access
     grant actions="search,read"
     grant properties="*" permission="read"
 
+  to objecttype="groups/group" position.ancestors="context=udm:contexts:position"
+    name="allow-search-context-groups-from-parents" description="Allow to start a group search above the own OU"
+
+    grant actions="search"
+
+# Every context role for user managament
+access
+  by role="udm:default-roles:helpdesk-operator"
+  by role="udm:default-roles:organizational-unit-admin"
+  description="User management starts user searches above the own OU"
+
+  to objecttype="users/user" position.ancestors="context=udm:contexts:position"
+    name="allow-search-context-users-from-parents" description="Allow to start a user search above the own OU"
+
+    grant actions="search"
+
 access
   by role="udm:default-roles:helpdesk-operator"
   by role="udm:default-roles:organizational-unit-admin"
@@ -213,18 +229,23 @@ access by role="udm:default-roles:linux-ou-client-manager"
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="*" permission="write"  # FIXME: can put the client into Domain Administrators
 
+  to objecttype="computers/linux" position.ancestors="context=udm:contexts:position"
+    name="allow-search-context-linux-computers-from-parents" description="Allow to start a linux computer search above the own OU"
+
+    grant actions="search"
+
   # group read permissions in OU-specific groups only
   to objecttype="groups/group" position.subtree="context=udm:contexts:position"
     name="allow-context-ou-group-read" description="Allow to read groups in own OU"
 
-    grant actions="search,read,create,modify,rename,remove,move"
+    grant actions="search,read"
     grant properties="*" permission="read"
 
   # group write permissions in OU-specific groups only
   to objecttype="groups/group" position.subtree="context=udm:contexts:position"
-    name="allow-context-ou-group-host-write" description="Allow to write groups in own OU"
+    name="allow-context-ou-group-host-write" description="Allow to change the hosts of groups in own OU"
 
-    grant actions="create,modify,rename,remove,move"
+    grant actions="modify"
     grant properties="hosts" permission="write"
 
 access by role="udm:default-roles:linux-ou-client-manager"
