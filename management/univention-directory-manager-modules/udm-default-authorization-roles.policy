@@ -166,11 +166,24 @@ access by role="udm:default-roles:organizational-unit-admin"
     grant actions="search,read"
     grant properties="*" permission="read"
 
+  # Ignored for now: is_search_allowed() returns after the visibility check of the search base and does not ask Cerbos.
+  # Once that early return is removed, this is the pattern for searches that start above the granted position.
+  to objecttype="mail/domain" position.ancestors="cn=domain,cn=mail,{ldap/base}"
+    name="allow-global-mail-domain-search-from-parents" description="Allow to start a mail/domain search above the global mail container"
+
+    grant actions="search"
+
   to objecttype="settings/usertemplate" position.subtree="cn=templates,cn=univention,{ldap/base}"
     name="allow-global-settings-usertemplate-read" description="Allow to read settings/usertemplate in global settings container"
 
     grant actions="search,read"
     grant properties="*" permission="read"
+
+  # Ignored for now, see allow-global-mail-domain-search-from-parents.
+  to objecttype="settings/usertemplate" position.ancestors="cn=templates,cn=univention,{ldap/base}"
+    name="allow-global-settings-usertemplate-search-from-parents" description="Allow to start a settings/usertemplate search above the global template container"
+
+    grant actions="search"
 
   to objecttype="users/user"
     name="allow-user-reports-creation" description="Allow to create users/user reports"
