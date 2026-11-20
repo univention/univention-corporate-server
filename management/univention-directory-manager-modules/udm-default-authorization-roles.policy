@@ -185,6 +185,13 @@ access by role="udm:default-roles:organizational-unit-admin"
 
     grant actions="search"
 
+  # settings/cn is the superordinate of settings/usertemplate, UDM cannot search or open a template without reading it
+  to objecttype="settings/cn" position.hierarchy="cn=templates,cn=univention,{ldap/base}"
+    name="allow-global-settings-container-read" description="Allow to read the settings containers of the global user templates"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
   to objecttype="users/user"
     name="allow-user-reports-creation" description="Allow to create users/user reports"
 
