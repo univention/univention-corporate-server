@@ -33,11 +33,6 @@ msgstr ""
 "\"univention-check-join-status\" gab einen Fehler mit dem Domänenbeitritt "
 "zurück."
 
-#: umc/python/diagnostic/plugins/56_univention_types.py:61
-#, python-format
-msgid "%(num_objs)d objects should be \"%(module_name)s\""
-msgstr "%(num_objs)d Objekte sollten \"%(module_name)s\" sein"
-
 #: umc/python/diagnostic/plugins/11_nameserver.py:17
 #, python-format
 msgid "%d of the configured nameservers are not responding to DNS queries."
@@ -674,11 +669,14 @@ msgstr ""
 msgid "Manual: Analysis of listener/notifier problems"
 msgstr "Handbuch: Analyse von Listener/Notifier-Problemen"
 
-#: umc/python/diagnostic/plugins/56_univention_types.py:64
 #: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:68
 #, python-format
 msgid "Migrate %d LDAP objects"
 msgstr "Migriere %d LDAP-Objekte"
+
+#: umc/python/diagnostic/plugins/56_univention_types.py:34
+msgid "Migrate LDAP objects"
+msgstr "LDAP-Objekte migrieren"
 
 #: umc/python/diagnostic/plugins/42_samba_tdb_deprecated.py:23
 msgid "Migrate Samba database from tdb to mdb"
@@ -1428,7 +1426,6 @@ msgstr ""
 "Es gab einen Fehler beim Benutzen des Proxy-Servers. Das {setup:network} "
 "kann zur Veränderung der Proxy-Konfiguration genutzt werden.\n"
 
-#: umc/python/diagnostic/plugins/56_univention_types.py:54
 #: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:51
 msgid "These objects were found:"
 msgstr "Diese Objekte wurden gefunden:"

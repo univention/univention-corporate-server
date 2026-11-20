@@ -10,6 +10,7 @@ import sys
 from collections.abc import Callable
 
 import univention.uldap
+from univention.config_registry import ucr
 
 
 def buildModuleIdentifyMapping() -> dict[str, Callable]:
@@ -95,11 +96,15 @@ def main(options: argparse.Namespace) -> bool:
     warningHidden.verbose = options.verbose
 
     for (dn, attributes) in uldap.search(filter=searchFilter, base=options.base, attr=['*', 'entryUUID']):
+        if dn.endswith(',cn=temporary,cn=univention,%s' % ucr.get('ldap/base')):
+            continue
         matches = [
             module
             for (module, identify) in moduleIdentify.items()
             if identify(dn, attributes)
         ]
+        if 'kerberos/kdcentry' in matches:
+            continue
         if 'container/dc' in matches and ('container/ou' in matches or 'container/cn' in matches):
             # container/dc has priority (ldapbase ou=/cn= has multiple matches)
             matches = ['container/dc']
