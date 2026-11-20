@@ -148,7 +148,7 @@ def create_user(name, position, policy=None, **props):
         username=name,
         lastname=name,
         firstname=name,
-        password='Univention.1234',
+        password='univention',
         overridePWHistory='1',
         **props,
     )
