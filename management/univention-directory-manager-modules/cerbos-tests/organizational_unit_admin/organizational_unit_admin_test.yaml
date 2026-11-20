@@ -290,7 +290,7 @@ tests:
           udm:object:remove: EFFECT_DENY
           udm:object:move: EFFECT_DENY
 
-  - name: Sees and writes user properties, sets passwords and hides the guardian roles
+  - name: Sees and writes user properties, sets passwords and only reads the guardian roles
     input:
       principals: [ou_admin_bremen]
       resources: [user_bremen]
@@ -301,7 +301,11 @@ tests:
         - udm:property:firstname:writeonly
         - udm:property:firstname:none
         - udm:property:password:writeonly
+        - udm:property:guardianRoles:read
+        - udm:property:guardianRoles:readonly
         - udm:property:guardianRoles:none
+        - udm:property:guardianInheritedRoles:read
+        - udm:property:guardianInheritedRoles:readonly
         - udm:property:guardianInheritedRoles:none
     expected:
       - principal: ou_admin_bremen
@@ -313,8 +317,12 @@ tests:
           udm:property:firstname:writeonly: EFFECT_DENY
           udm:property:firstname:none: EFFECT_DENY
           udm:property:password:writeonly: EFFECT_ALLOW
-          udm:property:guardianRoles:none: EFFECT_ALLOW
-          udm:property:guardianInheritedRoles:none: EFFECT_ALLOW
+          udm:property:guardianRoles:read: EFFECT_ALLOW
+          udm:property:guardianRoles:readonly: EFFECT_ALLOW
+          udm:property:guardianRoles:none: EFFECT_DENY
+          udm:property:guardianInheritedRoles:read: EFFECT_ALLOW
+          udm:property:guardianInheritedRoles:readonly: EFFECT_ALLOW
+          udm:property:guardianInheritedRoles:none: EFFECT_DENY
 
   - name: Manages groups in its OU only
     input:
@@ -360,7 +368,7 @@ tests:
           udm:object:remove: EFFECT_DENY
           udm:object:move: EFFECT_DENY
 
-  - name: Sees group properties and hides the guardian member roles
+  - name: Sees group properties and only reads the guardian member roles
     input:
       principals: [ou_admin_bremen]
       resources: [group_bremen]
@@ -368,6 +376,8 @@ tests:
         - udm:property:name:read
         - udm:property:name:write
         - udm:property:name:none
+        - udm:property:guardianMemberRoles:read
+        - udm:property:guardianMemberRoles:readonly
         - udm:property:guardianMemberRoles:none
     expected:
       - principal: ou_admin_bremen
@@ -376,7 +386,9 @@ tests:
           udm:property:name:read: EFFECT_ALLOW
           udm:property:name:write: EFFECT_ALLOW
           udm:property:name:none: EFFECT_DENY
-          udm:property:guardianMemberRoles:none: EFFECT_ALLOW
+          udm:property:guardianMemberRoles:read: EFFECT_ALLOW
+          udm:property:guardianMemberRoles:readonly: EFFECT_ALLOW
+          udm:property:guardianMemberRoles:none: EFFECT_DENY
 
   - name: Creates user reports for every user
     input:
@@ -658,118 +670,157 @@ tests:
           udm:object:search: EFFECT_DENY
           udm:object:read: EFFECT_DENY
 
-  - name: Searches users from the LDAP base by any property
+  - name: Starts a user search from the LDAP base
     input:
       principals: [ou_admin_bremen]
       resources: [search_users_from_ldap_base]
       actions:
         - udm:object:search
-        - udm:property:username:search
-        - udm:property:lastname:search
-        - udm:property:uidNumber:search
-        - udm:property:objectFlag:search
     expected:
       - principal: ou_admin_bremen
         resource: search_users_from_ldap_base
         actions:
           udm:object:search: EFFECT_ALLOW
-          udm:property:username:search: EFFECT_ALLOW
-          udm:property:lastname:search: EFFECT_ALLOW
-          udm:property:uidNumber:search: EFFECT_ALLOW
-          udm:property:objectFlag:search: EFFECT_ALLOW
 
-  - name: Searches users from a base inside its OU
+  - name: Starts a user search from a base inside its OU
     input:
       principals: [ou_admin_bremen]
       resources: [search_users_from_cn_users_bremen]
       actions:
         - udm:object:search
-        - udm:property:username:search
-        - udm:property:lastname:search
-        - udm:property:uidNumber:search
-        - udm:property:objectFlag:search
     expected:
       - principal: ou_admin_bremen
         resource: search_users_from_cn_users_bremen
         actions:
           udm:object:search: EFFECT_ALLOW
-          udm:property:username:search: EFFECT_ALLOW
-          udm:property:lastname:search: EFFECT_ALLOW
-          udm:property:uidNumber:search: EFFECT_ALLOW
-          udm:property:objectFlag:search: EFFECT_ALLOW
 
-  - name: Searches groups from the LDAP base by name
+  - name: Starts a group search from the LDAP base
     input:
       principals: [ou_admin_bremen]
       resources: [search_groups_from_ldap_base]
       actions:
         - udm:object:search
-        - udm:property:name:search
     expected:
       - principal: ou_admin_bremen
         resource: search_groups_from_ldap_base
         actions:
           udm:object:search: EFFECT_ALLOW
-          udm:property:name:search: EFFECT_ALLOW
 
-  - name: Searches desktop policies from the LDAP base
+  - name: Starts a desktop policy search from the LDAP base
     input:
       principals: [ou_admin_bremen]
       resources: [search_desktop_policies_from_ldap_base]
       actions:
         - udm:object:search
-        - udm:property:name:search
     expected:
       - principal: ou_admin_bremen
         resource: search_desktop_policies_from_ldap_base
         actions:
           udm:object:search: EFFECT_ALLOW
-          udm:property:name:search: EFFECT_ALLOW
 
-  - name: Cannot search object types it has no grant for
+  - name: Cannot start a search for object types it has no grant for
     input:
       principals: [ou_admin_bremen]
       resources: [search_windows_computers_from_ldap_base]
       actions:
         - udm:object:search
-        - udm:property:name:search
     expected:
       - principal: ou_admin_bremen
         resource: search_windows_computers_from_ldap_base
         actions:
           udm:object:search: EFFECT_DENY
-          udm:property:name:search: EFFECT_DENY
 
-  - name: Without a context of its own role it cannot search users or groups
+  - name: Without a context of its own role it cannot start a user or group search
     input:
       principals: [ou_admin_no_context, ou_admin_context_of_other_role]
       resources: [search_users_from_ldap_base, search_groups_from_ldap_base]
       actions:
         - udm:object:search
-        - udm:property:username:search
-        - udm:property:uidNumber:search
     expected:
       - principal: ou_admin_no_context
         resource: search_users_from_ldap_base
         actions:
           udm:object:search: EFFECT_DENY
-          udm:property:username:search: EFFECT_DENY
-          udm:property:uidNumber:search: EFFECT_DENY
       - principal: ou_admin_no_context
         resource: search_groups_from_ldap_base
         actions:
           udm:object:search: EFFECT_DENY
-          udm:property:username:search: EFFECT_DENY
-          udm:property:uidNumber:search: EFFECT_DENY
       - principal: ou_admin_context_of_other_role
         resource: search_users_from_ldap_base
         actions:
           udm:object:search: EFFECT_DENY
-          udm:property:username:search: EFFECT_DENY
-          udm:property:uidNumber:search: EFFECT_DENY
       - principal: ou_admin_context_of_other_role
         resource: search_groups_from_ldap_base
         actions:
           udm:object:search: EFFECT_DENY
+
+  - name: Finds users in its OU only by properties it can read
+    input:
+      principals: [ou_admin_bremen]
+      resources: [user_bremen]
+      actions:
+        - udm:property:username:search
+        - udm:property:lastname:search
+        - udm:property:firstname:search
+        - udm:property:mailPrimaryAddress:search
+        - udm:property:guardianRoles:search
+        - udm:property:guardianInheritedRoles:search
+    expected:
+      - principal: ou_admin_bremen
+        resource: user_bremen
+        actions:
+          udm:property:username:search: EFFECT_ALLOW
+          udm:property:lastname:search: EFFECT_ALLOW
+          udm:property:firstname:search: EFFECT_ALLOW
+          udm:property:mailPrimaryAddress:search: EFFECT_ALLOW
+          udm:property:guardianRoles:search: EFFECT_ALLOW
+          udm:property:guardianInheritedRoles:search: EFFECT_ALLOW
+
+  - name: Cannot find users outside its OU by any property
+    input:
+      principals: [ou_admin_bremen]
+      resources: [user_berlin, user_base]
+      actions:
+        - udm:property:username:search
+        - udm:property:lastname:search
+    expected:
+      - principal: ou_admin_bremen
+        resource: user_berlin
+        actions:
           udm:property:username:search: EFFECT_DENY
-          udm:property:uidNumber:search: EFFECT_DENY
+          udm:property:lastname:search: EFFECT_DENY
+      - principal: ou_admin_bremen
+        resource: user_base
+        actions:
+          udm:property:username:search: EFFECT_DENY
+          udm:property:lastname:search: EFFECT_DENY
+
+  - name: Finds groups in its OU only by properties it can read
+    input:
+      principals: [ou_admin_bremen]
+      resources: [group_bremen]
+      actions:
+        - udm:property:name:search
+        - udm:property:users:search
+        - udm:property:description:search
+        - udm:property:guardianMemberRoles:search
+    expected:
+      - principal: ou_admin_bremen
+        resource: group_bremen
+        actions:
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:users:search: EFFECT_ALLOW
+          udm:property:description:search: EFFECT_ALLOW
+          udm:property:guardianMemberRoles:search: EFFECT_ALLOW
+
+  - name: Cannot find groups outside its OU by any property
+    input:
+      principals: [ou_admin_bremen]
+      resources: [group_berlin]
+      actions:
+        - udm:property:name:search
+    expected:
+      - principal: ou_admin_bremen
+        resource: group_berlin
+        actions:
+          udm:property:name:search: EFFECT_DENY
