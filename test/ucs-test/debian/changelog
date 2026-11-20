@@ -1,3 +1,9 @@
+ucs-test (10.0.24-46) unstable; urgency=medium
+
+  * Bug 60160: add test for group sync reconciliation
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Fri, 20 Nov 2026 10:55:15 +0100
+
 ucs-test (10.0.24-45) unstable; urgency=medium
 
   * Bug 60028: fix OIDC audience mapper tests
