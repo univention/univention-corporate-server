@@ -4,6 +4,7 @@
 import locale
 import time
 from copy import deepcopy
+from pathlib import Path
 from subprocess import check_call, check_output
 from tempfile import NamedTemporaryFile
 from types import SimpleNamespace
@@ -25,6 +26,11 @@ TRANSLATIONS = {
 
 
 CONFIGURE_AUTH = '/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization'
+
+cerbos_only = pytest.mark.skipif(
+    not Path('/usr/share/univention-guardian-server/docker-compose.yaml').exists(),
+    reason='requires the Cerbos authorization engine, not the local guardian',
+)
 
 
 def translate(string: str) -> str:
