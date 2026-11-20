@@ -21,6 +21,8 @@ Depends:
  python3-prometheus-client,
  python3-requests,
  python3-univention-config-registry,
+ python3-univention-debug,
+ python3-univention-directory-manager,
  shell-univention-lib,
  ${misc:Depends},
 Description: Nubus telemetry sender
