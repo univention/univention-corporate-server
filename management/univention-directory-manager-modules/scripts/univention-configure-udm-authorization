@@ -112,6 +112,7 @@ class UniventionDirectoryManagerPolicies:
 
         subparser = subparsers.add_parser('generate')
         subparser.set_defaults(func=self.generate_all)
+        subparser.add_argument('-v', '--verbose', action='store_true', help='Log every generated policy file')
         subparser.add_argument('--config-dir', default='/usr/share/univention-directory-manager-modules/policies/')
         subparser.add_argument('--archive', help='Also write the generated policy tree as a gzip-compressed tar archive')
         subparser.add_argument('--strict', dest='strict', action='store_true', default=True)
@@ -129,6 +130,7 @@ class UniventionDirectoryManagerPolicies:
         subparser.add_argument('--image', default=CERBOS_IMAGE, help='Docker image containing the Cerbos ldapDN extension')
         subparser.add_argument('--cerbos-binary', default='cerbos', help='Local Cerbos binary for --runner=local')
         subparser.add_argument('--test-filter', help='Forward a Cerbos test filter to cerbos compile')
+        subparser.add_argument('-v', '--verbose', action='store_true', help='Log every generated policy file and the temporary test directories')
 
         subparser = subparsers.add_parser('prune')
         subparser.set_defaults(func=self.prune)
@@ -213,7 +215,8 @@ class UniventionDirectoryManagerPolicies:
             command.extend(['--test-filter', self.args.test_filter])
 
         command.append(policy_dir)
-        log.info('Running Cerbos tests: %s', tree)
+        if self.args.verbose:
+            log.info('Running Cerbos tests: %s', tree)
 
         try:
             return subprocess.run(command, check=False).returncode
@@ -258,6 +261,10 @@ class UniventionDirectoryManagerPolicies:
         if result:
             raise SystemExit(result)
 
+    def _log_written(self, kind, path):
+        if self.args.verbose:
+            log.info('Wrote Cerbos %s: %s', kind, path.relative_to(self.output_root))
+
     def generate_principal_schema(self):
         pass  # TODO: write to _schemas/principal.json
 
@@ -298,7 +305,7 @@ class UniventionDirectoryManagerPolicies:
                 document = conf._derived_roles_document(data['derivedRoles'])
                 path = derived_dir / f'{sanitize_filename(data["derivedRoleSet"])}.yaml'
                 path.write_text(CERBOS_SCHEMA + yaml.dump(document, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))  # TODO: use upstream YAML writers with comments
-                log.info('Wrote Cerbos derived roles: %s', path.relative_to(self.output_root))
+                self._log_written('derived roles', path)
 
             for resource, rules in data['resources'].items():
                 compiled['resourceRules'].setdefault(resource, []).extend(rules)
@@ -329,7 +336,7 @@ class UniventionDirectoryManagerPolicies:
             }
             path = self.output_root / 'role_policies' / f'{sanitize_filename(role)}.yaml'
             path.write_text(CERBOS_SCHEMA + yaml.dump(document, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))
-            log.info('Wrote Cerbos role policy: %s', path.relative_to(self.output_root))
+            self._log_written('role policy', path)
 
         return compiled
 
@@ -415,7 +422,7 @@ class UniventionDirectoryManagerPolicies:
         path = self.output_root / 'role_policies' / f'{sanitize_filename(DOMAIN_ADMIN_ROLE)}.yaml'
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(yaml.dump(document, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))
-        log.info('Wrote Cerbos domain administrator role policy: %s', path.relative_to(self.output_root))
+        self._log_written('domain administrator role policy', path)
         return path
 
     def generate_variables(self, variable_definitions):
@@ -483,7 +490,7 @@ class UniventionDirectoryManagerPolicies:
                 self._resource_policy_comments(modname, module) + yaml.dump(policy, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True),
             )
             written.append(path)
-            log.info('Wrote Cerbos resource policy: %s', path.relative_to(self.output_root))
+            self._log_written('resource policy', path)
         return written
 
     def _resource_policy(self, modname, module, imported_derived_roles, resource_rules, configs):
