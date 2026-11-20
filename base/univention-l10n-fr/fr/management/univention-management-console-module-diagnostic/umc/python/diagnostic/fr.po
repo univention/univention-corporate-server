@@ -22,11 +22,6 @@ msgstr ""
 "« univention-check-join-status » a renvoyé un problème avec la jonction au "
 "domaine."
 
-#: umc/python/diagnostic/plugins/56_univention_types.py:57
-#, python-format
-msgid "%d objects should be \"%s\""
-msgstr "%d objets devraient être « %s »"
-
 #: umc/python/diagnostic/plugins/11_nameserver.py:15
 #, python-format
 msgid "%d of the configured nameservers are not responding to DNS queries."
@@ -387,10 +382,13 @@ msgid "Manual: Analysis of listener/notifier problems"
 msgstr "Manuel : Analyse des problèmes d’écouteurs/notificateurs"
 
 #: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:102
-#: umc/python/diagnostic/plugins/56_univention_types.py:60
 #, python-format
 msgid "Migrate %d LDAP objects"
 msgstr "Migrer %d objets LDAP"
+
+#: umc/python/diagnostic/plugins/56_univention_types.py:34
+msgid "Migrate LDAP objects"
+msgstr "Migrer les objets LDAP"
 
 #: umc/python/diagnostic/plugins/55_user_migration.py:31
 msgid "Migrate user objects"

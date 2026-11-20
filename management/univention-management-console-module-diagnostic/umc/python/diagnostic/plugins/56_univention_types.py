@@ -2,10 +2,8 @@
 # SPDX-FileCopyrightText: 2016-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from typing import Any
+import subprocess
 
-from univention.admin.modules import identify, update
-from univention.admin.uldap import access, getAdminConnection
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import Instance, ProblemFixed, Warning  # noqa: A004
@@ -19,66 +17,30 @@ description = '\n'.join([
     _('Objects that implicitly satisfy the standards of a Univention Object but lack this attribute should be migrated.'),
 ])
 
-_UPDATED = False
-UdmModule = Any  # FIXME:
-
-
-def udm_objects_without_type(lo: access) -> list[tuple[str, list[UdmModule], list[bytes], list[bytes], list[bytes]]]:
-    global _UPDATED
-    if not _UPDATED:
-        update()
-        _UPDATED = True
-    objs = []
-    query = lo.search('(!(univentionObjectType=*))', attr=['*', 'entryUUID'])
-    for dn, attrs in query:
-        if dn.endswith(',cn=temporary,cn=univention,%s' % ucr.get('ldap/base')):
-            continue
-        modules = identify(dn, attrs)
-        if modules:
-            for module in modules:  # Bug #47846
-                if module.module == 'kerberos/kdcentry':
-                    break
-            else:
-                objs.append((dn, modules, attrs['objectClass'], attrs['entryUUID'], attrs.get('univentionObjectIdentifier', [])))
-    return objs
-
 
 def run(_umc_instance: Instance) -> None:
     if ucr.get('server/role') != 'domaincontroller_master':
         return
 
-    lo, _pos = getAdminConnection()
-    objects = udm_objects_without_type(lo)
-    if len(objects):
-        counted_objects: dict[str, int] = {}
-        details = '\n\n' + _('These objects were found:')
-        for _dn, modules, _object_classes, _entry_uuid, _object_identifier in objects:
-            for module in modules:
-                counted_objects.setdefault(module.short_description, 0)
-                counted_objects[module.short_description] += 1
-        for module_name in sorted(counted_objects.keys()):
-            num_objs = counted_objects[module_name]
-            details += '\n· ' + _('%(num_objs)d objects should be "%(module_name)s"') % {'num_objs': num_objs, 'module_name': module_name}
-        raise Warning(description + details, buttons=[{
+    process = subprocess.Popen(
+        ['/usr/share/univention-directory-manager-tools/univention-object-type-migrate', '--no-action'],
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+    )
+    stdout, _stderr = process.communicate()
+    stdout = stdout.decode('UTF-8', 'replace')
+    if process.returncode or 'Would modify' in stdout:
+        raise Warning(f'{description}\n\n{stdout}', buttons=[{
             'action': 'migrate_objects',
-            'label': _('Migrate %d LDAP objects') % len(objects),
+            'label': _('Migrate LDAP objects'),
         }])
 
 
 def migrate_objects(_umc_instance: Instance) -> None:
-    lo, _pos = getAdminConnection()
-    objects = udm_objects_without_type(lo)
-    for dn, modules, object_classes, entry_uuid, object_identifier in objects:
-        new_object_classes = object_classes[:]
-        if b'univentionObject' not in object_classes:
-            new_object_classes.append(b'univentionObject')
-        changes = [
-            ('objectClass', object_classes, new_object_classes),
-            ('univentionObjectType', [], [module.module.encode('UTF-8') for module in modules]),
-        ]
-        if not object_identifier:
-            changes.append(('univentionObjectIdentifier', [], entry_uuid))
-        lo.modify(dn, changes)
+    cmd = ['/usr/share/univention-directory-manager-tools/univention-object-type-migrate', '--action']
+    try:
+        subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as exc:
+        raise Warning(exc.output.decode('UTF-8', 'replace')) from exc
     raise ProblemFixed(buttons=[])
 
 
