@@ -290,42 +290,55 @@ tests:
           udm:property:name:search: EFFECT_ALLOW
           udm:property:guardianRoles:search: EFFECT_ALLOW
 
-  - name: A second role does not hide properties from a domain administrator
+  - name: A second role does not make user properties read-only or write-only for a domain administrator
     input:
       principals: [domain_admin_and_ou_admin]
       resources: [user_bremen, user_base]
       actions:
-        - udm:object:read
         - udm:object:modify
-        - udm:property:guardianRoles:read
         - udm:property:guardianRoles:write
+        - udm:property:guardianRoles:readonly
         - udm:property:password:write
-        - udm:property:guardianRoles:none
-        - udm:property:guardianInheritedRoles:none
         - udm:property:password:writeonly
     expected:
       - principal: domain_admin_and_ou_admin
         resource: user_bremen
         actions:
-          udm:object:read: EFFECT_ALLOW
           udm:object:modify: EFFECT_ALLOW
-          udm:property:guardianRoles:read: EFFECT_ALLOW
           udm:property:guardianRoles:write: EFFECT_ALLOW
+          udm:property:guardianRoles:readonly: EFFECT_DENY
           udm:property:password:write: EFFECT_ALLOW
-          udm:property:guardianRoles:none: EFFECT_DENY
-          udm:property:guardianInheritedRoles:none: EFFECT_DENY
           udm:property:password:writeonly: EFFECT_DENY
       - principal: domain_admin_and_ou_admin
         resource: user_base
         actions:
-          udm:object:read: EFFECT_ALLOW
           udm:object:modify: EFFECT_ALLOW
-          udm:property:guardianRoles:read: EFFECT_ALLOW
           udm:property:guardianRoles:write: EFFECT_ALLOW
+          udm:property:guardianRoles:readonly: EFFECT_DENY
           udm:property:password:write: EFFECT_ALLOW
-          udm:property:guardianRoles:none: EFFECT_DENY
-          udm:property:guardianInheritedRoles:none: EFFECT_DENY
           udm:property:password:writeonly: EFFECT_DENY
+
+  - name: A second role does not make group properties read-only for a domain administrator
+    input:
+      principals: [domain_admin_and_ou_admin]
+      resources: [group_bremen, group_domain_admins]
+      actions:
+        - udm:object:modify
+        - udm:property:guardianMemberRoles:write
+        - udm:property:guardianMemberRoles:readonly
+    expected:
+      - principal: domain_admin_and_ou_admin
+        resource: group_bremen
+        actions:
+          udm:object:modify: EFFECT_ALLOW
+          udm:property:guardianMemberRoles:write: EFFECT_ALLOW
+          udm:property:guardianMemberRoles:readonly: EFFECT_DENY
+      - principal: domain_admin_and_ou_admin
+        resource: group_domain_admins
+        actions:
+          udm:object:modify: EFFECT_ALLOW
+          udm:property:guardianMemberRoles:write: EFFECT_ALLOW
+          udm:property:guardianMemberRoles:readonly: EFFECT_DENY
 
   - name: Role names without the full namespace grant nothing
     input:

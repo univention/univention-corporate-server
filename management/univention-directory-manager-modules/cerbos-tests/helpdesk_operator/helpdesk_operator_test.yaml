@@ -431,118 +431,145 @@ tests:
           udm:object:search: EFFECT_DENY
           udm:object:read: EFFECT_DENY
 
-  - name: Searches users from the LDAP base by any property
+  - name: Starts a user search from the LDAP base
     input:
       principals: [helpdesk_bremen]
       resources: [search_users_from_ldap_base]
       actions:
         - udm:object:search
-        - udm:property:username:search
-        - udm:property:lastname:search
-        - udm:property:uidNumber:search
-        - udm:property:objectFlag:search
     expected:
       - principal: helpdesk_bremen
         resource: search_users_from_ldap_base
         actions:
           udm:object:search: EFFECT_ALLOW
-          udm:property:username:search: EFFECT_ALLOW
-          udm:property:lastname:search: EFFECT_ALLOW
-          udm:property:uidNumber:search: EFFECT_ALLOW
-          udm:property:objectFlag:search: EFFECT_ALLOW
 
-  - name: Searches users from a base inside its OU
+  - name: Starts a user search from a base inside its OU
     input:
       principals: [helpdesk_bremen]
       resources: [search_users_from_cn_users_bremen]
       actions:
         - udm:object:search
-        - udm:property:username:search
-        - udm:property:lastname:search
-        - udm:property:uidNumber:search
-        - udm:property:objectFlag:search
     expected:
       - principal: helpdesk_bremen
         resource: search_users_from_cn_users_bremen
         actions:
           udm:object:search: EFFECT_ALLOW
-          udm:property:username:search: EFFECT_ALLOW
-          udm:property:lastname:search: EFFECT_ALLOW
-          udm:property:uidNumber:search: EFFECT_ALLOW
-          udm:property:objectFlag:search: EFFECT_ALLOW
 
-  - name: Searches groups from the LDAP base by name
+  - name: Starts a group search from the LDAP base
     input:
       principals: [helpdesk_bremen]
       resources: [search_groups_from_ldap_base]
       actions:
         - udm:object:search
-        - udm:property:name:search
     expected:
       - principal: helpdesk_bremen
         resource: search_groups_from_ldap_base
         actions:
           udm:object:search: EFFECT_ALLOW
-          udm:property:name:search: EFFECT_ALLOW
 
-  - name: Searches desktop policies from the LDAP base
+  - name: Starts a desktop policy search from the LDAP base
     input:
       principals: [helpdesk_bremen]
       resources: [search_desktop_policies_from_ldap_base]
       actions:
         - udm:object:search
-        - udm:property:name:search
     expected:
       - principal: helpdesk_bremen
         resource: search_desktop_policies_from_ldap_base
         actions:
           udm:object:search: EFFECT_ALLOW
-          udm:property:name:search: EFFECT_ALLOW
 
-  - name: Cannot search object types it has no grant for
+  - name: Cannot start a search for object types it has no grant for
     input:
       principals: [helpdesk_bremen]
       resources: [search_windows_computers_from_ldap_base]
       actions:
         - udm:object:search
-        - udm:property:name:search
     expected:
       - principal: helpdesk_bremen
         resource: search_windows_computers_from_ldap_base
         actions:
           udm:object:search: EFFECT_DENY
-          udm:property:name:search: EFFECT_DENY
 
-  - name: Without a context of its own role it cannot search users or groups
+  - name: Without a context of its own role it cannot start a user or group search
     input:
       principals: [helpdesk_no_context, helpdesk_context_of_other_role]
       resources: [search_users_from_ldap_base, search_groups_from_ldap_base]
       actions:
         - udm:object:search
-        - udm:property:username:search
-        - udm:property:uidNumber:search
     expected:
       - principal: helpdesk_no_context
         resource: search_users_from_ldap_base
         actions:
           udm:object:search: EFFECT_DENY
-          udm:property:username:search: EFFECT_DENY
-          udm:property:uidNumber:search: EFFECT_DENY
       - principal: helpdesk_no_context
         resource: search_groups_from_ldap_base
         actions:
           udm:object:search: EFFECT_DENY
-          udm:property:username:search: EFFECT_DENY
-          udm:property:uidNumber:search: EFFECT_DENY
       - principal: helpdesk_context_of_other_role
         resource: search_users_from_ldap_base
         actions:
           udm:object:search: EFFECT_DENY
-          udm:property:username:search: EFFECT_DENY
-          udm:property:uidNumber:search: EFFECT_DENY
       - principal: helpdesk_context_of_other_role
         resource: search_groups_from_ldap_base
         actions:
           udm:object:search: EFFECT_DENY
+
+  - name: Finds users in its OU only by properties it can read
+    input:
+      principals: [helpdesk_bremen]
+      resources: [user_bremen]
+      actions:
+        - udm:property:username:search
+        - udm:property:lastname:search
+        - udm:property:primaryGroup:search
+        - udm:property:firstname:search
+        - udm:property:mailPrimaryAddress:search
+        - udm:property:guardianRoles:search
+    expected:
+      - principal: helpdesk_bremen
+        resource: user_bremen
+        actions:
+          udm:property:username:search: EFFECT_ALLOW
+          udm:property:lastname:search: EFFECT_ALLOW
+          udm:property:primaryGroup:search: EFFECT_ALLOW
+          udm:property:firstname:search: EFFECT_DENY
+          udm:property:mailPrimaryAddress:search: EFFECT_DENY
+          udm:property:guardianRoles:search: EFFECT_DENY
+
+  - name: Cannot find users outside its OU by any property
+    input:
+      principals: [helpdesk_bremen]
+      resources: [user_berlin, user_base]
+      actions:
+        - udm:property:username:search
+        - udm:property:lastname:search
+    expected:
+      - principal: helpdesk_bremen
+        resource: user_berlin
+        actions:
           udm:property:username:search: EFFECT_DENY
-          udm:property:uidNumber:search: EFFECT_DENY
+          udm:property:lastname:search: EFFECT_DENY
+      - principal: helpdesk_bremen
+        resource: user_base
+        actions:
+          udm:property:username:search: EFFECT_DENY
+          udm:property:lastname:search: EFFECT_DENY
+
+  - name: Finds groups in its OU only by name
+    input:
+      principals: [helpdesk_bremen]
+      resources: [group_bremen]
+      actions:
+        - udm:property:name:search
+        - udm:property:users:search
+        - udm:property:description:search
+        - udm:property:guardianMemberRoles:search
+    expected:
+      - principal: helpdesk_bremen
+        resource: group_bremen
+        actions:
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:users:search: EFFECT_DENY
+          udm:property:description:search: EFFECT_DENY
+          udm:property:guardianMemberRoles:search: EFFECT_DENY

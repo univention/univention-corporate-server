@@ -366,76 +366,135 @@ tests:
           udm:object:search: EFFECT_DENY
           udm:object:read: EFFECT_DENY
 
-  - name: Searches linux computers and groups from the LDAP base
+  - name: Starts a linux computer and group search from the LDAP base
     input:
       principals: [lcm_bremen]
       resources: [search_linux_from_ldap_base, search_groups_from_ldap_base]
       actions:
         - udm:object:search
-        - udm:property:name:search
     expected:
       - principal: lcm_bremen
         resource: search_linux_from_ldap_base
         actions:
           udm:object:search: EFFECT_ALLOW
-          udm:property:name:search: EFFECT_ALLOW
       - principal: lcm_bremen
         resource: search_groups_from_ldap_base
         actions:
           udm:object:search: EFFECT_ALLOW
-          udm:property:name:search: EFFECT_ALLOW
 
-  - name: Searches DNS host records from the LDAP base
+  - name: Starts a DNS host record search from the LDAP base
     input:
       principals: [lcm_bremen]
       resources: [search_dns_host_records_from_ldap_base]
       actions:
         - udm:object:search
-        - udm:property:name:search
     expected:
       - principal: lcm_bremen
         resource: search_dns_host_records_from_ldap_base
         actions:
           udm:object:search: EFFECT_ALLOW
-          udm:property:name:search: EFFECT_ALLOW
 
-  - name: Without a context of its own role it cannot search linux computers, groups or DNS host records
+  - name: Without a context of its own role it cannot start a linux computer, group or DNS host record search
     input:
       principals: [lcm_no_context, lcm_context_of_other_role]
       resources: [search_linux_from_ldap_base, search_groups_from_ldap_base, search_dns_host_records_from_ldap_base]
       actions:
         - udm:object:search
-        - udm:property:name:search
     expected:
       - principal: lcm_no_context
         resource: search_linux_from_ldap_base
         actions:
           udm:object:search: EFFECT_DENY
-          udm:property:name:search: EFFECT_DENY
       - principal: lcm_no_context
         resource: search_groups_from_ldap_base
         actions:
           udm:object:search: EFFECT_DENY
-          udm:property:name:search: EFFECT_DENY
+      - principal: lcm_no_context
+        resource: search_dns_host_records_from_ldap_base
+        actions:
+          udm:object:search: EFFECT_DENY
       - principal: lcm_context_of_other_role
         resource: search_linux_from_ldap_base
         actions:
           udm:object:search: EFFECT_DENY
-          udm:property:name:search: EFFECT_DENY
       - principal: lcm_context_of_other_role
         resource: search_groups_from_ldap_base
         actions:
           udm:object:search: EFFECT_DENY
-          udm:property:name:search: EFFECT_DENY
-      - principal: lcm_no_context
-        resource: search_dns_host_records_from_ldap_base
-        actions:
-          udm:object:search: EFFECT_DENY
-          udm:property:name:search: EFFECT_DENY
       - principal: lcm_context_of_other_role
         resource: search_dns_host_records_from_ldap_base
         actions:
           udm:object:search: EFFECT_DENY
+
+  - name: Finds linux computers in its OU by their properties
+    input:
+      principals: [lcm_bremen]
+      resources: [linux_bremen, linux_team_bremen]
+      actions:
+        - udm:property:name:search
+        - udm:property:mac:search
+        - udm:property:ip:search
+    expected:
+      - principal: lcm_bremen
+        resource: linux_bremen
+        actions:
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:mac:search: EFFECT_ALLOW
+          udm:property:ip:search: EFFECT_ALLOW
+      - principal: lcm_bremen
+        resource: linux_team_bremen
+        actions:
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:mac:search: EFFECT_ALLOW
+          udm:property:ip:search: EFFECT_ALLOW
+
+  - name: Cannot find linux computers outside its OU by any property
+    input:
+      principals: [lcm_bremen]
+      resources: [linux_berlin, linux_base]
+      actions:
+        - udm:property:name:search
+        - udm:property:mac:search
+    expected:
+      - principal: lcm_bremen
+        resource: linux_berlin
+        actions:
+          udm:property:name:search: EFFECT_DENY
+          udm:property:mac:search: EFFECT_DENY
+      - principal: lcm_bremen
+        resource: linux_base
+        actions:
+          udm:property:name:search: EFFECT_DENY
+          udm:property:mac:search: EFFECT_DENY
+
+  - name: Finds groups in its OU by their properties
+    input:
+      principals: [lcm_bremen]
+      resources: [group_bremen]
+      actions:
+        - udm:property:name:search
+        - udm:property:hosts:search
+    expected:
+      - principal: lcm_bremen
+        resource: group_bremen
+        actions:
+          udm:property:name:search: EFFECT_ALLOW
+          udm:property:hosts:search: EFFECT_ALLOW
+
+  - name: Cannot find groups outside its OU by any property
+    input:
+      principals: [lcm_bremen]
+      resources: [group_berlin, group_domain_admins]
+      actions:
+        - udm:property:name:search
+    expected:
+      - principal: lcm_bremen
+        resource: group_berlin
+        actions:
+          udm:property:name:search: EFFECT_DENY
+      - principal: lcm_bremen
+        resource: group_domain_admins
+        actions:
           udm:property:name:search: EFFECT_DENY
 
   - name: Without a context it cannot access linux computers, groups or OUs
