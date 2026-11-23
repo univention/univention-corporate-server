@@ -79,17 +79,15 @@ while test -n "$1"; do
 done
 
 
-
 CMD=$(which smbclient)
 if [ -z "$CMD" ] ; then
 	echo "Cannot find smbclient executable"
 	exit $STATE_UNKNOWN
 fi
 
-# See Bug #45454, since samba erratum 165 this no longer works
-# for now only remove the -U "$SMB_USER"
-#output=$($CMD -U "$SMB_USER" -N -L "$SMB_HOST" 2> /dev/null)
-output=$($CMD -N -L "$SMB_HOST" 2> /dev/null)
+
+# -P uses the machine secret to log in.
+output=$($CMD -P -L "$SMB_HOST" 2> /dev/null)
 RET=$?
 
 msg=$(echo -n "$output" | head -n1)
@@ -102,7 +100,7 @@ if [ $RET != 0 ]; then
 else
 	state=$STATE_OK
 	get_state_string $state
-	echo "${STATE_STRING}: smbd is alive: smbclient -N -L $SMB_HOST"
+	echo "${STATE_STRING}: smbd is alive: smbclient -P -L $SMB_HOST"
 	exit $state
 fi
 

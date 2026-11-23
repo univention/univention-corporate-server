@@ -1,8 +1,12 @@
-univention-nagios (15.7.0) UNRELEASED; urgency=medium
+univention-nagios (15.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:39 +0300
+  [ Marc Lehmann ]
+  * Bug: #56092: use machine secret for smbclient
+
+ -- Marc Lehmann <marc.lehmann@univention.de>  Tue, 24 Nov 2026 15:37:55 +0100
 
 univention-nagios (15.6.0) unstable; urgency=medium
 
