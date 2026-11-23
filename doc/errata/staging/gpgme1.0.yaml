@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: gpgme1.0
+fix: 1.12.0-6+deb10u1
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-129975 (CVSS score unknown).
+bug: [60182]
+cve:
+- CVE-2026-129975
