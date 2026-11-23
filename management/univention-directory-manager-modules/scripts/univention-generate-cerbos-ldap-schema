@@ -1,0 +1,74 @@
+#!/usr/bin/python3
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+"""
+Generate the ldapSchema global for Cerbos from the LDAP schema of this system.
+
+Cerbos compares LDAP DNs in ldapDN() and ldapDNList() without access to the
+directory. The ldapSchema global tells it the names and the OID of every
+attribute type and how its values are compared.
+The output is JSON for engine.globals.ldapSchema in the Cerbos configuration
+and for options.globals.ldapSchema in Cerbos test suites.
+"""
+
+import argparse
+import json
+import re
+import sys
+
+import ldap.schema
+
+import univention.uldap
+
+
+# Cerbos knows three ways to compare values. An EQUALITY rule that is not
+# listed compares exactly, so that a wrong mapping denies access.
+MATCH = {
+    'caseignorematch': 'ignoreCase',
+    'caseignoreia5match': 'ignoreCase',
+    'caseignorelistmatch': 'ignoreCase',
+    'uuidmatch': 'ignoreCase',
+    'caseexactmatch': 'exact',
+    'caseexactia5match': 'exact',
+    'octetstringmatch': 'octets',
+}
+NUMERIC_OID = re.compile(r'^(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*))+$')
+NAME = re.compile(r'^[A-Za-z][A-Za-z0-9-]*$')
+
+
+def attribute_types(subschema):
+    for oid in subschema.listall(ldap.schema.AttributeType):
+        attribute_type = subschema.get_obj(ldap.schema.AttributeType, oid)
+        # Cerbos rejects the whole schema if one OID or name is invalid.
+        if not NUMERIC_OID.match(oid) or not all(NAME.match(name) for name in attribute_type.names):
+            print(f'Skipping attribute type {oid} {attribute_type.names}', file=sys.stderr)
+            continue
+        equality = subschema.get_inheritedattr(ldap.schema.AttributeType, oid, 'equality') or ''
+        yield {
+            'oid': oid,
+            'names': list(attribute_type.names),
+            'match': MATCH.get(equality.lower(), 'exact'),
+        }
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument(
+        '--unknown-attribute-types', choices=('exact', 'ignoreCase', 'reject'), default='reject',
+        help='How Cerbos treats an attribute type that is not in the schema (default: %(default)s)',
+    )
+    args = parser.parse_args()
+
+    lo = univention.uldap.getMachineConnection()
+    _dn, entry = lo.search(base='cn=Subschema', scope='base', attr=['attributeTypes'])[0]
+    subschema = ldap.schema.SubSchema(entry)
+
+    json.dump({
+        'unknownAttributeTypes': args.unknown_attribute_types,
+        'attributeTypes': sorted(attribute_types(subschema), key=lambda t: [int(arc) for arc in t['oid'].split('.')]),
+    }, sys.stdout, indent=1)
+    sys.stdout.write('\n')
+
+
+if __name__ == '__main__':
+    main()
