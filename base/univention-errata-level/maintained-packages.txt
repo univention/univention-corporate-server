@@ -2863,6 +2863,7 @@ libsmartcols-dev
 libsmartcols1
 libsmbclient
 libsmbclient-dev
+libsmbclient0
 libsnappy-dev
 libsnappy1v5
 libsndfile1
@@ -2967,6 +2968,7 @@ libtest-file-sharedir-perl
 libtest-output-perl
 libtevent-dev
 libtevent0
+libtevent0t64
 libtext-aligner-perl
 libtext-charwidth-perl
 libtext-glob-perl
@@ -3401,6 +3403,12 @@ linux-headers-6.12.96+deb13-rt-amd64
 linux-headers-amd64
 linux-headers-cloud-amd64
 linux-headers-rt-amd64
+linux-image-6.12.117+deb13-amd64
+linux-image-6.12.117+deb13-amd64-unsigned
+linux-image-6.12.117+deb13-cloud-amd64
+linux-image-6.12.117+deb13-cloud-amd64-unsigned
+linux-image-6.12.117+deb13-rt-amd64
+linux-image-6.12.117+deb13-rt-amd64-unsigned
 linux-image-6.12.95+deb13-amd64
 linux-image-6.12.95+deb13-amd64-unsigned
 linux-image-6.12.95+deb13-cloud-amd64
@@ -4010,6 +4018,7 @@ python3-lmdb
 python3-logfmter
 python3-louis
 python3-lxml
+python3-m2crypto
 python3-magic
 python3-mailutils
 python3-mako
@@ -4147,6 +4156,7 @@ python3-univention-group-membership-cache
 python3-univention-heimdal
 python3-univention-ipcalc
 python3-univention-lib
+python3-univention-lib-icap
 python3-univention-license
 python3-univention-management-console
 python3-univention-pkgdb
