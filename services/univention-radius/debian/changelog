@@ -1,3 +1,9 @@
+univention-radius (9.7.3) unstable; urgency=medium
+
+  * Bug #60001: check cheap clauses before the Domain Admins set
+
+ -- Florian Best <best@univention.de>  Mon, 23 Nov 2026 17:59:49 +0100
+
 univention-radius (9.7.2) unstable; urgency=medium
 
   * Bug #59042: avoid patching dh-cargo during build
