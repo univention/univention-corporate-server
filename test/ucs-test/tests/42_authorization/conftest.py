@@ -24,13 +24,22 @@ TRANSLATIONS = {
     },
 }
 
+USE_CERBOS = Path('/usr/share/univention-guardian-server/docker-compose.yaml').exists()
+# or: ucr.is_true('directory/manager/rest/delegative-administration/guardian', True)
 
-CONFIGURE_AUTH = '/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization'
+if USE_CERBOS:
+    CONFIGURE_AUTH = '/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization'
+else:
+    CONFIGURE_AUTH = '/usr/share/univention-directory-manager-tools/univention-configure-local-udm-authorization'
 
-cerbos_only = pytest.mark.skipif(
-    not Path('/usr/share/univention-guardian-server/docker-compose.yaml').exists(),
-    reason='requires the Cerbos authorization engine, not the local guardian',
-)
+
+cerbos_only = pytest.mark.skipif(not USE_CERBOS, reason='requires the Cerbos authorization engine, not the local guardian')
+CERBOS_CONFIG_DIR = Path('/usr/share/univention-directory-manager-modules/policies/')
+
+AUTH_SERVICES = [
+    'univention-management-console-server.service',
+    'univention-directory-manager-rest.service',
+]
 
 
 def translate(string: str) -> str:
@@ -367,18 +376,21 @@ def sub_container_with_user(ou, udm):
 
 @pytest.fixture
 def setup_role(ou, udm, ucr, ldap_base):
+    policy_files = []
 
     def _func(acl, role):
-        with NamedTemporaryFile('w') as tmp:
-            tmp.write(acl)
-            tmp.flush()
-            check_call([CONFIGURE_AUTH, '--store-local', 'create-roles', '--config', tmp.name])
+        path = _create_role(acl, ucr)
+        if path:
+            policy_files.append(path)
+
         _, username = udm.create_user(
             guardianRoles=[role],
             groups=[ucr.get('directory/manager/rest/authorized-groups/test-api-access')],
             policy_reference=[f'cn=organizational-unit-admins,cn=UMC,cn=policies,{ldap_base}'],
         )
-        check_call(['systemctl', 'restart', 'univention-management-console-server.service', 'univention-directory-manager-rest.service'])
+
+        _restart_auth_services(USE_CERBOS)
+
         rest = RestClientHelper(
             'https://%(hostname)s.%(domainname)s/univention/udm/' % ucr,
             username=username,
@@ -390,26 +402,75 @@ def setup_role(ou, udm, ucr, ldap_base):
 
     yield _func
 
-    # cleanup
-    check_output([CONFIGURE_AUTH, '--store-local', 'prune'])
-    check_output([CONFIGURE_AUTH, '--store-local', 'create-permissions'])
-    check_output([CONFIGURE_AUTH, '--store-local', 'create-default-roles'])
-    check_call(['systemctl', 'restart', 'univention-management-console-server.service', 'univention-directory-manager-rest.service'])
+    _cleanup_roles(ucr, policy_files)
 
 
 @pytest.fixture(scope='session')
-def guardian_role():
+def guardian_role(ucr):
+    policy_files = []
+
     def _func(acl):
-        with NamedTemporaryFile('w') as tmp:
-            tmp.write(acl)
-            tmp.flush()
-            check_call([CONFIGURE_AUTH, '--store-local', 'create-roles', '--config', tmp.name])
-        check_call(['systemctl', 'restart', 'univention-management-console-server.service', 'univention-directory-manager-rest.service'])
+        path = _create_role(acl, ucr)
+        if path:
+            policy_files.append(path)
+
+        _restart_auth_services(USE_CERBOS)
+
     yield _func
-    check_output([CONFIGURE_AUTH, '--store-local', 'prune'])
-    check_output([CONFIGURE_AUTH, '--store-local', 'create-permissions'])
-    check_output([CONFIGURE_AUTH, '--store-local', 'create-default-roles'])
-    check_call(['systemctl', 'restart', 'univention-management-console-server.service', 'univention-directory-manager-rest.service'])
+
+    _cleanup_roles(ucr, policy_files)
+
+
+def _restart_auth_services(cerbos=False):
+    services = AUTH_SERVICES.copy()
+    if cerbos:
+        services.append('univention-guardian-server.service')
+    check_call(['systemctl', 'restart', *services])
+
+
+def _create_role(acl, ucr):
+    if USE_CERBOS:
+        CERBOS_CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+        with NamedTemporaryFile(
+            mode='w',
+            prefix='test-',
+            suffix='.policy',
+            dir=CERBOS_CONFIG_DIR,
+            delete=False,
+        ) as tmp:
+            tmp.write(acl)
+            path = Path(tmp.name)
+
+        try:
+            check_call([CONFIGURE_AUTH, 'generate'])
+        except Exception:
+            path.unlink(missing_ok=True)
+            raise
+
+        return path
+
+    with NamedTemporaryFile('w') as tmp:
+        tmp.write(acl)
+        tmp.flush()
+        check_call([
+            CONFIGURE_AUTH, '--store-local',
+            'create-roles', '--config', tmp.name,
+        ])
+
+    return None
+
+
+def _cleanup_roles(ucr, policy_files):
+    if USE_CERBOS:
+        for path in policy_files:
+            path.unlink(missing_ok=True)
+        check_call([CONFIGURE_AUTH, 'generate'])
+    else:
+        check_output([CONFIGURE_AUTH, '--store-local', 'prune'])
+        check_output([CONFIGURE_AUTH, '--store-local', 'create-permissions'])
+        check_output([CONFIGURE_AUTH, '--store-local', 'create-default-roles'])
+
+    _restart_auth_services(USE_CERBOS)
 
 
 @pytest.fixture(scope='session')
