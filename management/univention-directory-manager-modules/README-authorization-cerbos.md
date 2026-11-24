@@ -2,406 +2,75 @@
 
 # UDM Authorization using Cerbos
 
-## Cerbos policies
-
-Cerbos provides different kinds of policies: resource policies, derived roles, role policies, and principal policies.
-
-The challenge is, to find the one, which fits best for our use case.
-
-Cerbos makes the resource the primary owner of permissions, whereas Guardian makes the role the primary owner.
-
-The role concept in Cerbos is a static one: All roles and resources are described.
-Guardian had a dynamic one, where roles were defined arbitrarily and contexts added dynamically.
-
-Guardian was RBAC with ABAC extension.
-Cerbos allows to implement various policy design patterns (action-led, role-led, attribute-led/ABAC, IdP-role-centric/RBAC) - none of them are the exact OOTB thing we need.
-
-### Mapping Guardian → Cerbos Terminology
-
-| Guardian                | Cerbos                      |
-| ----------------------- | --------------------------- |
-| Role                    | IdP role / static role      |
-| Actor                   | Principal                   |
-| Target                  | Resource                    |
-| Permission              | Action                      |
-| Capability              | Resource Rule               |
-| Context                 | principal.attr.context_roles |
-| Condition               | CEL                         |
-| Capability Registration | not applicable              |
-| Management API          | not applicable              |
-
-Cerbos uses the term `role` for two things:
-1. `static` or `Identity Provider role`
-which is the role name given by e.g. UDM (attribute `guardianRole`) the IdP - these names are invented by us/customers.
-
-These are the static roles for the outside.
-
-2. derived Roles
-which is a internal concept, for naming conditions attached to roles - usable by resource policies.
-Not usable from the outside.
-
-### Resource policies
-
-The root of all policies is the resource policy (we must define them):
-
-* resource policies answer the question: "Who may(potentially) perform which actions on this type of resource?"
-* resource policies can grant actions based on wildcards
-* resource policies can add scopes and scope-permissions (see later)
-* resource policies must import known derived roles, they want to use/extend. → **that makes it harder/nearly impossible for our customers to write them**
-* a resource policy containing rules to `DENY` access to an action is **final**. One cannot add a role policy which afterwards allows these actions again.
-* **there can only be exactly 1 resource policy for each resource kind**
-* this one resource policy must contain all the rules (or outsource them into derived roles) in one defintion (file)!
-* it must define which roles or derived roles are candidates for the resource
-→ **that means, if a customers creates a new role, we must extend our resource definition!** (if no role policies are used, see later why not)
-
-**Consequences for UDM**:
-
-* We either have to generate resource policies from all the information we know about the rules - that is more complicated - or define the resource policy for each UDM module with a global `rules: *; effect_ ALLOW` and further restrict it via role policies (or derived roles?)
-
-* We can't separate the rule creation into 2 steps anymore, like before, where we create everything regarding the UDM modules in one step (at package installation) and the cusomter or default policy rules in a second step.
-
-* We have to regenerate all rules, in a atomic state, whenever there is a new extended attribute/option, module, UDM module Debian package installation, or change in the policies
-→ UDM has to be the central place to create these definitions
-
-* We can't allow customers to write cerbos rules on themself but always use our UDM specific DSL policy description. There is a small chance, that they could write role policies on top of everything.
-
-**Open questions**:
-
-* resource policies can dynamically generate `ouput` (CEL expressions) on `conditionNotMet` or `ruleActivated`. Can we use this to detect if we in general could display UI elements for the current user: it would yield a condition-not-met answer instead of a no-permissions-anser.
-
-### Role policies
-> Role policies are ABAC policies in which you specify a number of resources, each with a set of allowable actions that the role can carry out on the resource.
-
-> In the simple case, they allow you to author permissions from the view of an IdP role, rather than for a given resource.
-
-> Role policies are not standalone. They apply as an additive constraint on top of resource policies, so an action is only allowed if it is permitted by both the role policy and a matching resource policy.
-> A role policy cannot grant access that the resource policy does not already allow, which means a resource policy is always required.
-
-* role policies exists for restricting concrete principal roles
-* role policies are an **additive constraint on top of resource policies**: an action must be permitted by both the resource policy and a matching role policy. (https://github.com/cerbos/cerbos/issues/2955 is a feature request to relax this)
-
-The rights are restricted by the role policy - if a matching role policy exists for that principal role.
-Actions not listed in the role policy's `allowActions` are implicitly denied for that role.
-
-use when:
-> Use role policies when permissions should be defined from the IdP role's perspective
-
-> Simple allowlist semantics (list what's allowed, everything else denied)
-> When you want to avoid explicit DENY rules
-
-* Role policies only narrow permissions: "Given that this role is allowed by the resource policy, are there additional restrictions?"
-
-This allows multiple roles to share the same resource policy while each role can have its own restrictions.
-
-* role policies can inherit from other roles
-
-> A parent role can be either an arbitrary IdP role or the name of another role policy within the system. Parent role resolution is recursive.
-
-**Consequences for UDM**:
-
-* Sounds like a ideal concept for UDM! In practice I could not make it working.
-The audit logs couldn't tell me why exactly it was denied.
-It probably has to do with the context-position based conditions in combination with the actions.
-Or with multi-role assignments and the context-positions condition evaluation using `principal.role` work different in role rules than in resource rules.
-Or whatever.
-
-* It would add a overhead in the resource policy definition, as a "useless" fallback must grant all actions which are provided by the resource
-
-* Additionally: We must write all rules in a atomic step, and replace the full directory with all rules for UDM, otherwise we will run into the vulnerability described below (which I could trigger with a permantent request reapplying). Alternatively disallow automatic role reloads and trigger it manually.
-
-* it's not possible to expand resource-kinds with '\*' in a role policy; therefor all UDM modules must be specified e.g. for domain admin based rules. (requires re-generation on every module installation)
-
-* `resource` in a role policy can't be a list - not possible to write re-usable rule
-
-**Security considerations**:
-
-There is a small timeframe where all the resource policies are written to disk and cerbos loaded them.
-Then our custom roles are added as role policies from the rules specified by customers (or our default ones).
-In the time frame between that, if my service does a request for a simple "domain user" with no special rules assigned, gets granted ALL permissions on all UDM modules because the role-rules are not there yet.
-The same applies to the time window on Debian package upgrades/listener module processing, where the role-policies are removed for a short amount of time.
-
-**Open questions** (only relevant if we could use the concept):
-
-* Does the policy inheritance allow us to have pre-defined policies for each UDM module, with certain names like `users-user-read-all`, `user-user-write-all`?
-* If yes, can this be used as API for customers to base their customizations on? But then those would be exposed as roles, not as "reusable privileges"
-
-### Derived roles (named conditions)
-Derived roles are for context-sensitive classification (owner, same-OU, department-member, etc.).
-and help with computing context, not structuring permissions.
-
-Derived roles can extend a `manager` to a `manager_of_bremen`.
-Derived roles have names (`manager_of_bremen`) , but those names are internal and can't be assigned to the role attribute of the principal.
-
-> Defining a derived role only creates a named condition
-
-**Restrictions**:
-
-* The resource policy must reference all derived roles, otherwise they wouldn't have an effect.
-
-**Consequences for UDM**:
-
-* It can only be used for our re-usable pattern for the generic `OU-admin@context-position` concept - the condition logic can be inserted there and re-used in the resource rules.
-
-* When we extend that as CEL function, this saves only a `contextPosition.underneathOf(resourcePosition)` line - but adds the complexity to adjust all rules and specify the correct import path
-
-* UDM auto-generated the resource policies. We wouldn't know the names of the (derived or IdP) roles which are written by customers.
-
-* If we want to use derived roles for more than that, our apps would define all possible static IdP roles and customers can't do that anymore.
-
-* Derived roles also apply only conditions to the whole resource. Our conditions are based on the granted action.
-→ The derived roles are not useable for us.
-
-### Scoped policies
-
-* suitable for tenants
-* resource and principal policies have an optional scope
-* can be hierarchical, `.`-separated
-* must be specified in the check request in the resource and principal
-* e.g. we could have a scope `acme.bremen` the resource `ou=bremen,dc=base` would need to specify this scope.
-* lenient scope can relax that each scope must be know by a resource policy
-
-**Restrictions**:
-
-There can't be multiple scopes for one principal e.g. located in Bremen and Berlin.
-
-**Consequences for UDM**:
-→ This would be nice for our OU admin.
-But as there could be OU admins for multiple OUs, it's not suitable.
-Also the OU admins might not be located in the OU itself. Therefor - where to know the scope from?
-Maybe that is the Guardian-context information in the role?
-
-### Principal policies
-
-Cerbos supports principal policies to allow certain actions on resources for specific principals.
-In UDM this would mean: `access by dn="uid=fbest,cn=users,…" to objectType="users/user" grant …`.
-
-This is more a safetey mechanism intended for exceptional cases.
-
-**Consequences for UDM**:
-
-* At this point, we don't need this.
-* → is it somehow a useful use case for our customers in the future?
-
-### PlanResources
-
-[PlanResources](https://www.cerbos.dev/blog/filtering-database-results-with-cerbos-query-plans) help to reduce the filterset.
-
-From a request like `PlanResources(principal, kind="udm:module:users/user", action="object:search")` Cerbos can respond with a document with the possible rules for the principal,
-which can be used to create a LDAP filter and search base+scope.
-This solves performance problems of searching for all objects in UDM but at the end the role is only allowed to read users from a single OU.
-
-**Consequences for UDM**:
-
-* we could pre-filter with this, but afterwards everything still needs to go through as we cannot convert property-based (ABAC) restrictions into filters.
-
-* requires that each UDM module is a own resource (well, everything else like a generic udm:module kind also makes no sense)
-
-* Worth to consider thinking about *what* is a resource in UDM?
-
-Each UDM object is a resource.
-But what makes the kind of the resource?
-Currently: the UDM object type.
-But it could also be the position where the object lies in the directory tree.
-And the resource consists of multiple representations e.g. a current object state or a modify old-new-comparision state.
-
-Would it make sense to design certin OUs / LDAP containers as ressource (additionally or instead of the UDM object type).
-Those would then be easy to filter via plan resources.
-
-## Implementation of the concept in UDM
-
-### resource policy offers ALLOW to writeonly/readonly/none - inner conflict
-
-This could be the cause why role policies don't work for us.
-The resource policy granted ALLOW for the actions `writeonly`, `readonly`, `none` by default
-but the role policy did not.
-
-maybe evaluate this in the language and then remove the wildcard and replace with all other things
-
-if all the actions are requested, is the DENY/ALLOW per action?
-    then it could work.
-
-what if zufällig readonly/writeonly/none is granted? then the actual permissions get broken
-
-derived roles must DENY those
-
-### Limit: at maximum 500 actions can be checked
-
-> cerbos.sdk.model.CerbosRequestException: number of actions (594) exceeds configured limit (500)
-
-On a demo system with quite a lot of customer extended attributes defined, I reached into the limits when just searching for `users/user` objects.
-
-```bash
-$ udm settings/extended_attribute list | grep DN | wc -l
-108
-```
-
-The requested actions are: `All UDM properties * {'read', 'write', 'none', 'writeonly'}`
-
-We can:
-
-1. compile Cerbos on our own and raise the limits, or ask upstream to do this
-
-2. If we are able to reduce this to `{'read', 'none'}` we probably don't come into the limits anymore.
-This would require that `write` doesn't include implicit `read`, making `writeonly` superfluous and forces customers to explicitly define read and write.
-
-But this might get into conflict if multiple roles are assigned to the user:
-
-> If the principal has multiple roles and at least one of their roles evaluates to have `EFFECT_ALLOW` for the action, the overall effect is `EFFECT_ALLOW`.
-
-TODO: draw the concrete conflicting situation
-
-This would only be solvable by extending all un-restrictive rules with more and more conditions e.g. regarding the position?
-This is hard to manage, even with exposing derived-roles!
-
-### Limit: at maximum 50 items can be checked
-
-CheckResources has a maximum of 50 items!
-That is important for testing, we should make sure to always have more than 50 objects in the tests!
-
-### LDAP DN comparisons
-
-For the position based context evaluation we need correct LDAP DN comparisions with a given LDAP scope of `base`, `onelevel`, `subtree`.
-I could create a best-effort sometimes working solution for now, like:
-
-```yaml
-condition:
-  match:
-    expr: request.principal.attr.context_roles.exists(cr, cr.role == "udm:default-roles:organizational-unit-admin"
-      && (request.resource.attr.position == cr.position || request.resource.attr.position.endsWith(","
-      + cr.position)))
-```
-
-**Solution:** We need to write such a CEL extension function in Go, using a Go LDAP library, as cerbos is compiled without support for non-native Go libraries.
-
-### grpc vs HTTP client
-
-The grpc client requires us to convert the whole object representation into a byte-serializeable format.
-For a dynamic structure like UDM objects that's a lot of difficult transformation and also time-consuming on the client side (the data came from LDAP, we decoded it correctly to encode them again?!).
-
-**Solution:** Use the HTTP client. Besides cerbos suggests to use the gRPC client.
-
-### not enough sufficient rule metadata
-
-With local guardian we could annotate each rule with a name and a description.
-Cerbos provides resource descriptions, resouces rule names but no resources rule description, role rule names/descriptions, etc.
-
-**Solution:** put the origin of the rule into the `metadata.annotations` free form field of the resource defintions and use YAML comments for the descriptions and names.
-
-### get more use-cases and write tests for them!
-
-Cerbos allows to make nice test definitions with simple YAML files shipped.
-We should make use of it for the existing use-cases.
-
-We should have a list of more real customer use cases, model them and write test cases for it!
-
-### virtual UDM modules
-
-`computers/computer` is just a virtual/non-existing object type of `computers/{domaincontroller_master,*}`-module.
-It is unclear, what problems we might face with virtual modules.
-
-### Rule renewal / package integration / distribution
-
-Every package which provides a UDM module, extened attribute or similar, must invoke a re-generation of the rules on installation and de-installation.
-Therefor the data must be distributed in the whole domain via our registration mechanism.
-
-The complexity for this is high, and we shouldn't offer access to our internal formats as API, which rely on the current way in which we integrade authorization in UDM.
-
-To be flexible here, we should
-create a debhelper for Debian packages providing UDM modules/extended attributes that cause the correct things on installation/removal:
-`debian/rules` with `--with udm-module` and `--with udm-policy` any maybe `X-Provides-UDM-Module` debian control flags are enough to trigger the complete logic in a generic wrapper.
-
-### Changes in comparison with Guardian
-
-#### Cerbos has no "target role" concept
-Guardian required that also the roles of resources (targets) were added to the object.
-(e.g. in the portal use-case we theorized about matching tiles via a rule at the target).
-Cerbos doesn't have this concept.
-
-→ This improves much of the performance in UDM as the target roles must not be searched for every object.
-
-#### no `new_target` / `old_target` representation
-
-Guardian has a concept that the principal representation contained a `old_target`, and `new_target` - for all action checks.
-And conditions were globally registered and required to check against one of these keys.
-It was always unclear, to which of the keys the condition applied - especially as many use cases like search and get doesn't have old/new values but only current states.
-
-Cerbos doesn't have such a concept.
-
-In the PoC we replaced this by `request.resources.attrs` containing the current / OLD representation and `request.resources.attrs.new` contains the updated object state on modifications.
-
-TODO: we could also define 2 resources (even schematized): one for search/get and one for modifications/create/move/etc. (see also "Plan resources"!).
-
-### file and line counts
-
-We compile the resource rules from 143 lines in `/usr/share/univention-directory-manager-modules/policies/udm-default-authorization-roles.policy`.
-
-The compiled Guardian YAML files had `24.362` lines.
-in
-```
-# find /usr/share/univention-guardian-server/policies/udm -type f | wc -l
-116
-# wc -l $(find /usr/share/univention-guardian-server/policies/udm -type f)
-  4577 insgesamt
-```
-
-using role policies it would bloat up to `21236` lines, as all resources would need to be defined with all actions.
-
-## Architecture
-
-UDM implements attribute-based access control (ABAC) using Cerbos as the Policy Decision Point (PDP).
-
-Cerbos evaluates authorization policies and returns authorization decisions. UDM remains the Policy Enforcement Point (PEP) and is responsible for enforcing those decisions, filtering objects and properties, and preventing information disclosure.
-
-The overall architecture is:
+> This document describes the Cerbos-based UDM authorization design and the
+> implementation developed so far. It separates implemented mechanisms,
+> intended semantics, and outstanding work. The concrete implementation may
+> still evolve; in particular, search authorization and some multi-role cases
+> are not considered finished.
+
+## Overview
+
+UDM uses Cerbos as its **Policy Decision Point (PDP)**. UDM remains the
+**Policy Enforcement Point (PEP)**: it constructs principals and resources,
+requests decisions, restricts returned objects and properties, and enforces
+writes. Cerbos does not perform LDAP operations or enforce the result itself.
 
 ```text
-User
-  |
-  v
-UDM (PEP)
-  |
-  | CheckResources / PlanResources
-  v
-Cerbos (PDP)
-  |
-  v
-ALLOW / DENY decisions
+Authenticated user / UDM client
+             |
+             v
+       UDM authorization (PEP)
+       - actor and context roles
+       - target representations
+       - object/property enforcement
+             |
+             | CheckResources (Cerbos SDK)
+             v
+          Cerbos (PDP)
+       resource policy + role policy
+       CEL / LDAP DN functions
+             |
+             v
+       Decisions per action
+             |
+             v
+       UDM filters / allows / rejects
 ```
 
-Cerbos is responsible only for policy evaluation.
+The authorization rules are authored in a UDM-specific DSL (`*.policy`) and
+compiled into Cerbos YAML. A single policy generation run must produce a
+consistent policy tree; generated files should not be edited manually.
 
-UDM is responsible for:
+### Former Guardian to Cerbos terminology
 
-* Object filtering
-* Property filtering
-* LDAP access
-* Old/New state comparison
-* Information disclosure prevention
-* Effective permission calculation
-* Enforcement of write restrictions
+| Guardian | Cerbos / UDM |
+| --- | --- |
+| Actor | Principal |
+| Target | Resource |
+| Role | Principal role with a corresponding Cerbos role policy |
+| Permission | Action |
+| Capability | DSL grant, compiled into a role-policy rule |
+| Context | Request attribute, currently `principal.attr.context_roles` |
+| Condition | CEL expression |
+| Capability/context registration | Not required as a separate Cerbos management operation |
+| Management API | Not needed for file-based policy generation |
 
-### Authorization Model
+The names of UDM roles (including customer-defined roles) are assigned to
+principals. Contexts remain **dynamic data on the principal**, not distinct
+Cerbos roles per LDAP position. A single principal can have the same role in
+multiple positions.
 
-The authorization model consists of:
+## Authorization model
 
-* Principals
-* Resources
-* Actions
-* Policies
-* Conditions
+### Principals and contextual roles
 
-#### Principals
-
-The principal represents the authenticated actor.
-
-Example:
+The principal ID is the actor's LDAP DN. The principal has a set of plain role
+names and a separate list of context assignments.
 
 ```json
 {
   "id": "uid=helpdesk,cn=users,dc=example,dc=com",
-  "roles": [
-    "udm:default-roles:helpdesk-operator"
-  ],
+  "roles": ["udm:default-roles:helpdesk-operator"],
   "attr": {
     "context_roles": [
       {
@@ -413,34 +82,26 @@ Example:
 }
 ```
 
-The `context_roles` attribute contains role-specific contextual information.
-
-Unlike the previous Guardian implementation, contexts are not globally registered.
-
-Contexts are dynamic request attributes.
+UDM normalizes role assignments into the principal's role list and contextual
+assignments. CEL rules check both the **role name** and the **matching context**.
+Merely possessing a context with a matching DN but a different role must not
+grant permission.
 
 ### Resources
 
-Each UDM module is represented as its own Cerbos resource kind.
-
-Examples:
+Each UDM module is a distinct Cerbos resource kind; each checked UDM object is
+a resource instance:
 
 ```text
 udm:module:users/user
 udm:module:groups/group
-udm:module:mail/domain
 udm:module:container/ou
+udm:module:container/cn
 ```
 
-This allows:
-
-* Module-specific policies
-* Future usage of PlanResources
-* Efficient LDAP filter generation
-
-A resource additionally contains attributes describing the target object.
-
-Example:
+The resource ID is a nonempty DN for object checks. Its attributes include
+`dn`, `position`, `properties`, `options`, and, for writes, the `new`
+representation. For example:
 
 ```json
 {
@@ -449,322 +110,499 @@ Example:
   "attr": {
     "dn": "uid=test,cn=users,dc=example,dc=com",
     "position": "cn=users,dc=example,dc=com",
-    "properties": {
-      "firstname": "John",
-      "lastname": "Doe"
+    "properties": {"firstname": "John"},
+    "new": {
+      "dn": "uid=test,cn=users,dc=example,dc=com",
+      "position": "cn=users,dc=example,dc=com",
+      "properties": {"firstname": "Jonathan"}
     }
   }
 }
 ```
 
+For modifications, moves, and renames, the outer representation is the old
+state and `attr.new` is the proposed state. For creation there is no real old
+state: the resource ID, DN and position must be populated from the proposed
+object, rather than an empty `old_dn`. Conditions should not assume that a
+historical state exists for a newly created object.
+
+For moves, the source and destination can require different positional
+permissions. The design discussed for UDM is to authorize the `move` action
+against both the source and destination, while not automatically requiring
+`read` at the destination. Verify the installed enforcement code before relying
+on this additional check.
+
 ### Actions
 
-All actions are prefixed with `udm:`.
+All UDM actions use the `udm:` prefix, distinguishing them from actions for
+other applications sharing the same Cerbos instance.
 
-#### Object actions
+Object actions:
 
 ```text
-udm:object:read
-udm:object:search
-udm:object:create
-udm:object:modify
-udm:object:rename
-udm:object:move
-udm:object:remove
-udm:object:restore
+udm:object:search       udm:object:read
+udm:object:create       udm:object:modify
+udm:object:rename       udm:object:move
+udm:object:remove       udm:object:restore
 udm:object:report-create
 ```
 
-#### Property actions
+Property actions:
 
 ```text
+udm:property:<property>:search
 udm:property:<property>:read
 udm:property:<property>:write
-
+udm:property:<property>:none
 udm:property:<property>:readonly
 udm:property:<property>:writeonly
-udm:property:<property>:none
 ```
 
-Examples:
+`none`, `readonly`, and `writeonly` are **negative permission signals**, not
+Cerbos `EFFECT_DENY` decisions. An `EFFECT_ALLOW` on one of those actions tells
+UDM to remove the corresponding effective permission. This design allows
+property overrides, but has important implications when a principal has
+multiple roles.
+
+UDM calculates effective property permissions using this precedence:
 
 ```text
-udm:property:firstname:read
-udm:property:firstname:write
-
-udm:property:password:writeonly
-udm:property:guardianRoles:none
+none > readonly / writeonly > read / write
 ```
 
-Property actions are queried explicitly by UDM.
+For example, `write + readonly` means not writable; `read + none` means not
+readable. An allow-all role policy must **never** include these negative signals
+unless the restriction is deliberate.
 
-This allows UDM to determine whether a specific property should be visible or writable.
+The DSL currently expands `write` into `write`, `read`, and `search`, and
+`read` into `read` and `search`. These implications are implemented when
+compiling policies, not inferred by Cerbos at evaluation time.
 
-### Resource Policies
+## Policy architecture
 
-Resource policies describe both the technical capabilities of a UDM resource and the authorization rules defined in the UDM authorization DSL.
+### Resource policies: technical boundaries and global denies
 
-They are generated automatically by:
+There is **one Resource Policy per concrete UDM module resource kind**. The
+Resource Policy does not enumerate individual properties and does not contain
+the bulk of the role-specific DSL rules.
+
+Instead, it contains:
+
+* An `EFFECT_ALLOW` for the internal parent role `udm:super-admin`.
+* Only the **object actions actually supported by the UDM module** (as
+  determined using `univention.admin.modules.supports()`, with known special
+  cases).
+* The property wildcard `udm:property:*:*`, which covers both positive and
+  negative property permission signals.
+* Global, resource-specific `EFFECT_DENY` safeguards, such as the rule
+  preventing management of users with `uidNumber == 0`.
+
+Illustrative resource policy (the object-action list varies per module):
+
+```yaml
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: udm:module:users/user
+  version: default
+  rules:
+    - name: deny-uid-number-zero
+      # Generated global DENY condition covering old/new state.
+      # Omitted here for readability.
+      actions: ["udm:*:*:*", "udm:*:*", "udm:*"]
+      effect: EFFECT_DENY
+      roles: ["*"]
+      condition:
+        match:
+          expr: "..."
+    - name: allow-role-policy-actions-users-user
+      actions:
+        - udm:object:create
+        - udm:object:read
+        - udm:object:search
+        - udm:object:modify
+        - udm:property:*:*
+      effect: EFFECT_ALLOW
+      roles:
+        - udm:super-admin
+```
+
+The example is schematic, **not a complete deployable policy**. In particular,
+use the generator's complete global DENY condition and actual module
+capabilities. The generated YAML includes human-readable comments reporting
+which object operations the module supports and how many property definitions
+it exposes.
+
+The wildcard is intentionally `udm:property:*:*`, **not** `*` or
+`udm:property:*`: the property action has four colon-separated components.
+Restricting the allowlist to the `udm:` action namespace also avoids accepting
+unrelated application actions on UDM resources.
+
+Because Resource Policies are tied to concrete kinds, new UDM modules require
+new Resource Policies. Extended attributes do **not** require enumerating a
+new property-action rule in those Resource Policies.
+
+### Role policies: effective permissions from the DSL
+
+**Role Policies are the primary output of the UDM DSL compiler.** They express
+which actions a role may perform on which UDM resources, with conditions for
+positions, named expressions, or values.
+
+Role Policies are an additional constraint: a permission must be allowed by
+the relevant Resource Policy *and* by a matching Role Policy. All generated
+Role Policies inherit the internal parent role:
+
+```yaml
+rolePolicy:
+  role: udm:default-roles:helpdesk-operator
+  version: default
+  parentRoles:
+    - udm:super-admin
+  variables:
+    import:
+      - udm_variables
+  rules:
+    - resource: udm:module:users/user
+      allowActions:
+        - udm:object:read
+        - udm:property:username:read
+      condition:
+        match:
+          expr: V.position_example
+```
+
+`V.position_example` represents a generated named CEL variable; the name and
+full expression differ in actual output. The internal parent role must never
+be assigned directly to an end user.
+
+A single role can be defined in **multiple DSL files**. The generator must
+collect its rules and variables across those files and emit **one** Role Policy
+per role; otherwise later files overwrite earlier permissions. A cross-file
+merge was implemented during development and requires regression tests.
+
+Multiple grants for the same `(role, resource, action)` are alternative paths
+to permission and must be combined using `condition.match.any` (logical OR).
+Conditions within a single grant (position, `if`, `values`) are combined with
+`all` (logical AND). Actions with the same final condition can be grouped into
+a single rule. An unconditional grant for an action makes conditional
+alternatives for that action redundant.
+
+This separation is important: grouping only by resource can accidentally
+extend a `modify` permission to positions where only `read` was intended.
+
+### Domain administrator
+
+The domain administrator is also represented by a Role Policy and uses the
+same parent role. Unlike ordinary roles, it is generated independently of
+the DSL. It permits only **positive** actions:
+
+```yaml
+rolePolicy:
+  role: udm:default-roles:domain-administrator
+  version: default
+  parentRoles: [udm:super-admin]
+  rules:
+    - resource: "udm:module:*"
+      allowActions:
+        - "udm:object:*"
+        - "udm:property:*:search"
+        - "udm:property:*:read"
+        - "udm:property:*:write"
+```
+
+The Resource Policy still restricts object actions to operations available in
+the concrete UDM module. The example `resource: "udm:module:*"` is the current
+generator's Role Policy pattern; Resource Policies themselves remain
+module-specific.
+
+An extra role can still grant a negative property signal to a principal who
+also has the domain-administrator role. Cerbos merges permissions across roles;
+UDM's negative-action interpretation is separate. This is a **known semantic
+issue**, not something solved merely by omitting negative actions from the
+domain-administrator Role Policy.
+
+### CEL variables and LDAP DN comparisons
+
+Position and context conditions use exported CEL variables (such as
+`V.position_...`) from `variables/udm_variables.yaml`. The principal context
+list is normalized into `V.udm_assignments` where available.
+
+LDAP positions must be compared as LDAP DNs rather than by string suffix or
+case-sensitive string equality. The custom Cerbos `ldapDN()` extension handles
+DN-aware comparisons. Supported DSL positional scopes include:
+
+| DSL scope | Intended relationship |
+| --- | --- |
+| `base` | Equal DN |
+| `one` / `onelevel` | One level below the base |
+| `sub` / `subtree` | Base or a descendant |
+| `children` | Descendant, excluding base |
+| `ancestors` | Ancestor, excluding the referenced DN |
+| `hierarchy` | Base, ancestors, and descendants |
+
+Generated conditions may use methods such as `scopeOneLevel()` and
+`scopeSubtree()`. When authoring context-based rules, verify the direction of
+each comparison; `ancestors` and `hierarchy` are particularly easy to reverse.
+
+Derived Roles remain a Cerbos feature, but **they are not the central context
+mechanism in this implementation**. Context checks are attached to the
+corresponding role-policy rules via CEL variables.
+
+### Value conditions and implicit actions
+
+Consider:
+
+```text
+grant properties="guardianMemberRoles" permission="write" values="$newValue$.all(r, r == 'udm:default-roles:domain-user')"
+```
+
+The `values` expression restricts the **explicit** `write` permission, not
+other grants in the same `to` clause. It must not leak into a separate
+`read`/`search` grant. The compiler also distinguishes actions implied by
+`write`: derived `read` and `search` actions do not inherit a condition on
+`$newValue$`, since ordinary read requests have no proposed new value.
+
+Tests should cover both directions: valid and invalid proposed values, reads
+without `attr.new`, and multiple grants or conditions for the same action.
+
+## Policy generation and deployment
+
+The generator is:
 
 ```text
 univention-configure-udm-authorization
 ```
 
-One resource policy exists for every UDM module.
+Typical use:
 
-Example:
-
-```yaml
-resourcePolicy:
-  resource: "udm:module:users/user"
-```
-
-The generator combines all authorization rules from the DSL into these resource policies.
-
-Each generated rule specifies:
-
-* the object or property actions it grants
-* the roles or derived roles it applies to
-* optional authorization conditions, such as
-
-  * position-based scope restrictions
-  * named DSL conditions
-  * value-based (CEL) constraints
-
-Each DSL grant is compiled into an individual Cerbos rule. This keeps conditions local to the actions they protect and avoids unintentionally restricting unrelated actions.
-
-Besides the generated authorization rules, the resource policies also contain:
-
-* the technical wildcard action definitions supported by the resource
-* global deny rules
-* technical administrator rules
-
-Resource policies therefore become the single source of truth for authorization decisions.
-
-### Derived Roles
-
-Position-based role contexts are represented as Cerbos Derived Roles.
-
-For every distinct combination of
-
-* parent role
-* context type
-* scope
-
-the generator creates one derived role.
-
-Example:
-
-```yaml
-derivedRoles:
-  definitions:
-    - name: organizational-unit-admin-position-subtree
-      parentRoles:
-        - udm:default-roles:organizational-unit-admin
-```
-
-The derived role evaluates whether the authenticated principal possesses the required contextual role, for example by checking
-
-```cel
-request.principal.attr.context_roles.exists(...)
-```
-
-Derived roles encapsulate only reusable role-context evaluation.
-
-They do **not** grant permissions themselves.
-
-Permissions remain defined exclusively by the resource policies, which reference the derived roles where required.
-
-This separation keeps contextual role evaluation reusable while allowing authorization conditions that depend on individual actions (for example value comparisons) to remain attached directly to the corresponding resource-policy rule.
-
-### Context-based Authorization
-
-Several default roles are scoped to LDAP positions.
-
-Examples:
-
-* Organizational Unit Administrator
-* Helpdesk Operator
-* Linux Client Manager
-
-A role context is represented as:
-
-```json
-{
-  "role": "udm:default-roles:organizational-unit-admin",
-  "position": "ou=bremen,dc=example,dc=com"
-}
-```
-
-Conditions are translated into CEL expressions.
-
-Example:
-
-```cel
-request.principal.attr.context_roles.exists(cr,
-  cr.role == "udm:default-roles:organizational-unit-admin" &&
-  (
-    request.resource.attr.position == cr.position ||
-    request.resource.attr.position.endsWith("," + cr.position)
-  )
-)
-```
-
-Supported LDAP search scopes:
-
-* base
-* onelevel
-* subtree
-* not children
-* not base+one
-
-### Old and New State
-
-For create and modify operations UDM provides both states.
-
-Example:
-
-```json
-{
-  "attr": {
-    "dn": "uid=test,cn=users,dc=example,dc=com",
-    "position": "cn=users,dc=example,dc=com",
-    "properties": {
-      "firstname": "John",
-      "lastname": "Doe"
-    },
-    "new": {
-      "dn": "uid=test,cn=users,dc=example,dc=com",
-      "position": "cn=users,dc=example,dc=com",
-      "properties": {
-        "firstname": "Jonathan",
-        "lastname": "Doesit"
-      },
-    }
-  }
-}
-```
-
-Policies may compare old and new values.
-
-This replaces Guardian's old-target/new-target model.
-
-### Property Override Semantics
-
-Cerbos evaluates individual actions.
-
-UDM computes effective property permissions.
-
-The following precedence is applied:
-
-```text
-none
-  > readonly / writeonly
-    > read / write
-```
-
-Examples:
-
-```text
-write + readonly
-  => readonly
-
-read + none
-  => none
-
-writeonly + read
-  => writeonly
-```
-
-This logic is intentionally implemented inside UDM and not inside Cerbos.
-
-### Policy Generation
-
-Policy generation is performed by:
-
-```text
+```bash
 univention-configure-udm-authorization generate
+univention-configure-udm-authorization generate --unstrict
+univention-configure-udm-authorization generate --exclude-tests
 ```
 
-Responsibilities:
+Strict checking is the intended default; `--unstrict` relaxes it. The generator
+reads installed `.policy` files, introspects available UDM modules, produces
+Resource Policies and Role Policies, exports CEL variables, and constructs a
+new generated policy tree. The directory replacement should be atomic so
+Cerbos never observes a partially written policy set.
 
-* Discover all UDM modules and their properties
-* Parse the UDM authorization DSL
-* Compile DSL rules into Cerbos resource-policy rules
-* Generate reusable derived roles for contextual role evaluation
-* Merge generated authorization rules with the technical resource policies
-* Write the complete policy tree atomically
-
-The generator performs the complete compilation in memory before writing the resulting policy tree. This guarantees that Cerbos never observes a partially generated set of policies.
-
-The generated resource policies contain both the technical description of each UDM resource and the authorization rules compiled from the DSL. Context-based role evaluation is extracted into reusable derived roles, while grant-specific conditions remain attached to the individual resource-policy rules that they protect.
-
-### Policy Directory Layout
-
-Policies are stored below:
+The current host policy root used by the generator is:
 
 ```text
 /usr/share/univention-guardian-server/policies/udm/
 ```
 
-The directory structure follows the Cerbos policy layout conventions:
+A representative generated layout is:
 
 ```text
-derived_roles/
-  *.yaml
-
 resource_policies/
   udm/
     users-user.yaml
     groups-group.yaml
-    container-ou.yaml
     ...
-
-    users-user_test.yaml
-    groups-group_test.yaml
-    ...
-
+role_policies/
+  udm-default-roles-domain-administrator.yaml
+  ...
+variables/
+  udm_variables.yaml
+derived_roles/          # Only if needed by generated policies
+_tests/                # Installed-policy suites, unless excluded
+  <suite>/
+    *_test.yaml
     testdata/
       principals.yaml
       resources.yaml
 ```
 
-The `resource_policies/udm/` directory contains one generated resource policy for every UDM module.
-The `role_policies/` directory is retained for optional manually maintained Cerbos role policies. Role policies are not generated from the UDM authorization DSL and are not part of the primary authorization model.
+### Test infrastructure
 
-The complete generated policy tree is created in a temporary location and moved into place atomically. Generated content may therefore be recreated at any time and must not be modified manually.
-
-### Why Cerbos?
-
-Compared to the previous Guardian-based implementation:
-
-* No management API
-* No permission registration
-* No capability registration
-* No context registration
-* No database-backed policy objects
-* Native policy-as-code
-* Native CEL conditions
-* Native YAML policies
-* Better support for future PlanResources usage
-
-The responsibility split is clearer:
+The packaging location for immutable test suites is:
 
 ```text
-Cerbos
-  = Policy Decision Point
-
-UDM
-  = Policy Enforcement Point
+/usr/share/univention-directory-manager-modules/cerbos-tests/
 ```
 
-This significantly reduces architectural complexity while preserving the flexibility required for UDM-specific authorization use cases.
+Each immediate subdirectory represents a suite, containing Cerbos
+`*_test.yaml` files, optional `testdata/principals.yaml` and
+`testdata/resources.yaml`, and optionally one or more `*.policy` files.
 
+* A suite **without** its own `.policy` files tests the generated policies from
+  the installed DSL configuration. These suites may be copied into `_tests/`
+  in a generated bundle.
+* A suite **with** its own `.policy` files is generated and compiled in an
+  isolated temporary tree. Its DSL files must not be copied into a production
+  bundle.
 
-### TODO: document this
+The host-side `test` command was developed to reproduce the previous
+`run-cerbos-tests` script's behavior:
 
-| Pattern   | `udm:object` | `udm:object:read` | `udm:property:firstname:read` |
-|-----------|--------------|-------------------|-------------------------------|
-| `udm:*`   | ALLOW        | deny              | deny                          |
-| `udm:*:*` | deny         | ALLOW             | deny                          |
-| `*`       | ALLOW        | ALLOW             | ALLOW                         |
+```bash
+univention-configure-udm-authorization test
+univention-configure-udm-authorization test --unstrict
+```
+
+The test command generates temporary policy trees and invokes `cerbos compile`
+with policy tests; strict evaluation is the default. It does not modify the
+active installation.
+
+Build-time testing is deferred: We can't execute docker during package builds.
+
+`generate --exclude-tests` omits the packaged test suites from generated
+bundles. The exact command-line options and runtime selection should be
+checked against the version of the generator deployed on the host.
+
+Useful test scenarios include:
+
+* Multiple grants for the same resource/action with different positions.
+* One role split across multiple `.policy` files, including same-resource
+  actions and imported CEL variables.
+* `values` constraints that must not affect unrelated actions or implicit
+  reads.
+* Domain-administrator positive permissions and global DENY conditions.
+* Contextless principals, contexts for a different role, and multiple OUs.
+* DN spelling variations and the `+` character in LDAP DNs.
+* Negative property actions and principals with several assigned roles.
+
+**A passing Cerbos policy test is not a full LDAP/UDM integration test.** It
+cannot verify HTTP behavior, search-result redaction, LDAP exceptions, or
+whether UDM really executes the checks before sensitive operations.
+
+## Runtime enforcement and performance
+
+UDM asks Cerbos for object actions and property actions, then calculates the
+readable or writable property set. Negative property signals override
+positive ones in UDM's post-processing. The Cerbos HTTP SDK adapter is a thin
+client wrapper; it does not replicate authorization logic.
+
+Cerbos's per-request action limit requires attention on modules with many
+extended attributes. Action queries are deduplicated and large checks must be
+batched without changing the effective result. The first read-path optimization
+(`V1`) stopped requesting property `write` when reading an object, relying on
+the DSL compiler to emit explicit `read` for a `write` grant. Negative signals
+remain necessary for property filtering.
+
+The resource-policy wildcard reduces policy size and regeneration churn; it
+does **not** itself reduce the number of actions requested for each read.
+
+## Search authorization: design and unresolved work
+
+`search` is intended to represent authorization of an LDAP **query**, not
+merely a weaker form of object `read`. A complete flow has three layers:
+
+1. Check permission to perform the requested search on a given module, base,
+   scope and LDAP filter.
+2. Check which returned objects may be read.
+3. Filter returned properties according to their property permissions.
+
+Search-filter attributes may appear under UDM property names or raw LDAP
+attribute names. The proposed implementation parses the LDAP filter using
+`univention.admin.filter.parse()` and `walk()`, then resolves LDAP attribute
+names through the module mapping. `objectClass` can be a special case; the
+handling of other unmapped attributes needs an explicit security policy.
+
+An authorization check for the **base DN alone is not enough** to prove an
+entire `subtree` search is within an allowed area. Scope and search-base
+conditions must be considered together. Filtering results after LDAP execution
+also does not eliminate disclosure via timing, search counts, or pagination.
+
+### Non-disclosure behavior of LDAP searches
+
+The previous implementation intentionally distinguishes these cases:
+
+| Case | Required observable result |
+| --- | --- |
+| Search base missing | `NO_SUCH_OBJECT` / UDM `noObject` |
+| Search base exists but is not visible | Same `NO_SUCH_OBJECT` / `noObject` |
+| Search base visible, but the query/filter is not permitted | Empty result (subject to existing API options) |
+| Search permitted, but no returned objects are visible | Empty result |
+| Search permitted and results visible | Filtered results |
+
+The base-visibility check must run **before** rejecting a query based on its
+filter or scope. Returning a different exception for an unreadable base than
+for a nonexistent base would create an information-disclosure channel.
+Behavioral compatibility needs UDM REST and LDAP integration tests, not just
+Cerbos policy tests.
+
+Search semantics, filter-attribute mapping, and the separation of module-level
+search availability from permission to read an individual result remain areas
+for further development.
+
+## Security considerations and known limitations
+
+* **Atomic policy replacement:** The final generated policy tree must replace
+  the previous tree as a unit. An intermediate state with broad Resource
+  Policies but missing Role Policies is unsafe.
+* **Internal parent role:** `udm:super-admin` must not be
+  assigned to real users. Its Resource Policy privileges are broad by design.
+* **Global DENY rules:** These remain in Resource Policies and must be tested
+  against all relevant actions, including creation and changes to `attr.new`.
+* **Multiple roles:** A principal may receive negative property signals from
+  a second role even when the domain-administrator Role Policy contains only
+  positive actions. This needs a deliberate semantic solution in UDM.
+* **Multi-file DSL definitions:** No role should be silently overwritten by a
+  later file. Keep tests for rule merging, action-specific conditions, and
+  variable collisions.
+* **Search side channels:** Base visibility, query authorization and result
+  redaction must maintain the intended LDAP exception semantics.
+* **DN and state representation:** Compare DNs via `ldapDN()` and ensure the
+  correct old/new DN and position for `create`, `move`, and `rename`.
+* **Large requests:** Both action-count and resource-count limits need
+  reliable batching and merging.
+* **Generated data is not a customer API:** Customers should author UDM DSL
+  policies. Generated Cerbos YAML is an implementation artifact.
+
+## Other Cerbos facilities considered
+
+**Derived Roles** are useful for reusable conditions, but the current design
+uses Role Policies with CEL variables to express role-specific contextual
+permissions. **Scoped policies** were considered for LDAP OUs; one principal
+may have multiple independent OU assignments, so Cerbos's single hierarchical
+scope is not a direct replacement. **Principal Policies** may be useful for
+exceptional identities but are not part of the ordinary UDM DSL model.
+
+**PlanResources** may eventually help narrow LDAP searches before fetching
+objects. It cannot replace enforcement of arbitrary UDM property conditions or
+all post-search filtering. This remains a performance/design opportunity, not
+part of the basic authorization guarantee.
+
+## Related upstream Cerbos issues
+
+These upstream issues describe improvements that would make UDM's authorization
+use cases easier to express or maintain. They are proposals, not assumptions
+about features available in our deployed Cerbos version.
+
+**[#3492](https://github.com/cerbos/cerbos/issues/3492) - Contextual role assignments and scoped permissions.**
+UDM needs multiple assignments of the same role with independent contexts (for
+example, different OUs or schools). Currently, UDM carries these assignments in
+principal attributes and generates role-specific CEL conditions. The discussion
+explores first-class contextual role assignments, multiple principal scopes,
+derived roles in role policies, and reusable parameterized conditions.
+
+**[#3473](https://github.com/cerbos/cerbos/issues/3473) - Raise the 500-actions-per-resource limit.**
+UDM can exceed 500 actions when evaluating permissions for modules with many
+extended attributes (714 in the reported example). Although
+`server.requestLimits.maxActionsPerResource` is configurable, its maximum is
+hard-capped at 500 by the internal `requestItemsMax` constant, which also caps
+`maxResourcesPerRequest`. Raising that constant (for example, to 4000) requires
+a custom Cerbos build; splitting requests remains a workaround.
+
+**[#3269](https://github.com/cerbos/cerbos/issues/3269) - List roles through the Admin API.**
+A role-listing endpoint would let UDM present available roles as selectable
+options in administrative user interfaces instead of maintaining a separate
+role inventory.
+
+**[#3268](https://github.com/cerbos/cerbos/issues/3268) - Names and metadata on individual rules.**
+Allow rule names and per-rule metadata in Role and Principal Policies. This
+would preserve DSL descriptions, source files and line numbers directly in
+generated policies instead of relying on YAML comments.
+
+**[#3267](https://github.com/cerbos/cerbos/issues/3267) - Improve policy-concept documentation.**
+Clarify the relationships between IdP roles, Derived Roles, Resource Policies,
+Role Policies and scopes, with more practical examples and links to deeper
+explanations. This would make the policy design choices less ambiguous.
+
+**[#3210](https://github.com/cerbos/cerbos/issues/3210) - Extensible CEL functions.**
+Support application-specific CEL operations, especially correct LDAP DN
+equality and scope comparisons. UDM currently needs a custom Cerbos build for
+its `ldapDN()` extension; an extension mechanism would reduce that maintenance
+burden and could support other normalized values such as MAC addresses.
