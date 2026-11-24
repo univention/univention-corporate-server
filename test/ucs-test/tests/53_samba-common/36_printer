@@ -134,7 +134,8 @@ nc_pid=$!
 ## initiate print
 echo "initiate print"
 i=0
-while ! ipptool -vct -f "$tmp_filename" -d filetype=application/octet-stream "ipps://$username:$password@$hostname.$domainname/printers/$printername" print-job.test
+urlencoded_username="$(python3 -c "import urllib.parse; print(urllib.parse.quote('$username'))")"
+while ! ipptool -vct -f "$tmp_filename" -d filetype=application/octet-stream "ipps://$urlencoded_username:$password@$hostname.$domainname/printers/$printername" print-job.test
 do
 	let i=$i+1
 	if [ $i = 20 ]; then
