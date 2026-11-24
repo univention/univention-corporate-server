@@ -1,3 +1,10 @@
+univention-samba4 (11.7.1) unstable; urgency=medium
+
+  * Bug #57862: Set smb.conf 'ad dc functional level' from UCR
+    samba4/function/level for levels above 2008_R2
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 24 Nov 2026 21:42:28 +0000
+
 univention-samba4 (11.7.0) UNRELEASED; urgency=medium
 
   * Bug #59722: UCS 5.2-7 version bump

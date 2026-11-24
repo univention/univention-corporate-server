@@ -1,3 +1,11 @@
+univention-management-console-module-adtakeover (9.7.1) unstable; urgency=medium
+
+  * Bug #57862: Allow AD Takeover of domains with functional level up to
+    Windows Server 2016 and set samba4/function/level to the functional level of
+    the AD domain
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 24 Nov 2026 21:42:28 +0000
+
 univention-management-console-module-adtakeover (9.7.0) UNRELEASED; urgency=medium
 
   * Bug #59722: UCS 5.2-7 version bump

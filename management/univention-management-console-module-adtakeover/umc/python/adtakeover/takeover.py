@@ -27,7 +27,7 @@ import ldb
 import samba
 from ldap.dn import dn2str, escape_dn_chars, str2dn
 from ldap.filter import filter_format
-from samba import Ldb
+from samba import Ldb, functional_level
 from samba.auth import system_session
 from samba.credentials import DONT_USE_KERBEROS, Credentials
 # from samba.netcmd.common import netcmd_get_domain_infos_via_cldap
@@ -63,6 +63,13 @@ JOIN_LOGFILE_NAME = "/var/log/univention/join.log"
 BACKUP_DIR = "/var/univention-backup/ad-takeover"
 SAMBA_DIR = '/var/lib/samba'
 SAMBA_PRIVATE_DIR = os.path.join(SAMBA_DIR, 'private')
+
+# Functional levels (msDS-Behavior-Version) mapped to the values accepted by
+# UCR samba4/function/level, `samba-tool domain provision --function-level`
+# and smb.conf `ad dc functional level`. Only levels known to the installed
+# Samba are supported (Samba >= 4.20: up to 2016).
+FUNCTION_LEVEL_TO_UCR = {level: name for name, level in functional_level.string_version_to_constant.items()}
+MAX_SUPPORTED_FUNCTION_LEVEL = max(FUNCTION_LEVEL_TO_UCR)
 SYSVOL_PATH = os.path.join(SAMBA_DIR, 'sysvol')
 
 logging.basicConfig(filename=LOGFILE_NAME, format='%(asctime)s %(message)s', level=logging.DEBUG)
@@ -620,6 +627,7 @@ class AD_Connection:
             raise TakeoverError(_("The LDAP base of this UCS domain differs from the LDAP base of the selected Active Directory domain."))
 
         self.domain_sid = None
+        self.domain_function_level = None
         msgs = self.samdb.search(
             base=self.domain_dn, scope=samba.ldb.SCOPE_BASE,
             expression="(objectClass=domain)",
@@ -628,20 +636,31 @@ class AD_Connection:
         if msgs:
             obj = msgs[0]
             self.domain_sid = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
-            if "msDS-Behavior-Version" in obj:
-                try:
-                    msds_behavior_version = int(obj["msDS-Behavior-Version"][0])
-                except ValueError:
-                    log.error("Cannot parse msDS-Behavior-Version: %s", obj["msDS-Behavior-Version"][0])
-                if msds_behavior_version > 4:
-                    raise TakeoverError(_("The Active Directory domain has a function level of Windows Server 2012 or newer, Samba currently only supports up to Windows 2008R2: %s") % (msds_behavior_version))
-            else:
-                log.error("msDS-Behavior-Version missing in AD.")
+            self.domain_function_level = self._check_function_level(obj)
         if not self.domain_sid:
             raise TakeoverError(_("Failed to determine AD domain SID."))
 
         self.domain_info = lookup_adds_dc(self.hostname_or_ip)
         self.domain_info['ad_os'] = self.operatingSystem(self.domain_info["ad_netbios_name"])
+
+    @staticmethod
+    def _check_function_level(obj):
+        """Return the domain functional level (msDS-Behavior-Version) of the AD domain object, or `None` if unknown."""
+        if "msDS-Behavior-Version" not in obj:
+            log.error("msDS-Behavior-Version missing in AD.")
+            return None
+        try:
+            msds_behavior_version = int(obj["msDS-Behavior-Version"][0])
+        except ValueError:
+            log.error("Cannot parse msDS-Behavior-Version: %s", obj["msDS-Behavior-Version"][0])
+            return None
+        log.info("AD domain functional level (msDS-Behavior-Version): %s", msds_behavior_version)
+        if msds_behavior_version > MAX_SUPPORTED_FUNCTION_LEVEL:
+            raise TakeoverError(_("The Active Directory domain has a function level higher than Windows Server %(max)s, which is not supported by Samba: %(level)s") % {
+                'max': functional_level.level_to_string(MAX_SUPPORTED_FUNCTION_LEVEL),
+                'level': msds_behavior_version,
+            })
+        return msds_behavior_version
 
     def reconnect(self):
         try:
@@ -865,6 +884,8 @@ class AD_Takeover:
                 log.debug,
             )
 
+        self.set_function_level()
+
         self.ucr.load()
         univention.admin.configRegistry.load()  # otherwise the modules do not use the new syntax
 
@@ -884,6 +905,22 @@ class AD_Takeover:
             fd.flush()
 
             self.__join_into_ad(progress, fd.name)
+
+    def set_function_level(self):
+        """
+        Adopt the functional level of the AD domain: Samba refuses to join
+        (and to start) unless smb.conf `ad dc functional level` (rendered
+        from UCR samba4/function/level by univention-samba4) is at least the
+        domain functional level.
+        """
+        self.function_level_orig = self.ucr.get("samba4/function/level")
+        level = FUNCTION_LEVEL_TO_UCR.get(self.AD.domain_function_level)
+        if not level:
+            log.warning("Unknown AD domain functional level %r, not changing samba4/function/level.", self.AD.domain_function_level)
+            return
+        log.info("Setting samba4/function/level=%s (AD domain functional level %s)", level, self.AD.domain_function_level)
+        run_and_output_to_log(["univention-config-registry", "set", "samba4/function/level=%s" % (level,)], log.debug)
+        self.lp.load('/etc/samba/smb.conf')
 
     def __join_into_ad(self, progress, auth_filename):
         # Get machine credentials
@@ -946,6 +983,13 @@ class AD_Takeover:
         self.ucr.load()
 
         run_and_output_to_log(["univention-config-registry", "unset", "hosts/static/%s" % (self.ad_server_ip,)], log.debug)
+
+        # Restore the functional level of the previous Samba domain
+        function_level_orig = getattr(self, "function_level_orig", None)
+        if function_level_orig:
+            run_and_output_to_log(["univention-config-registry", "set", "samba4/function/level=%s" % (function_level_orig,)], log.debug)
+        elif hasattr(self, "function_level_orig"):
+            run_and_output_to_log(["univention-config-registry", "unset", "samba4/function/level"], log.debug)
 
         # Restore backup Samba directory
         if os.path.exists(self.backup_samba_dir):

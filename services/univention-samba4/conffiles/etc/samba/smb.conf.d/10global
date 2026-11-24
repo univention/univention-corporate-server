@@ -19,6 +19,10 @@ samba4_role = configRegistry.get('samba4/role')
 if samba4_role in ('DC', 'RODC'):
     print('\tserver role\t= active directory domain controller')
     print('\tname resolve order\t= %s' % (configRegistry.get('samba/name/resolve/order', 'wins host bcast'),))
+    # Bug #57862: Samba refuses to start/join if the domain functional level is higher than 'ad dc functional level' (default 2008_R2)
+    function_level = configRegistry.get('samba4/function/level')
+    if function_level in ('2012', '2012_R2', '2016'):
+        print('\tad dc functional level\t= %s' % (function_level,))
 
 elif samba4_role == 'MEMBER':
     print('\tserver role\t= member server')

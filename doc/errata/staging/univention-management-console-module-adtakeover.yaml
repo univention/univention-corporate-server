@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-management-console-module-adtakeover
+fix: 9.7.1
+desc: |
+ This update addresses the following issue:
+ * The AD Takeover now supports Active Directory domains with a functional
+   level up to Windows Server 2016 (e.g. domains with Windows Server 2016,
+   2019 or 2022 domain controllers). Previously the takeover was aborted for
+   domains with a functional level of Windows Server 2012 or newer. The
+   Samba functional level is now set to the level of the domain taken over.
+bug: [57862]

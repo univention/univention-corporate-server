@@ -149,8 +149,8 @@ Elementtype=str
 Categories=service-samba
 
 [samba4/function/level]
-Description[de]=Der Funktionslevel einer Active Directory-Domäne hat Auswirkungen auf die verfügbaren Domänenfunktionen. Mit dieser Variable kann der Funktionslevel vor der Installation des ersten Samba 4-Domänencontrollers konfiguriert werden. Ist bereits ein Domänencontroller installiert, kann der Befehl 'samba-tool domain level' verwendet werden.
-Description[en]=The function level of an Active Directory domain determines the available domain functions. This variable allows the configuration of the function level prior to the installation of the first Samba 4 domain controller. After that, 'samba-tool domain level' can be used.
+Description[de]=Der Funktionslevel einer Active Directory-Domäne hat Auswirkungen auf die verfügbaren Domänenfunktionen. Mit dieser Variable kann der Funktionslevel vor der Installation des ersten Samba 4-Domänencontrollers konfiguriert werden. Ist bereits ein Domänencontroller installiert, kann der Befehl 'samba-tool domain level' verwendet werden. Werte über 2008_R2 (2012, 2012_R2, 2016) setzen zusätzlich die smb.conf-Option 'ad dc functional level', die mindestens dem Funktionslevel der Domäne entsprechen muss. Die AD-Übernahme setzt die Variable auf den Funktionslevel der übernommenen Domäne.
+Description[en]=The function level of an Active Directory domain determines the available domain functions. This variable allows the configuration of the function level prior to the installation of the first Samba 4 domain controller. After that, 'samba-tool domain level' can be used. Values above 2008_R2 (2012, 2012_R2, 2016) additionally set the smb.conf option 'ad dc functional level', which must be at least the functional level of the domain. AD takeover sets this variable to the functional level of the domain taken over.
 Type=str
 Categories=service-samba
 

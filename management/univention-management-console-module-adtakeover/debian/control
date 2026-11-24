@@ -22,6 +22,7 @@ Depends:
  python3-univention-lib,
  univention-management-console-server (>= 11.0.4-37),
  univention-s4-connector,
+ univention-samba4 (>= 11.7.1),
  ${python3:Depends},
 Provides:
  ${python3:Provides},

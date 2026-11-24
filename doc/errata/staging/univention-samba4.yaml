@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-samba4
+fix: 11.7.1
+desc: |
+ This update addresses the following issue:
+ * The UCR variable `samba4/function/level` now also configures the Samba
+   option `ad dc functional level` for the functional levels `2012`,
+   `2012_R2` and `2016`. This is required to run a Samba domain controller in
+   a domain with a functional level higher than Windows Server 2008 R2.
+bug: [57862]
