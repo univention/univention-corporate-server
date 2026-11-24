@@ -218,7 +218,7 @@ prepare_domain_for_ucs52_preup_checks() {
 prepare_domain_for_ucs53_preup_checks() {
 	rabbitmq_reset_for_ucs53
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
-		/usr/share/univention-ldap/univention-update-univention-object-identifier
+		/usr/share/univention-ldap/univention-update-univention-object-identifier || true  # might not exists yet in update-from-4.2-4 scenario
 	fi
 
 	return  # enable in UCS 5.3-1
