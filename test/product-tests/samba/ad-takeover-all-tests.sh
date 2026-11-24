@@ -15,6 +15,16 @@
 #  done:      Login an UMC als weiteres Mitglied der AD-Gruppe "Domain Admins" / "Domänen Administratoren".
 #  done:    Anlegen eines neuen Benutzers per UMC, Anmeldung mit dem neuen Benutzer am Windows Client
 #  done:      Joinen eines weiteren Windows Clients in die (UCS-)Domäne, Anmeldung als übernommener Benutzer
+# Bug #57862: the Samba DC must run at the functional level of the AD domain taken over
+check_function_level () {
+	set -e -x
+	local expected="${1:?missing functional level, e.g. 2016}"
+	test "$(ucr get samba4/function/level)" = "$expected"
+	grep -E "^\s*ad dc functional level\s*=\s*${expected}$" /etc/samba/smb.conf
+	samba-tool domain level show | grep -E "^Domain function level: \(Windows\) ${expected//_/ }$"
+	samba-tool domain level show | grep -E "^Lowest function level of a DC: \(Windows\) ${expected//_/ }$"
+}
+
 check_ad_takeover () {
 	set -e -x
 

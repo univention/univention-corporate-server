@@ -1,0 +1,44 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: "samba4/function/level configures smb.conf 'ad dc functional level' (needed for AD takeover of FL >= 2012)"
+## bugs: [57862]
+## exposure: careful
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+
+# shellcheck source=/dev/null
+. "$TESTLIBPATH/base.sh" || exit 137
+
+orig="$(ucr get samba4/function/level)"
+cleanup () {
+	if [ -n "$orig" ]; then
+		ucr set samba4/function/level="$orig" >/dev/null
+	else
+		ucr unset samba4/function/level >/dev/null
+	fi
+}
+trap cleanup EXIT
+
+smb_conf_level () {
+	# only the explicitly configured value; testparm would also print Samba's default
+	sed -n 's/^\s*ad dc functional level\s*=\s*//p' /etc/samba/smb.conf
+}
+
+for level in 2012 2012_R2 2016; do
+	ucr set samba4/function/level="$level" >/dev/null
+	actual="$(smb_conf_level)"
+	[ "$actual" = "$level" ] || fail_test 110 "samba4/function/level=$level: expected 'ad dc functional level = $level' in smb.conf, got '$actual'"
+	testparm -s --parameter-name='ad dc functional level' 2>/dev/null | grep -qx "$level" || fail_test 110 "testparm does not report 'ad dc functional level' $level"
+done
+
+for level in 2003 2008 2008_R2; do
+	ucr set samba4/function/level="$level" >/dev/null
+	actual="$(smb_conf_level)"
+	[ -z "$actual" ] || fail_test 110 "samba4/function/level=$level: 'ad dc functional level' must not be set, got '$actual'"
+done
+
+exit "$RETVAL"

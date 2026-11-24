@@ -1,3 +1,9 @@
+ucs-test (12.7.27) unstable; urgency=medium
+
+  * Bug 57862: add test for samba4/function/level -> smb.conf ad dc functional level
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Nov 2026 21:43:13 +0000
+
 ucs-test (12.7.26) unstable; urgency=medium
 
   * Bug #60188: Test localized labels for App Center list settings.
