@@ -15,3 +15,6 @@ desc: |
    HTTP Host header can be allowed with the new UCR variable
    `umc/http/referer/allowed-hosts`.
 bug: [59997]
+erratum: 709
+announced: 2026-11-25
+support: core
