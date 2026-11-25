@@ -666,7 +666,7 @@ class UDMAuthorizationConfig:
             return f'{target}.matchSubtree({base}) && {base} != {target}'
 
         if scope == 'hierarchy':
-            return f'({base}.matchSubtree({target}) || {target}.scopeSubtree({base}))'
+            return f'({base}.matchSubtree({target}) || {target}.matchSubtree({base}))'
 
         raise DSLSyntaxError(f'Unsupported position scope: {scope}')
 
