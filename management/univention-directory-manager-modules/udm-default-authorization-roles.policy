@@ -37,7 +37,7 @@ condition "is-self"
   expr="ldapDN(request.principal.id) == ldapDN(request.resource.id)"
 
 condition "is-self-or-ancestor"
-  expr="ldapDN(request.resource.id).scopeSubtree(ldapDN(request.principal.id))"
+  expr="ldapDN(request.resource.id).matchSubtree(ldapDN(request.principal.id))"
 
 # access by role="*"
 #   to objecttype="*"
