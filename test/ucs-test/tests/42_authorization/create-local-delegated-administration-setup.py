@@ -72,6 +72,7 @@ time /usr/share/univention-directory-manager-tools/univention-configure-local-ud
 
 def activate_autorization_in_umc_and_udm_rest(api_access_dn):
     handler_set([
+        'directory/manager/delegative-administration/guardian=false',
         'directory/manager/web/delegative-administration/enabled=true',
         'directory/manager/rest/delegative-administration/enabled=true',
         f'directory/manager/rest/authorized-groups/test-api-access={api_access_dn}',

@@ -82,6 +82,7 @@ systemctl restart univention-guardian-server.service
 
 def activate_autorization_in_umc_and_udm_rest(api_access_dn):
     handler_set([
+        'directory/manager/delegative-administration/guardian=true',
         'directory/manager/web/delegative-administration/enabled=true',
         'directory/manager/rest/delegative-administration/enabled=true',
         f'directory/manager/rest/authorized-groups/test-api-access={api_access_dn}',
