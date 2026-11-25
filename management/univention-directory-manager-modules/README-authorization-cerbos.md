@@ -339,8 +339,8 @@ DN-aware comparisons. Supported DSL positional scopes include:
 | `ancestors` | Ancestor, excluding the referenced DN |
 | `hierarchy` | Base, ancestors, and descendants |
 
-Generated conditions may use methods such as `scopeOneLevel()` and
-`scopeSubtree()`. When authoring context-based rules, verify the direction of
+Generated conditions may use methods such as `matchOneLevel()` and
+`matchSubtree()`. When authoring context-based rules, verify the direction of
 each comparison; `ancestors` and `hierarchy` are particularly easy to reverse.
 
 Derived Roles remain a Cerbos feature, but **they are not the central context
