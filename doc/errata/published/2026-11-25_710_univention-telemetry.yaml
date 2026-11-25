@@ -12,3 +12,6 @@ desc: |
    at Univention and how to disable the transmission, see
    <https://help.univention.com/t/6701>.
 bug: [60162]
+erratum: 710
+announced: 2026-11-25
+support: core
