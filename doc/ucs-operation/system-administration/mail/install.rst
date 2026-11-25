@@ -1,18 +1,22 @@
 .. SPDX-FileCopyrightText: 2021-2026 Univention GmbH
 .. SPDX-License-Identifier: AGPL-3.0-only
 
-.. _mail-installation:
+.. _system-administration-mail-install:
 
-Installation
-============
+Install the mail server
+=======================
 
-A mail server can be installed from the Univention App Center with the
-application :program:`Mail server`. Alternatively, the software package
-:program:`univention-mail-server` can be installed. Additional information can
-be found in :ref:`computers-softwaremanagement-install-software`. A mail server
-can be installed on all server system roles. The use of a UCS Directory Node is
-recommended because of frequent LDAP accesses.
+You can install the mail server on a Nubus for UCS system with any system role.
+Univention recommends a Directory Node
+because the mail server frequently accesses the LDAP directory.
 
-The runtime data of the Dovecot server are stored in the
-:file:`/var/spool/dovecot/` directory. If this directory is on a NFS share,
-please read :ref:`mail-serverconfig-nfs`.
+Install the :program:`Mail server` app through Univention App Center.
+For instructions, see :ref:`lifecycle-app-center-installation`.
+
+Alternatively, you can install the :program:`univention-mail-server` package.
+For information about package installation,
+see :ref:`lifecycle-package-installation-management`.
+
+Dovecot stores its runtime data in :file:`/var/spool/dovecot/`.
+If you use an NFS share for this directory,
+see :external+uv-ucs-manual:ref:`mail-serverconfig-nfs`.
