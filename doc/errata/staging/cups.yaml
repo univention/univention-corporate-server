@@ -7,7 +7,8 @@ fix: 2.4.2-3+deb12u9A~5.2.7.202611241718
 desc: |
  This update addresses the following issues:
  * CUPS could hang during TLS handshake (`OpenPrinting/cups/pull/1810`)
- * memory corruption due to pthread_key_create
+ * Avoid memory corruption after failing `pthread_key_create`
  * Colour mode selection was not persisted correctly across restarts
    (`OpenPrinting/cups/pull/687`)
+ * A patch to filter out duplicate jobs is applied again (Bug #53647)
 bug: [60135]
