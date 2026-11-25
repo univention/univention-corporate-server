@@ -12,3 +12,6 @@ desc: |
    (`OpenPrinting/cups/pull/687`)
  * A patch to filter out duplicate jobs is applied again (Bug #53647)
 bug: [60135]
+erratum: 702
+announced: 2026-11-25
+support: core
