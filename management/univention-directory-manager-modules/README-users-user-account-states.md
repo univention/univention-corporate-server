@@ -87,16 +87,22 @@ Expiry Date = (January 1, 1970) + shadowLastChange + shadowMax + 1 (day)
 
 Indicates the user account is deactivated. This affects authentication for Windows (Samba), Kerberos, and POSIX systems.
 
-- **UCS OpenLDAP attributes** (any of):
+- **UCS OpenLDAP attributes** (UDM reports `disabled=1` only if all are set):
 
   - `sambaAcctFlags` contains `D`
-  - `krb5KDCFlags` bitmask includes the `KRB5_KDB_REQUIRES_PRE_AUTH` bit (aka: `1 << 7`, `0x80`).
-  - `shadowExpire == 1` or `shadowExpire <= current time` ~or `userPassword` hash starts with `!`~
+  - `krb5KDCFlags` bitmask includes the `invalid` bit (aka: `1 << 7`, `0x80`).
+  - The `userPassword` hash is **not** prefixed with `!` (since UCS 5.2-7, [Bug #59898](https://forge.univention.org/bugzilla/show_bug.cgi?id=59898)).
+    Accounts disabled before UCS 5.2-7 may still carry the `!` prefix;
+    UDM removes it when the account gets enabled again.
 - **Property UDM search filter**:
 
   - `disabled=` `1` | `0` | `posix` | `windows` | `all` | `none` | `kerberos` | `windows_kerberos` | `windows_posix` | `posix_kerberos` | `*`
 
-**Note**: This may not disable login via LDAP (depending on configuration).
+**Note**: If only some of these attributes are set,
+UDM treats the state as inconsistent and rewrites all of them on the next modification.
+
+**Note**: LDAP bind of a disabled account is denied by the `shadowbind` overlay, not by the password check.
+See [Disabled accounts](#disabled-accounts).
 
 - **Active Directory (and Samba) attributes**:
 
@@ -110,7 +116,7 @@ Defines a point in time after which the account is considered expired (i.e., dis
 
   - `sambaKickoffTime`: UNIX timestamp
   - `krb5ValidEnd`: GeneralizedTime (currently when stored via UDM time is set to `00:00:00` o'clock: `YYYYMMDD000000Z`)
-  - `shadowExpire`: Days since the Unix epoch when the account is considered expired (or `1` for general disabled); expired if `current_day >= shadowExpire`
+  - `shadowExpire`: Days since the Unix epoch when the account is considered expired (or `1` for disabled accounts, deprecated, see [Disabled accounts](#disabled-accounts)); expired if `current_day >= shadowExpire`
 - **Property UDM search filter**:
 
   - `userexpiry=` `2025-06-20` | `*`
@@ -171,6 +177,231 @@ udm users/user list --filter "(|(disabled=1)(locked=1)(userexpiry<=$(date -I))"
 ```python
 univention.admin.modules.get('users/user').lookup(None, lo, filter_format("(|(disabled=1)(locked=1)(userexpiry<=%s))", [datetime.date.today().isoformat()]))
 ```
+
+# Account states in Nubus
+
+This section describes which components enforce disabled, expired, and locked accounts
+and expired passwords,
+and what a user sees when authenticating through LDAP or Keycloak.
+Background: [ucs#3786](https://git.knut.univention.de/univention/dev/ucs/-/work_items/3786),
+[keycloak-app#328](https://git.knut.univention.de/univention/dev/projects/keycloak/keycloak-app/-/work_items/328),
+[ucs#3787](https://git.knut.univention.de/univention/dev/ucs/-/work_items/3787).
+
+OpenLDAP itself has no concept of disabled, locked, or expired accounts:
+as long as the `userPassword` hash matches, a plain LDAP bind succeeds.
+The overlays described below deny the bind instead.
+Keycloak authenticates users through LDAP user federation,
+that is, with an LDAP bind as the user,
+so it sees whatever the overlays return.
+
+## Overview of account states
+
+| State | Use case | UDM property | LDAP attributes | LDAP bind | Keycloak login |
+|-------|----------|--------------|-----------------|-----------|----------------|
+| disabled | Administrator or script deactivated the account, for example the user left the organization | `disabled` | `krb5KDCFlags`, `sambaAcctFlags` | denied | denied, "account disabled" |
+| locked | Too many authentication failures | `locked` | `pwdAccountLockedTime`, `krb5KDCFlags`, `sambaAcctFlags` | denied (by `ppolicy`) | denied, generic error |
+| account expired | Defined date on which the user leaves the organization | `userexpiry` | `shadowExpire`, `krb5ValidEnd`, `sambaKickoffTime` | denied | denied, "account expired" |
+| password expired | Password renewal interval | `passwordexpiry` | `shadowLastChange`, `shadowMax`, `krb5PasswordEnd` | denied | user is sent to password change |
+
+## Disabled accounts
+
+### Components
+
+- **UDM** (`users/user`)
+  - Writes the `disabled` state to two attributes:
+    `krb5KDCFlags` bit 7 (Kerberos) and `D` in `sambaAcctFlags` (Samba).
+    - Note: For backward compatibility, UDM also still sets `shadowExpire: 1`.
+      This is deprecated and will be removed; don't rely on it.
+  - Keeps the `userPassword` hash valid when disabling an account.
+  - Disabling an account also unlocks it, like Samba and AD do.
+  - `users/ldap` (simple authentication accounts) has no POSIX, Kerberos, or Samba attributes
+    and still disables accounts by prefixing the `userPassword` hash with `!`.
+- **OpenLDAP overlay `shadowbind`** ([97_shadowbind_overlay.quilt](https://git.knut.univention.de/univention/dev/internal/ucs-patches/-/blob/bba3818cf24cc40997ffc27b7377b62ec881bef8/openldap/ucs_5.2-0-errata5.2-7/2.5.13+dfsg-5/97_shadowbind_overlay.quilt))
+  - Runs after a **successful** password check during the bind.
+  - Checks, in this order, and stops at the first match:
+
+    | Condition | Additional info |
+    |-----------|-----------------|
+    | `krb5KDCFlags` bit 7 set (disabled) | `account expired` |
+    | `shadowExpire` set and today `>= shadowExpire` | `account expired` |
+    | `shadowLastChange == 0` | `password expired` |
+    | today `- shadowLastChange > shadowMax` | `password expired` |
+
+    "Today" is days since the Unix epoch.
+    A disabled account currently reports `account expired`,
+    because the Keycloak mapper does not yet accept `account disabled`.
+  - Lets the bind fail with `LDAP_INVALID_CREDENTIALS` (49)
+    and adds the reason as additional info,
+    for example `ldap_bind: Invalid credentials (49) additional info: account expired`.
+  - A wrong password never reaches these checks,
+    so the error carries no additional info and does not reveal the account state.
+- **Keycloak LDAP mapper** [UniventionUserAccountControlStorageMapper](https://git.knut.univention.de/univention/dev/projects/keycloak/keycloak-app/-/blob/1efe667f025a9c6928e3e97b73b1752094231c91/extensions/univention-ldap-mapper/src/main/java/de/univention/keycloak/UniventionUserAccountControlStorageMapper.java)
+  - Runs on authentication failure.
+  - Only acts if the LDAP error is code 49 and contains `account expired`, `password expired`, or `The password has expired.`.
+    Otherwise Keycloak reports the generic `invalid_user_credentials`.
+  - Then reads the user's LDAP attributes and checks, in this order:
+    1. disabled: `shadowExpire == 1` or `krb5KDCFlags` bit 7, rejects the login with `accountDisabled`.
+    1. account expired: `shadowExpire <= today`, `krb5ValidEnd` or `sambaKickoffTime` in the past,
+       rejects the login with `accountExpired`.
+    1. password change needed: `shadowLastChange == 0`, `shadowLastChange + shadowMax < today`,
+       `krb5PasswordEnd` in the past, or `sambaPwdMustChange == 0`,
+       lets the login continue with the required action `UNIVENTION_UPDATE_PASSWORD`.
+    1. locked: `L` in `sambaAcctFlags` or `krb5KDCFlags` bit 17, rejects the login with `accountLocked`.
+
+### Flow
+
+1. An administrator sets `disabled=1` through UDM.
+1. UDM sets bit 7 in `krb5KDCFlags` and `D` in `sambaAcctFlags`.
+   The `userPassword` hash stays unchanged.
+1. The user logs in through Keycloak with the correct password.
+1. The LDAP bind passes the password check.
+   `shadowbind` sees bit 7 in `krb5KDCFlags` and fails the bind with additional info.
+1. The Keycloak mapper sees the additional info,
+   detects the disabled account,
+   and Keycloak shows "Account is disabled, contact your administrator".
+1. With a wrong password, the bind fails at the password check
+   and Keycloak shows the generic "Invalid username or password".
+1. Kerberos and Samba deny authentication because of their own flags.
+   PAM-based logins, for example plain UMC login or SSH, are denied as well,
+   because `pam_sss` (SSSD with LDAP backend) authenticates with an LDAP bind.
+1. An administrator sets `disabled=0`.
+   UDM removes the Kerberos and Samba flags,
+   and a `!` prefix on the hash, if present.
+   The existing password works again without being reset.
+
+## Expired accounts
+
+The components are the same as for [disabled accounts](#disabled-accounts).
+
+### Flow
+
+1. An administrator sets `userexpiry` through UDM.
+1. UDM sets `shadowExpire` (days since the Unix epoch),
+   `krb5ValidEnd`, and `sambaKickoffTime`.
+   The `userPassword` hash and the `disabled` state stay unchanged.
+1. The expiry day is reached: today `>= shadowExpire`.
+1. The user logs in through Keycloak with the correct password.
+1. The LDAP bind passes the password check.
+   `shadowbind` sees the expired `shadowExpire`
+   and fails the bind with `account expired`.
+1. The Keycloak mapper sees the additional info,
+   finds the account expired,
+   and rejects the login with `accountExpired`.
+1. With a wrong password, the bind fails at the password check
+   and Keycloak shows the generic "Invalid username or password".
+1. Kerberos denies authentication after `krb5ValidEnd`, Samba after `sambaKickoffTime`.
+   PAM-based logins are denied by the LDAP bind through `pam_sss`.
+1. An administrator removes `userexpiry` or sets a later date.
+   UDM updates the three attributes and the existing password works again.
+
+## Expired passwords
+
+The components are the same as for [disabled accounts](#disabled-accounts).
+
+### Flow
+
+1. The password expires in one of these ways:
+   - The password policy (`policies/pwhistory`, `expiryInterval`) expires it.
+     UDM sets `shadowMax` to `expiryInterval - 1`,
+     `shadowLastChange` to the day of the last password change,
+     and `krb5PasswordEnd`.
+     See [`passwordexpiry`](#passwordexpiry-password-expiration-time) for the calculation.
+   - An administrator sets `pwdChangeNextLogin=1`.
+     UDM sets `shadowLastChange` and `shadowMax` so that the password is already expired,
+     and `krb5PasswordEnd` to today.
+   - `shadowLastChange` is `0`, which means the password must be changed (`pam_unix` compatible).
+1. The password counts as expired if `shadowLastChange == 0`
+   or today `- shadowLastChange > shadowMax`.
+1. The user logs in through Keycloak with the correct, expired password.
+1. The LDAP bind passes the password check.
+   `shadowbind` fails the bind with `password expired`.
+1. The Keycloak mapper sees the additional info and finds that a password change is needed.
+   Instead of rejecting the login,
+   it adds the required action `UNIVENTION_UPDATE_PASSWORD`
+   and Keycloak shows the password change form.
+1. The user enters a new password.
+   Keycloak sends the change to the UMC endpoint `/univention/auth`
+   on the host set in `KEYCLOAK_PASSWORD_CHANGE_ENDPOINT`.
+   UDM sets the new password and resets `shadowLastChange`, `shadowMax`, and `krb5PasswordEnd`.
+1. Keycloak continues the login.
+1. With a wrong password, the bind fails at the password check
+   and Keycloak shows the generic "Invalid username or password".
+
+## Locked accounts
+
+### Components
+
+- **UDM** (`users/user`)
+  - Never sets the `locked` state by itself.
+    It reports `locked=1` if the lock bit is set in `sambaAcctFlags` (`L`) or `krb5KDCFlags` (bit 17).
+  - `unlock=1` removes both lock bits,
+    removes `pwdAccountLockedTime`,
+    and resets `sambaBadPasswordCount` and `sambaBadPasswordTime`.
+- **OpenLDAP overlay `ppolicy`**
+  - Locks accounts after failed bind attempts.
+    Disabled by default, enabled with the UCR variable `ldap/ppolicy/enabled`,
+    see [OpenLDAP `ppolicy` overlay module](#openldap-ppolicy-overlay-module).
+  - After `pwdMaxFailure` failed attempts it adds `pwdFailureTime` and `pwdAccountLockedTime` to the user object.
+  - Denies every bind while `pwdAccountLockedTime` is set
+    and `pwdLockoutDuration` is missing (default) or `0`.
+  - Returns plain `LDAP_INVALID_CREDENTIALS` without additional info,
+    so the Keycloak LDAP mapper cannot detect the lockout.
+- **Univention patch to `ppolicy`** ([70_ppolicy_udm_lock.quilt](https://git.knut.univention.de/univention/dev/internal/ucs-patches/-/blob/88bc1a71d68206f18be6c9687a0e3fdb43e862c3/openldap/ucs_5.2-0-errata5.2-6/2.5.13+dfsg-5/70_ppolicy_udm_lock.quilt))
+  - On lockout, calls `univention.lib.account` through the CPython C API
+    to also set the lock bits in `sambaAcctFlags` and `krb5KDCFlags`.
+    This makes the lockout visible in UDM.
+  - Does not invalidate the password hash.
+
+### Flow
+
+1. An administrator enables `ppolicy` (`ldap/ppolicy/enabled=true`) and configures the `pwdPolicy` object,
+   by default `cn=default,cn=ppolicy,cn=univention,$BASE`.
+1. The user fails to bind `pwdMaxFailure` times.
+1. `ppolicy` adds `pwdFailureTime` and `pwdAccountLockedTime`.
+   From now on every bind is denied, even with the correct password:
+   ```
+   dn: uid=test2,cn=users,dc=ucs,dc=test
+   pwdFailureTime: 20260907153608.418870Z
+   ...
+   pwdFailureTime: 20260907153616.679399Z
+   pwdAccountLockedTime: 20260907153616Z
+   ```
+1. The Univention patch sets the lock bits for Samba and Kerberos:
+   ```
+   sambaAcctFlags: [UL         ]
+   krb5KDCFlags: 131136
+   ```
+1. UDM reports `locked=1`.
+1. Keycloak shows the generic "Invalid username or password",
+   because `ppolicy` adds no additional info to the error.
+1. An administrator sets `unlock=1` through UDM.
+   UDM removes `pwdAccountLockedTime` and both lock bits.
+
+### Known limitations
+
+- **No specific Keycloak error for locked accounts.**
+  `ppolicy` returns plain `LDAP_INVALID_CREDENTIALS`.
+  A possible fix is to patch `ppolicy` to add "account locked" as additional info,
+  but only after the correct password was entered.
+  The Keycloak mapper already has an `accountLocked` check,
+  but it also has to accept the new message.
+- **Automatic unlock is incomplete.**
+  If `pwdLockoutDuration` is set,
+  `ppolicy` removes `pwdFailureTime` and `pwdAccountLockedTime` after that duration and LDAP bind works again.
+  The Samba and Kerberos lock bits set by the Univention patch stay,
+  so UDM still reports `locked=1` and Kerberos and Samba still deny authentication
+  ([Bug #53231](https://forge.univention.org/bugzilla/show_bug.cgi?id=53231)).
+- **Lockouts are not synchronized between mechanisms.**
+  A lockout in Samba/AD or PAM `faillog` does not lock the account in `ppolicy`, and vice versa.
+  See the related bugs below.
+- **The patch links `slapd` to Python.**
+  Setting the Samba and Kerberos lock bits in C inside the overlay would remove the CPython dependency.
+
+## Recommended way to read the states
+
+TODO: State the recommended interface for reading these states
+(UDM REST API, Provisioning API, SCIM, or LDAP).
+
 # Password policies
 UCS has different [ways to achieve password policy enforcement](https://docs.software-univention.de/manual/5.2/en/user-management/user-lockout.html).
 They are not synchronized: [epic 664](https://git.knut.univention.de/groups/univention/-/epics/664).
