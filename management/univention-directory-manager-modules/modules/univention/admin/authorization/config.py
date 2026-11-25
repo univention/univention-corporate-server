@@ -660,7 +660,7 @@ class UDMAuthorizationConfig:
             return f'{base}.matchSubtree({target})'
 
         if scope == 'children':
-            return f'{base}.scopeSubtree({target}) && {base} != {target}'
+            return f'{base}.matchSubtree({target}) && {base} != {target}'
 
         if scope == 'ancestors':
             return f'{target}.scopeSubtree({base}) && {base} != {target}'
