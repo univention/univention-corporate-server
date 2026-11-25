@@ -5,3 +5,7 @@
 
 Mail services
 =============
+
+.. toctree::
+
+   install
