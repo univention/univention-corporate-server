@@ -33,3 +33,6 @@ cve:
 - CVE-2026-114945
 - CVE-2026-114946
 - CVE-2026-91403
+erratum: 707
+announced: 2026-11-25
+support: core
