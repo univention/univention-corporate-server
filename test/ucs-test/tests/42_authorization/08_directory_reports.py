@@ -12,7 +12,7 @@ from types import SimpleNamespace
 
 import pytest
 
-import univention.admin.authorization as udm_auth
+import univention.admin.authorization._wrapper as udm_auth
 from univention.admin import authorization, uldap
 from univention.config_registry import ucr as _ucr
 from univention.directory.reports import Report

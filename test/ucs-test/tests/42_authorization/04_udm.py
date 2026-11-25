@@ -10,7 +10,7 @@ from dataclasses import dataclass
 
 import pytest
 
-import univention.admin.authorization as udm_auth
+import univention.admin.authorization._wrapper as udm_auth
 from univention.admin import modules
 from univention.admin.objects import get_object
 from univention.admin.uexceptions import noObject, permissionDenied
