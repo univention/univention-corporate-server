@@ -12,6 +12,7 @@ from types import SimpleNamespace
 import pytest
 
 from univention.admin.rest.client import UDM as UDM_REST, UnprocessableEntity
+from univention.config_registry import ucr
 from univention.testing.strings import random_username
 from univention.testing.umc import Client
 from univention.testing.utils import UCSTestDomainAdminCredentials
@@ -375,7 +376,7 @@ def sub_container_with_user(ou, udm):
 
 
 @pytest.fixture
-def setup_role(ou, udm, ucr, ldap_base):
+def setup_role(ou, udm):
     policy_files = []
 
     def _func(acl, role):
@@ -386,7 +387,7 @@ def setup_role(ou, udm, ucr, ldap_base):
         _, username = udm.create_user(
             guardianRoles=[role],
             groups=[ucr.get('directory/manager/rest/authorized-groups/test-api-access')],
-            policy_reference=[f'cn=organizational-unit-admins,cn=UMC,cn=policies,{ldap_base}'],
+            policy_reference=[f'cn=organizational-unit-admins,cn=UMC,cn=policies,{ucr["ldap_base"]}'],
         )
 
         _restart_auth_services(USE_CERBOS)
