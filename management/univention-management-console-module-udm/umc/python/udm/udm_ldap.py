@@ -26,7 +26,7 @@ from ldap.dn import explode_dn
 from ldap.filter import filter_format
 
 import univention.admin as udm
-import univention.admin.authorization as udm_auth
+import univention.admin.authorization._wrapper as udm_auth
 import univention.admin.layout as udm_layout
 import univention.admin.mapping as udm_mapping
 import univention.admin.modules as udm_modules

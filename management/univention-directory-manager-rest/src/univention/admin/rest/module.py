@@ -40,7 +40,7 @@ from tornado.concurrent import run_on_executor
 from tornado.web import Finish, HTTPError, RequestHandler
 
 import univention
-import univention.admin.authorization as udm_auth
+import univention.admin.authorization._wrapper as udm_auth
 import univention.admin.license as udm_license
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects

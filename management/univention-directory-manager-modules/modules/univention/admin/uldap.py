@@ -347,8 +347,7 @@ class access:
         self.require_license = False
         self.allow_modify = True
 
-        from univention.admin.authorization import Authorization
-
+        from univention.admin.authorization._wrapper import Authorization
         self.authz = Authorization()
 
     @property
