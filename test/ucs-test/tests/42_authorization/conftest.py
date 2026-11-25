@@ -407,7 +407,7 @@ def setup_role(ou, udm):
 
 
 @pytest.fixture(scope='session')
-def guardian_role(ucr):
+def guardian_role():
     policy_files = []
 
     def _func(acl):
