@@ -654,7 +654,7 @@ class UDMAuthorizationConfig:
             return f'{base} == {target}'
 
         if scope == 'one':
-            return f'{base}.scopeOneLevel({target})'
+            return f'{base}.matchOneLevel({target})'
 
         if scope == 'subtree':
             return f'{base}.matchSubtree({target})'
