@@ -657,7 +657,7 @@ class UDMAuthorizationConfig:
             return f'{base}.scopeOneLevel({target})'
 
         if scope == 'subtree':
-            return f'{base}.scopeSubtree({target})'
+            return f'{base}.matchSubtree({target})'
 
         if scope == 'children':
             return f'{base}.scopeSubtree({target}) && {base} != {target}'
