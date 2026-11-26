@@ -616,7 +616,16 @@ class UniventionDirectoryManagerPolicies:
         return '\n'.join(lines) + '\n'
 
     def _global_deny_rules(self, modname):
-        global_rules = []
+        global_rules = [
+            {
+                # another role of a domain administrator must not hide properties or make them read-only or write-only
+                'name': 'deny-property-restrictions-for-domain-administrator',
+                'actions': [udm_property_action_wildcards('*', permission) for permission in ('none', 'readonly', 'writeonly')],
+                'roles': [ROLE_POLICY_PARENT],
+                'effect': 'EFFECT_DENY',
+                'condition': {'match': {'expr': f'"{DOMAIN_ADMIN_ROLE}" in P.roles'}},
+            },
+        ]
         if modname == 'users/user':
             global_rules.append(
                 {
