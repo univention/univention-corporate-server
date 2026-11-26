@@ -29,7 +29,6 @@ setup(
     license='GNU Affero General Public License v3',
 
     name=dch.package,
-    version=dch.version.full_version.split('A~')[0],
     maintainer=realname,
     maintainer_email=email_address,
 
