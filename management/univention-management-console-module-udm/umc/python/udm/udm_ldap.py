@@ -279,8 +279,9 @@ class LDAP_AuthenticationFailed(UMCError):
 
 class ObjectDoesNotExist(UMCError):
 
-    def __init__(self, ldap_dn):
+    def __init__(self, ldap_dn, check_exists=True):
         self.ldap_dn = ldap_dn
+        self.check_exists = check_exists
         super().__init__()
 
     @LDAP_Connection
@@ -293,7 +294,7 @@ class ObjectDoesNotExist(UMCError):
             return True
 
     def _error_msg(self):
-        if self._ldap_object_exists():
+        if self.check_exists and self._ldap_object_exists():
             yield _('Could not identify the LDAP object type for %s.') % (self.ldap_dn,)
             yield _('If the problem persists please try to relogin into Univention Management Console.')
         else:
@@ -1511,6 +1512,8 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
     except (LDAPError, udm_errors.ldapError):
         raise
     except udm_errors.base as e:
+        if isinstance(e, udm_errors.noObject) and e.args and e.args[0] in options['dependencies'].values():
+            raise ObjectDoesNotExist(e.args[0], check_exists=not ldap_connection.authz.enabled)
         if isinstance(e, udm_errors.noObject):
             container = options.get('base')
             if container and not ldap_connection.authz_connection.get(container):
