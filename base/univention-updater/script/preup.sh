@@ -147,6 +147,36 @@ case "${locale:-}" in
 	*) /usr/sbin/univention-config-registry set locale="${locale:+$locale }en_US.UTF-8:UTF-8" ;;
 esac
 
+# univention/dev/ucs#3935
+obsolete_packages=(
+	univention-management-module-udm
+	univention-config-registry
+	univention-ifplugd
+	univention-skel
+	univention-docker-container-mode
+	univention-mail-postfix-forward
+	univention-ldap-overlay-memberof
+	univention-nagios-ad-connector
+	python3-univention-radius
+)
+remove_obsolete_packages () {
+	local pkg installed=() var="update${VERSION}/skip/remove_obsolete_packages"
+	if is_ucr_true "$var"; then
+		echo "Skipping removal of obsolete packages as requested by $var" >&3
+		return 0
+	fi
+	for pkg in "${obsolete_packages[@]}"; do
+		dpkg -l "$pkg" 2>&3 | grep -q ^ii && installed+=("$pkg")
+	done
+	[ ${#installed[@]} -gt 0 ] || return 0
+	echo "Removing obsolete packages: ${installed[*]}"
+	if ! apt-get -y remove --purge "${installed[@]}" >&3 2>&3; then
+		echo "ERROR: Failed to remove obsolete packages: ${installed[*]}"
+		exit 1
+	fi
+}
+remove_obsolete_packages
+
 # autoremove before the update
 is_ucr_true update53/skip/autoremove ||
 	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove >&3 2>&3
