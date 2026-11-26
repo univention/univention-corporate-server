@@ -6,5 +6,16 @@
 # SPDX-FileCopyrightText: 2002-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+export PYBUILD_SYSTEM=pyproject
+export PYBUILD_DISABLE = test
+
+override_dh_auto_build:
+	$(MAKE) build
+	dh_auto_build
+
+override_dh_auto_clean:
+	$(MAKE) clean
+	dh_auto_clean
+
 %:
-	dh $@ --with python3,umc,ucr,univention-join
+	dh $@ --with python3,umc,ucr,univention-join --buildsystem=pybuild
