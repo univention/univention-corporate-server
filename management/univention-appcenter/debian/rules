@@ -8,7 +8,6 @@
 
 export DH_VERBOSE=1
 export PYBUILD_SYSTEM=pyproject
-export SETUPTOOLS_SCM_PRETEND_VERSION := $(shell dpkg-parsechangelog -SVersion | sed -e 's/^[0-9]*://' -e 's/-[^-]*$$//')
 export PYBUILD_TEST_PYTEST = 1
 # The UCS unit tests use a separate test setup, not pybuild's wheel test tree.
 export PYBUILD_DISABLE = test
