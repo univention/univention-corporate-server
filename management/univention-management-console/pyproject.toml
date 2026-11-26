@@ -1,0 +1,57 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+# emtpy but present!
+
+[project]
+name = "univention-management-console"
+dynamic = ["version"]
+description = "Univention Management Console"
+license = { text = "AGPL-3.0-only" }
+requires-python = ">= 3.11"
+dependencies = [
+    "python-ldap",
+    "tornado",
+    "univention-config-registry",
+    "univention-debug-python",
+    "univention-directory-manager-modules",
+    "univention-lib",
+    "univention-python",
+]
+authors = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+maintainers = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+
+[project.urls]
+Homepage = "https://www.univention.de/"
+Repository = "https://github.com/univention/univention-corporate-server/"
+Issues = "https://forge.univention.org/bugzilla/"
+
+[project.scripts]
+univention-management-console-server = "univention.management.console.server:main"
+
+[tool.setuptools]
+packages = [
+    "univention",
+    "univention.management",
+    "univention.management.console",
+    "univention.management.console.modules",
+]
+package-dir = { "" = "src" }
+script-files = [
+    "scripts/univention-management-console-module",
+    "scripts/univention-management-console-client",
+    "scripts/univention-management-console-acls",
+    "scripts/univention-management-console-settings",
+]
+
+[tool.setuptools.data-files]
+"share/univention-management-console/categories" = ["data/categories/*.xml"]
