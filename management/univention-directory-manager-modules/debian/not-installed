@@ -1,0 +1,4 @@
+usr/lib/python3.13/dist-packages/univention/admin/
+usr/lib/python3.13/dist-packages/univention/admincli/
+usr/lib/python3.13/dist-packages/univention/udm/
+usr/lib/python3.13/dist-packages/univention_directory_manager_modules-*.dist-info/
