@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 name = "ucs-test"
 dynamic = ["version"]
 description = "UCS test framework"
-license = { text = "AGPL-3.0-only" }
+license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 dependencies = [
     "univention-config-registry",

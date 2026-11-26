@@ -12,7 +12,6 @@ SPACE := $(BLANK) $(BLANK)
 COMMA := ,
 
 export PYBUILD_SYSTEM=pyproject
-export SETUPTOOLS_SCM_PRETEND_VERSION := $(shell dpkg-parsechangelog -SVersion | sed -e 's/^[0-9]*://' -e 's/-[^-]*$$//')
 
 %:
 	dh $@ --with python3,univention-l10n,umc --buildsystem=pybuild
