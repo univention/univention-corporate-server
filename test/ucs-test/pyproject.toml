@@ -1,3 +1,37 @@
+[build-system]
+requires = ["setuptools >= 64", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+# emtpy but present!
+
+[project]
+name = "ucs-test"
+dynamic = ["version"]
+description = "UCS test framework"
+license = { text = "AGPL-3.0-only" }
+requires-python = ">= 3.11"
+dependencies = [
+    "univention-config-registry",
+    "univention-debug-python",
+    "univention-directory-manager-modules",
+    "univention-lib",
+]
+authors = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+maintainers = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+
+[project.urls]
+Homepage = "https://www.univention.de/"
+Repository = "https://github.com/univention/univention-corporate-server/"
+Issues = "https://forge.univention.org/bugzilla/"
+
+[tool.setuptools.packages.find]
+include = ["univention.testing*"]
+
 [tool.ruff]
 extend = "../../pyproject.toml"
 [tool.ruff.lint]

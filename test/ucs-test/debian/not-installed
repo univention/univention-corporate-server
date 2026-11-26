@@ -1,0 +1,3 @@
+usr/lib/python3*/dist-packages/univention/pytest_assert_rewrites.py
+usr/lib/python3*/dist-packages/univention/testing/
+usr/lib/python3*/dist-packages/ucs_test-*.dist-info/
