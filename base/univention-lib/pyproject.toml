@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 name = "univention-lib"
 dynamic = ["version"]
 description = "UCS - common scripting functions for Python 3 scripts"
-license = { text = "AGPL-3.0-only" }
+license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 
 dependencies = [
