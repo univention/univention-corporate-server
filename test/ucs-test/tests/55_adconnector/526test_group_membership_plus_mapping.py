@@ -157,6 +157,44 @@ def _ad_member_count(ad_group_dn):
     return len({m.decode('UTF-8').lower() for m in AD.get(ad_group_dn, ['member']).get('member', [])})
 
 
+CONNECTOR_LOG = '/var/log/univention/connector-ad.log'
+
+
+def _log_offset():
+    return os.path.getsize(CONNECTOR_LOG)
+
+
+def _wait_for_ad_to_ucs(offset, groupname, timeout=180, interval=3):
+    """
+    Wait until the AD->UCS direction has processed `groupname`.
+
+    group_members_sync_from_ucs() removes a member from the AD group only when
+    it finds that member in group_members_cache_con - or when the group's
+    sync_mode is "write"/"none". For a group the connector created itself that
+    cache is empty: sync_from_ucs() resets it on add
+
+        if property_type == 'group':
+            self.group_members_cache_con[object['dn'].lower()] = set()
+
+    and group_members_sync_from_ucs() never writes to it, it only reads it.
+    The cache is filled by the other direction, in group_members_sync_to_ucs().
+
+    So in sync mode a removal only reaches AD once an AD->UCS poll has seen the
+    group. Waiting for that poll is what makes the removal below deterministic
+    instead of a race against the poll interval.
+    """
+    deadline = time.monotonic() + timeout
+    needle = 'sync AD > UCS'
+    while time.monotonic() < deadline:
+        with open(CONNECTOR_LOG, 'rb') as fd:
+            fd.seek(offset)
+            tail = fd.read().decode('UTF-8', 'replace')
+        if any(needle in line and groupname in line for line in tail.splitlines()):
+            return True
+        time.sleep(interval)
+    return False
+
+
 @pytest.mark.parametrize("mode", ["read", "sync"])
 def test_large_group_membership_through_mapped_ou(udm, ucr, mode, mapped_ad_ou):
     """A large group under the custom-mapped OU must sync fully to UCS."""
@@ -230,12 +268,20 @@ def test_group_membership_ucs_to_ad_through_mapped_ou(udm, ucr, mode):
         wait_for_sync()  # let the users sync over first
 
         groupname = random_string()
+        offset = _log_offset()
         group_dn, _ = udm.create_group(name=groupname, users=member_dns)
 
         ad_group_dn = f"cn={groupname},cn=groups,{ad_base}"
         got = _wait_for_count(lambda: _ad_member_count(ad_group_dn), SMALL_MEMBER_COUNT)
         assert got == SMALL_MEMBER_COUNT, (
             f"expected all {SMALL_MEMBER_COUNT} members under the +2-mapped OU to sync to AD, got {got}"
+        )
+
+        # the removal below needs group_members_cache_con to know the members,
+        # and only the AD->UCS direction fills it - see _wait_for_ad_to_ucs()
+        assert _wait_for_ad_to_ucs(offset, groupname), (
+            f"the AD->UCS direction never picked up {groupname}, so "
+            "group_members_cache_con is still empty and the removal would be kept"
         )
 
         # remove half - exercises group_members_sync_from_ucs()'s del path
