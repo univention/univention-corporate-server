@@ -18,6 +18,7 @@ import subprocess
 import logging
 import shutil
 import tarfile
+import xml.etree.ElementTree as ET  # noqa: S405
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -130,6 +131,7 @@ class UniventionDirectoryManagerPolicies:
         subparser.add_argument('--image', default=CERBOS_IMAGE, help='Docker image containing the Cerbos ldapDN extension')
         subparser.add_argument('--cerbos-binary', default='cerbos', help='Local Cerbos binary for --runner=local')
         subparser.add_argument('--test-filter', help='Forward a Cerbos test filter to cerbos compile')
+        subparser.add_argument('--junit', metavar='FILE', help='Write the results of all runs to FILE in JUnit format')
         subparser.add_argument('-v', '--verbose', action='store_true', help='Log every generated policy file and the temporary test directories')
 
         subparser = subparsers.add_parser('prune')
@@ -196,7 +198,7 @@ class UniventionDirectoryManagerPolicies:
                     content = path.read_text()
                     path.write_text(content.replace(TEST_FIXTURE_BASE, ldap_base))
 
-    def _compile_tests(self, tree):
+    def _compile_tests(self, tree, run):
         """Compile a temporary tree, using the same Cerbos CLI as the old runner."""
         if self.args.runner == 'docker':
             command = [
@@ -214,14 +216,40 @@ class UniventionDirectoryManagerPolicies:
         if self.args.test_filter:
             command.extend(['--test-filter', self.args.test_filter])
 
+        if self.args.junit:
+            command.extend(['--test-output', 'junit'])
+
         command.append(policy_dir)
         if self.args.verbose:
             log.info('Running Cerbos tests: %s', tree)
 
+        kwargs = {}
+        if self.args.junit:
+            kwargs.update(stdout=subprocess.PIPE, text=True)
+
         try:
-            return subprocess.run(command, check=False).returncode
+            proc = subprocess.run(command, check=False, **kwargs)
         except FileNotFoundError as exc:
             raise SystemExit(f'error: executable not found: {exc.filename}') from exc
+
+        if self.args.junit:
+            self._collect_junit(run, proc.stdout)
+        return proc.returncode
+
+    def _collect_junit(self, run, output):
+        """Add the test suites of one run to the combined JUnit report."""
+        try:
+            suites = ET.fromstring(output).findall('testsuite')  # noqa: S314
+        except ET.ParseError:
+            # cerbos compile failed before running any test, e.g. on an invalid policy
+            suite = ET.Element('testsuite', name=run, tests='1', errors='1')
+            case = ET.SubElement(suite, 'testcase', classname=run, name='cerbos compile')
+            ET.SubElement(case, 'error', message='cerbos compile produced no test results').text = output
+            suites = [suite]
+
+        for suite in suites:
+            print(f"{suite.get('name')}: {suite.get('tests')} tests, {suite.get('failures', '0')} failed, {suite.get('errors', '0')} errors", flush=True)
+            self.junit.append(suite)
 
     def run_tests(self):
         """Test installed policies and each suite with its own DSL in isolation."""
@@ -236,6 +264,7 @@ class UniventionDirectoryManagerPolicies:
 
         POLICY_TMP.mkdir(parents=True, exist_ok=True)
         result = 0
+        self.junit = ET.Element('testsuites')
         with TemporaryDirectory(dir=POLICY_TMP, prefix='.udm-cerbos-tests-') as tmp:
             workdir = Path(tmp)
             runs = ([('installed', installed, Path(self.args.config_dir))] if installed else [])
@@ -254,9 +283,12 @@ class UniventionDirectoryManagerPolicies:
                     self.args.config_dir = original_config_dir
 
                 self._copy_test_suites(selected)
-                code = self._compile_tests(self.output_root)
+                code = self._compile_tests(self.output_root, name)
                 if code:
                     result = code
+
+        if self.args.junit:
+            ET.ElementTree(self.junit).write(self.args.junit, encoding='utf-8', xml_declaration=True)
 
         if result:
             raise SystemExit(result)

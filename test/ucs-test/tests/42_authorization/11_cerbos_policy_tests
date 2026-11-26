@@ -1,0 +1,21 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: Run the Cerbos policy test suites against the policies generated from the UDM authorization DSL
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+## exposure: safe
+## packages:
+##  - univention-guardian-server
+## external-junit: /tmp/42_authorization_11_cerbos_policy_tests.xml
+
+# shellcheck source=/dev/null
+. /usr/share/univention-lib/ucr.sh || exit 137
+
+is_ucr_true directory/manager/delegative-administration/guardian || exit 77
+
+junit=/tmp/42_authorization_11_cerbos_policy_tests.xml
+rm -f "$junit"
+image="$(sed -n 's/^ *image: //p' /usr/share/univention-guardian-server/docker-compose.yaml)"
+
+exec /usr/share/univention-directory-manager-tools/univention-configure-udm-authorization test --image "$image" --junit "$junit"
