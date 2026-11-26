@@ -7,7 +7,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 export PYBUILD_SYSTEM=pyproject
-export SETUPTOOLS_SCM_PRETEND_VERSION := $(shell dpkg-parsechangelog -SVersion | sed -e 's/^[0-9]*://' -e 's/-[^-]*$$//')
 export PYBUILD_DISABLE = test
 
 override_dh_auto_build:

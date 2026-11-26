@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 name = "univention-admin-diary"
 dynamic = ["version"]
 description = "UCS - Univention Admin Diary"
-license = { text = "AGPL-3.0-only" }
+license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 
 dependencies = ["univention-config-registry"]
