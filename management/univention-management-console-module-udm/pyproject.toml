@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 name = "univention-management-console-module-udm"
 dynamic = ["version"]
 description = "UCS - UMC module for UDM"
-license = { text = "AGPL-3.0-only" }
+license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 dependencies = [
     "python-ldap",
