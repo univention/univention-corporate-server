@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 name = "univention-debug-python"
 dynamic = ["version"]
 description = "Univention debugging and logging library"
-license = { text = "AGPL-3.0-only" }
+license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 dependencies = ["logfmter"]
 authors = [
