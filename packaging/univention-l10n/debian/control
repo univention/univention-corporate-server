@@ -5,8 +5,10 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper-compat (=13),
  dh-python,
+ pybuild-plugin-pyproject,
  python3-all,
  python3-setuptools,
+ python3-setuptools-scm,
 Standards-Version: 3.8.2
 
 Package: univention-l10n-dev

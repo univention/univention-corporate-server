@@ -422,7 +422,7 @@ def create_json_file(po_file: str) -> None:
                 raise Error('The amount of plural forms for a translation in %s doesn\'t match "nplurals" from the file\'s header entry "Plural-Forms".' % (po_file))
 
     with open(json_file, 'w') as fd:
-        json.dump(data, fd)
+        json.dump(data, fd, sort_keys=True)
 
 
 def po_to_json(po_path: str, json_output_path: str) -> None:
