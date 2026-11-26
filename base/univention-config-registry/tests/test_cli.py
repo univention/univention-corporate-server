@@ -9,7 +9,7 @@ from copy import deepcopy
 import pytest
 
 import univention.config_registry.frontend as ucrfe
-from univention.config_registry import main
+from univention.config_registry.frontend import main
 
 
 @pytest.fixture(autouse=True)

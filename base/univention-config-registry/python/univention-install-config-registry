@@ -12,8 +12,7 @@ import sys
 from argparse import ArgumentParser
 from shlex import quote
 
-import univention.config_registry
-from univention.debhelper import binary_packages, doIt
+from univention.debhelper import binary_packages, doIt, parseRfc822
 
 
 def tmpDir(package):
@@ -67,7 +66,7 @@ def do_package(package):
         return
 
     with open(n_ucr) as f_ucr:
-        for item in univention.config_registry.parseRfc822(f_ucr.read()):
+        for item in parseRfc822(f_ucr.read()):
             typ = item['Type'][0]
             if typ == 'file':
                 f = item['File'][0]
