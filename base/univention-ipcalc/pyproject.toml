@@ -1,0 +1,71 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+# emtpy but present!
+
+[project]
+name = "univention-ipcalc"
+dynamic = ["version"]
+description = "Univention Corporate Server IP calculation helper"
+readme = "README.md"
+license = "AGPL-3.0-only"
+requires-python = ">= 3"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Environment :: Web Environment",
+    "Intended Audience :: System Administrators",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.11",
+    "Natural Language :: English",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: System :: Software Distribution",
+]
+dependencies = []
+authors = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+maintainers = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+
+[project.urls]
+Homepage = "https://www.univention.de/"
+Repository = "https://github.com/univention/univention-corporate-server/"
+Issues = "https://forge.univention.org/bugzilla/"
+
+[project.scripts]
+univention-ipcalc6 = "univention.ipcalc.__main__:main"
+
+[tool.setuptools]
+platforms = ["UCS"]
+packages = ["univention", "univention.ipcalc"]
+
+[tool.pytest.ini_options]
+required_plugins = ["pytest-cov"]
+testpaths = ["tests"]
+addopts = "--verbose --showlocals -r sx --cov=univention/ipcalc/ --cov-branch --cov-report=term-missing --doctest-modules"
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "except ImportError:",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
+
+[tool.coverage.html]
+directory = "pytest"
+
+[tool.coverage.xml]
+output = "coverage.xml"
