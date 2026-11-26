@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 name = "univention-directory-listener"
 dynamic = ["version"]
 description = "UCS - Directory Listener"
-license = { text = "AGPL-3.0-only" }
+license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 dependencies = [
     "univention-debug-python",
