@@ -9,17 +9,9 @@
 
 import os
 import subprocess
-from email.utils import parseaddr
 
-from debian.changelog import Changelog
-from debian.deb822 import Deb822
 from setuptools import Command, setup
 from setuptools.command.build_py import build_py
-
-
-dch = Changelog(open('debian/changelog'))
-dsc = Deb822(open('debian/control'))
-realname, email_address = parseaddr(dsc['Maintainer'])
 
 
 class BuildI18N(Command):
@@ -79,12 +71,6 @@ setup(
     },
     data_files=[('share/univention-management-console/categories', all_xml_files_in('data/categories'))],
     cmdclass={'build_py': Build, 'build_i18n': BuildI18N},
-    test_suite='',
-
-    name=dch.package,
-    version=dch.version.full_version.split('A~')[0],
-    maintainer=realname,
-    maintainer_email=email_address,
     url='https://www.univention.de/',
     description='Univention Management Console',
 )
