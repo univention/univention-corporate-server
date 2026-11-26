@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 26. Nov 2026
+     - :ref:`system-administration-mail-install`
+     - Add section about installation of the mail server.
+
    * - 13. Nov 2026
      - :ref:`references-ucr-variables`
      - Add :envvar:`domainname` and :envvar:`hostname` to the UCR variable reference.
