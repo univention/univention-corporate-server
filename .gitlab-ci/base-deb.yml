@@ -37,7 +37,7 @@ stages:
       if [ "$ORIGINAL_SOURCE" = "merge_request_event" ]; then
         apt-get --assume-yes --no-install-recommends install devscripts
         current_date=$(dpkg-parsechangelog -SDate)
-        dch -D unstable -v "$(dpkg-parsechangelog -SVersion)A~${UCS_VERSION//-/.}.$(date +%Y%m%d%H%M)" "pipeline version bump"
+        dch -D unstable -v "$(dpkg-parsechangelog -SVersion)A0+ucs.${UCS_VERSION//-/.}.$(date +%Y%m%d%H%M)" "pipeline version bump"
         sed -i "0,/^ -- /s/^ -- .*$/ -- Univention GmbH <packages@univention.de>  $current_date/" debian/changelog
       fi
     - find -exec touch -m -h -c -d "@${SOURCE_DATE_EPOCH:-$(dpkg-parsechangelog -STimestamp)}" {} +
