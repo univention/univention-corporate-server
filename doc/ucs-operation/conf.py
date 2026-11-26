@@ -59,6 +59,7 @@ extensions = [
     'sphinxcontrib.bibtex',
     'sphinx_inline_tabs',
     'sphinx_design',
+    'sphinx_llms_txt',
 ]
 
 intersphinx_mapping = {
