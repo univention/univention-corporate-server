@@ -13,10 +13,11 @@ Build-Depends:
  libunivention-config-dev (>= 17.3.0),
  libunivention-debug-dev (>= 0.8),
  libunivention-policy-dev,
+ pybuild-plugin-pyproject,
  python3-all,
  python3-all-dev,
- python3-debian,
  python3-setuptools,
+ python3-setuptools-scm,
  univention-config-dev (>= 17.3.0),
 
 Package: univention-directory-listener
