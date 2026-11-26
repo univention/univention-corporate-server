@@ -6,9 +6,10 @@ Build-Depends:
  debhelper-compat (=13),
  dh-python,
  npm,
+ pybuild-plugin-pyproject,
  python3-all,
- python3-debian,
  python3-setuptools,
+ python3-setuptools-scm,
  univention-config-dev (>= 15.0.3),
  univention-join-dev,
  univention-l10n-dev (>= 7.0.1),
@@ -49,6 +50,7 @@ Depends:
  python3-requests,
  python3-tornado,
  python3-univention-directory-manager (>= 15.0.20-9),
+ ${python3:Depends},
 Description: Library for Univention Portal
  .
  It is part of Univention Corporate Server (UCS), an
