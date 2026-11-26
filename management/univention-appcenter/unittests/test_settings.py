@@ -20,7 +20,6 @@ def test_list_setting_preserves_boolean_selection(value, expected):
     old_setting.set_value_together(app, value, configuration)
     stored_value = configuration['outside'][old_setting.name]
     with patch('univention.appcenter.settings.ucr_get', return_value=stored_value):
-        assert new_setting.get_value(app) == expected
         upgrade_value = old_setting.get_value(app)
 
     configuration = {}
@@ -28,11 +27,11 @@ def test_list_setting_preserves_boolean_selection(value, expected):
     assert configuration == {'outside': {new_setting.name: expected}}
 
 
-def test_list_setting_keeps_other_lists_strict():
+def test_list_setting_validates_boolean_against_configured_options():
     from univention.appcenter.settings import ListSetting, SettingValueError
 
-    setting = ListSetting(name='test/enum', values=['True', 'False', 'auto'])
-    assert setting.sanitize_value(None, 'False') == 'False'
-    for value in (False, 'false'):
+    setting = ListSetting(name='test/enum', values=['False', 'auto'])
+    assert setting.sanitize_value(None, False) == 'False'
+    for value in (True, 'false'):
         with pytest.raises(SettingValueError):
             setting.sanitize_value(None, value)

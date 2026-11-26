@@ -510,12 +510,19 @@ def test_list_setting(installed_component_app):
 Type = List
 Values = v1, v2, v3
 Labels = Label 1, Label 2\\, among others, Label 3
+Labels[de] = Eins, Zwei, Drei
 Description = My Description 8
 '''
 
     app, settings = fresh_settings(content, installed_component_app, 1)
     setting, = settings
     assert repr(setting) == "ListSetting(name='test/setting8')"
+
+    english, = Apps(locale='en').find(app.id).get_settings()
+    german, = Apps(locale='de').find(app.id).get_settings()
+    assert english.labels == ['Label 1', 'Label 2, among others', 'Label 3']
+    assert german.labels == ['Eins', 'Zwei', 'Drei']
+    assert german.values == english.values == ['v1', 'v2', 'v3']
 
     with Configuring(app, revert='ucr') as config:
         with pytest.raises(Abort):

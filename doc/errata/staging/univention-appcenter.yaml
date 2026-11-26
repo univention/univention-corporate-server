@@ -3,7 +3,7 @@ release: "5.2"
 version: [7]
 scope: ucs_5.2-0-errata5.2-7
 src: univention-appcenter
-fix: 11.7.5
+fix: 11.7.6
 desc: |
  This update addresses the following issues:
  * LDAP access control rules for App Center objects have been optimized to
@@ -12,7 +12,9 @@ desc: |
    rules can be activated by manually re-running the `30univention-appcenter`
    join script.
  * App upgrades now preserve the selected value when an app replaces a
-   checkbox with a list offering the values `True` and `False`.
+   checkbox with a list offering the values `True` and `False`. The App
+   Center displays translated labels for list options when the app provides
+   them.
  * `univention-app upgrade` has a new internal option that automated tests
    use to install an older version of a Docker app. It is not intended for
    production use.

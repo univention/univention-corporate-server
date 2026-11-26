@@ -151,14 +151,13 @@ class BoolSetting(Setting):
 
 
 class ListSetting(Setting):
-    labels = IniSectionListAttribute()
+    labels = IniSectionListAttribute(localisable=True)
     values = IniSectionListAttribute()
 
     def sanitize_value(self, app, value):
         super().sanitize_value(app, value)
-        # Preserve existing values when changing a Bool setting to a True/False list.
-        if set(self.values) == {'True', 'False'} and (isinstance(value, bool) or value in ('true', 'false')):
-            value = str(value).capitalize()
+        if isinstance(value, bool):
+            value = str(value)
         if value is not None and value not in self.values:
             raise SettingValueError('%s: %r is not a valid option' % (self.name, value))
         return value
