@@ -1,0 +1,68 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+# emtpy but present!
+
+[project]
+name = "univention-l10n"
+dynamic = ["version"]
+description = "Univention Corporate Server localization tools"
+readme = "README.md"
+license = { text = "AGPL-3.0-only" }
+requires-python = ">= 3.7"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.11",
+    "Natural Language :: English",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Software Development :: Build Tools",
+]
+dependencies = [
+    "lxml",
+    "python-debian",
+    "python-magic",
+    "polib",
+]
+authors = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+maintainers = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+
+[project.urls]
+Homepage = "https://www.univention.de/"
+Repository = "https://github.com/univention/univention-corporate-server/"
+Issues = "https://forge.univention.org/bugzilla/"
+
+[project.scripts]
+univention-l10n = "univention.l10n.cmd:main"
+univention-l10n-build = "univention.l10n.cmd:main_build"
+univention-l10n-install = "univention.l10n.cmd:main_install"
+
+[tool.setuptools]
+platforms = ["any"]
+packages = ["univention.l10n"]
+package-data = { "univention.l10n" = ["*.tmpl"] }
+script-files = [
+    "univention-ucs-translation-build-package",
+    "univention-ucs-translation-fakemessage",
+    "univention-ucs-translation-merge",
+]
+
+[tool.mypy]
+ignore_missing_imports = false
+files = ["."]
+
+[[tool.mypy.overrides]]
+module = ["setuptools", "apt_pkg", "debian.changelog"]
+ignore_missing_imports = true
