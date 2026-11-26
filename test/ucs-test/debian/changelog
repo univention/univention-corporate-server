@@ -1,3 +1,9 @@
+ucs-test (12.7.27) unstable; urgency=medium
+
+  * Bug #60195: add 25_directory-notifier/02_ldap_reconnect.sh
+
+ -- Felix Botner <botner@univention.de>  Thu, 26 Nov 2026 16:41:03 +0100
+
 ucs-test (12.7.26) unstable; urgency=medium
 
   * Bug #60188: Test localized labels for App Center list settings.
