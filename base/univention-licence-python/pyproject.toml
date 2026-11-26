@@ -12,9 +12,10 @@ build-backend = "setuptools.build_meta"
 name = "univention-licence-python"
 dynamic = ["version"]
 description = "Univention license validation library"
-license = { text = "AGPL-3.0-only" }
+license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 dependencies = [
+    "cryptography",
     "python-ldap",
     "univention-debug-python",
     "univention-python",
@@ -32,8 +33,7 @@ Repository = "https://github.com/univention/univention-corporate-server/"
 Issues = "https://forge.univention.org/bugzilla/"
 
 [tool.setuptools]
-packages = []
-include-package-data = false
+packages = ["univention"]
 
 [tool.setuptools.package-dir]
 "univention" = "python/univention"

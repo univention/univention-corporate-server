@@ -8,7 +8,6 @@ Build-Depends:
  pybuild-plugin-pyproject,
  python3-all,
  python3-cryptography,
- python3-debian,
  python3-ldap,
  python3-pytest <!nocheck>,
  python3-setuptools,
