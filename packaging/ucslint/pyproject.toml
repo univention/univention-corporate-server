@@ -1,0 +1,68 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+# emtpy but present!
+
+[project]
+name = "ucslint"
+dynamic = ["version"]
+description = "Check packaging for UCS"
+license = "AGPL-3.0-only"
+requires-python = ">= 3.7"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.11",
+    "Natural Language :: English",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Software Development :: Build Tools",
+]
+dependencies = [
+    "python-apt",
+    "python-debian",
+]
+authors = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+maintainers = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+
+[project.urls]
+Homepage = "https://www.univention.de/"
+Repository = "https://github.com/univention/univention-corporate-server/"
+Issues = "https://forge.univention.org/bugzilla/"
+
+[project.optional-dependencies]
+junit = ["junit-xml>=1.8"]
+
+[project.scripts]
+ucslint = "univention.ucslint.main:main"
+ucslint-pre-commit = "univention.ucslint.main:run"
+
+[tool.setuptools]
+platforms = ["any"]
+packages = ["univention.ucslint"]
+
+[tool.pytest.ini_options]
+required_plugins = ["pytest-cov"]
+testpaths = ["univention/ucslint"]
+addopts = "--verbose --showlocals -r sx --doctest-modules"
+pythonpath = ["."]
+
+[tool.mypy]
+ignore_missing_imports = false
+files = ["."]
+exclude = "testframework"
+
+[[tool.mypy.overrides]]
+module = ["setuptools", "apt_pkg", "debian.changelog"]
+ignore_missing_imports = true
