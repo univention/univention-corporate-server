@@ -7,6 +7,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 export PYBUILD_SYSTEM=pyproject
+export PYBUILD_DISABLE = test
+export PYBUILD_DESTDIR = debian/python3-univention-directory-reports
 
 %:
-	dh $@ --with python3,univention-l10n,ucr
+	dh $@ --with python3,univention-l10n,ucr --buildsystem=pybuild

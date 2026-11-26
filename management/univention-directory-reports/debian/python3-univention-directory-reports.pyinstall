@@ -1,2 +1,0 @@
-modules/univention/directory/*.py	univention.directory
-modules/univention/directory/reports/*.py	univention.directory.reports
