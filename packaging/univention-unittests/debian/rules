@@ -8,11 +8,12 @@
 
 export DH_VERBOSE = 1
 export PYBUILD_NAME = univention-unittests
+export PYBUILD_SYSTEM = pyproject
+export PYBUILD_DISABLE = test
+export PYBUILD_DESTDIR = debian/python3-univentionunittests
 
 %:
 	dh $@ --with python3 --buildsystem=pybuild
 
 override_dh_auto_install:
 	dh_auto_install --buildsystem=pybuild
-	python3 setup.py build --force -b build/python3-univentionunittests install --no-compile --force --root=debian/python3-univentionunittests --install-layout=deb
-	dh_auto_install
