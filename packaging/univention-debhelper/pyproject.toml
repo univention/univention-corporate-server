@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 name = "univention-debhelper"
 dynamic = ["version"]
 description = "Univention helper programs for debian/rules"
-license = { text = "AGPL-3.0-only" }
+license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 dependencies = []
 authors = [
