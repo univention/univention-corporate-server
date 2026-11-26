@@ -545,7 +545,7 @@ class UniventionDirectoryManagerPolicies:
         actions = []
         if univention.admin.modules.supports(modname, 'add') or modname == 'settings/license':
             actions.append(udm_object_action('create'))
-        if univention.admin.modules.supports(modname, 'edit'):
+        if univention.admin.modules.supports(modname, 'edit') or modname == 'settings/license':
             actions.append(udm_object_action('modify'))
             if all(prop.may_change for prop in mod.property_descriptions.values() if prop.identifies):
                 actions.append(udm_object_action('rename'))
