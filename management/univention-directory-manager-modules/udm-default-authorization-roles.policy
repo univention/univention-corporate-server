@@ -54,6 +54,7 @@ access by role="udm:default-roles:domain-user"
 
     grant actions="search,read"
     grant properties="*" permission="read"
+    grant properties="umcProperty" permission="write"
 
   to objecttype="users/user" if="is-self-or-ancestor"
     name="allow-user-self-search" description="Allow searching for the own object, starting from any of its parents"
