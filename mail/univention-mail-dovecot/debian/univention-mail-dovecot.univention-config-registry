@@ -100,6 +100,8 @@ Variables: mail/dovecot/folder/spam
 Type: file
 File: etc/dovecot/conf.d/20-imap.conf
 Variables: mail/dovecot/imap/client_workarounds
+Variables: mail/dovecot/limits/default_client_limit
+Variables: mail/dovecot/limits/imap/mail_max_userip_connections
 
 Type: file
 File: etc/dovecot/conf.d/20-lmtp.conf
