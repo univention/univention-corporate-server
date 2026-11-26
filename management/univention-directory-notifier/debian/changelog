@@ -1,8 +1,12 @@
-univention-directory-notifier (16.7.0) UNRELEASED; urgency=medium
+univention-directory-notifier (16.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:41 +0300
+  [ Felix Botner ]
+  * Bug #60195: retry the cn=translog write instead of aborting
+
+ -- Felix Botner <botner@univention.de>  Thu, 26 Nov 2026 17:34:33 +0100
 
 univention-directory-notifier (16.6.0) UNRELEASED; urgency=medium
 

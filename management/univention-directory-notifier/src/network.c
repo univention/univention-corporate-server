@@ -256,10 +256,14 @@ void check_callbacks()
 	}
 }
 
-static int terminate = 0;
+static volatile sig_atomic_t terminate = 0;
 
 static void sig_stop(int sig) {
 	terminate = sig;
+}
+
+int network_client_terminating(void) {
+	return terminate;
 }
 
 static void setup_signal_handler() {

@@ -34,6 +34,7 @@ int network_create_socket( int port );
 int network_client_del ( int fd );
 
 int network_client_main_loop ( );
+int network_client_terminating ( void );
 int network_client_init ( int port );
 
 int network_client_dump ( );

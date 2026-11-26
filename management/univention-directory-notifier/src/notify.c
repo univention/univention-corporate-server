@@ -28,6 +28,7 @@
 
 #define MAX_PATH_LEN 4096
 #define MAX_LINE 4096
+#define TRANSLOG_RETRY_MAX_DELAY 30 /* seconds */
 
 extern NotifyId_t notify_last_id;
 extern Notify_t notify;
@@ -221,44 +222,95 @@ static int sasl_proc(LDAP *ld, unsigned flags, void *defaults, void *in) {
 }
 
 /*
- * Write entries to cn=translog.
- * :param trans: Linked list of entries to write.
+ * Whether an LDAP result means that slapd could not be reached or did not answer, so a later attempt can succeed.
  */
-static void notify_dump_to_ldap(NotifyEntry_t *trans) {
+static bool translog_error_is_transient(int rc) {
+	switch (rc) {
+	case LDAP_SERVER_DOWN:
+	case LDAP_CONNECT_ERROR:
+	case LDAP_TIMEOUT:
+	case LDAP_BUSY:
+	case LDAP_UNAVAILABLE:
+		return true;
+	default:
+		return false;
+	}
+}
+
+/*
+ * Log a failed LDAP call with slapd's diagnostic message and, for errors raised by libldap itself, errno:
+ * they tell why the connection to slapd failed, which the result code alone does not.
+ * :param call: Name of the failed function.
+ * :param rc: LDAP result code.
+ * :param err: errno right after the failed call.
+ * :param ld: The connection, or NULL if there is none.
+ */
+static void translog_log_failure(const char *call, int rc, int err, LDAP *ld) {
+	int level = translog_error_is_transient(rc) ? UV_DEBUG_WARN : UV_DEBUG_ERROR;
+	char *diag = NULL;
+
+	if (ld)
+		ldap_get_option(ld, LDAP_OPT_DIAGNOSTIC_MESSAGE, &diag);
+	if (rc < 0)
+		univention_debug(UV_DEBUG_TRANSFILE, level, "%s(): %s (errno %d: %s; diagnostic: %s)", call, ldap_err2string(rc), err, strerror(err), diag && *diag ? diag : "none");
+	else
+		univention_debug(UV_DEBUG_TRANSFILE, level, "%s(): %s (diagnostic: %s)", call, ldap_err2string(rc), diag && *diag ? diag : "none");
+	ldap_memfree(diag);
+}
+
+/*
+ * Open and bind the connection to slapd used for cn=translog.
+ * :param ld: Receives the connection; NULL if ldap_initialize() fails.
+ * :returns: LDAP result code.
+ */
+static int translog_connect(LDAP **ld) {
+	int rc;
+
+	if ((rc = ldap_initialize(ld, "ldapi:///")) != LDAP_SUCCESS) {
+		translog_log_failure("ldap_initialize", rc, errno, *ld);
+		return rc;
+	}
+
+	unsigned long version = LDAP_VERSION3;
+	if ((rc = ldap_set_option(*ld, LDAP_OPT_PROTOCOL_VERSION, &version)) != LDAP_SUCCESS) {
+		translog_log_failure("ldap_set_option", rc, errno, *ld);
+		return rc;
+	}
+
+	const char *who = NULL;
+	const char mechanism[] = "EXTERNAL";
+	unsigned flags = LDAP_SASL_QUIET;
+	void *defaults = NULL;
+	if ((rc = ldap_sasl_interactive_bind_s(*ld, who, mechanism, NULL, NULL, flags, sasl_proc, defaults)) != LDAP_SUCCESS)
+		translog_log_failure("ldap_sasl_interactive_bind_s", rc, errno, *ld);
+	return rc;
+}
+
+/*
+ * Sleep for the retry delay; a signal only ends the sleep early when the notifier is terminating.
+ */
+static void translog_retry_sleep(unsigned int seconds) {
+	struct timespec ts = { .tv_sec = seconds };
+	while (nanosleep(&ts, &ts) == -1 && errno == EINTR && !network_client_terminating())
+		;
+}
+
+/*
+ * Write an entry to cn=translog.
+ * While slapd is unreachable, blocks and reconnects with exponential backoff until slapd has stored the entry:
+ * listeners must only be told about transactions that are in cn=translog,
+ * and exiting instead would drop every listener's connection.
+ * Any other error aborts, because retrying cannot store the entry.
+ * :param trans: The entry to write.
+ * :returns: true when the entry is stored, false when the notifier is terminating.
+ */
+static bool notify_dump_to_ldap(NotifyEntry_t *trans) {
 	static LDAP *ld = NULL;
-	LDAPControl **serverctrls = NULL;
-	LDAPControl **clientctrls = NULL;
 	int rc;
 	struct sigaction oldact, act = {
 		.sa_handler = SIG_IGN,
 		.sa_flags = 0,
 	};
-
-	// libldap uses liblber uses write() on the SOCKET to slapd, which raises SIGPIPE when slapd closes the socket due to a timeout.
-	sigaction(SIGPIPE, &act, &oldact);
-
-reopen:
-	if (!ld) {
-		if ((rc = ldap_initialize(&ld, "ldapi:///")) != LDAP_SUCCESS) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "ldap_initialize(): %s", ldap_err2string(rc));
-			abort();
-		}
-
-		unsigned long version = LDAP_VERSION3;
-		if ((rc = ldap_set_option(ld, LDAP_OPT_PROTOCOL_VERSION, &version)) != LDAP_SUCCESS) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "ldap_set_option(): %s", ldap_err2string(rc));
-			abort();
-		}
-
-		const char *who = NULL;
-		const char mechanism[] = "EXTERNAL";
-		unsigned flags = LDAP_SASL_QUIET;
-		void *defaults = NULL;
-		if ((rc = ldap_sasl_interactive_bind_s(ld, who, mechanism, serverctrls, clientctrls, flags, sasl_proc, defaults)) != LDAP_SUCCESS) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "ldap_sasl_interactive_bind_s(): %s", ldap_err2string(rc));
-			abort();
-		}
-	}
 
 	char dn[44]; // strlen("reqSession=%ld,cn=translog") + strlen(ULONG_MAX)
 	snprintf(dn, sizeof(dn), "reqSession=%ld,cn=translog", trans->notify_id.id);
@@ -321,24 +373,59 @@ reopen:
 	for (rc = 0; attrs[rc]; rc++)
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ALL, "LDIF %s: %s", attrs[rc]->mod_type, attrs[rc]->mod_values[0]);
 
-	rc = ldap_add_ext_s(ld, dn, attrs, serverctrls, clientctrls);
-	switch (rc) {
-		case LDAP_SUCCESS:
-			break;
-		case LDAP_SERVER_DOWN:
-			if ((rc = ldap_unbind_ext_s(ld, serverctrls, clientctrls)) != LDAP_SUCCESS)
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "%ld ldap_unbind_ext_s(): %s", trans->notify_id.id, ldap_err2string(rc));
+	// libldap uses liblber uses write() on the SOCKET to slapd, which raises SIGPIPE when slapd closes the socket due to a timeout.
+	sigaction(SIGPIPE, &act, &oldact);
+
+	bool stored = false;
+	unsigned int attempt = 1;
+	unsigned int delay = 1;
+	while (!network_client_terminating()) {
+		bool reused = ld != NULL;
+		rc = reused ? LDAP_SUCCESS : translog_connect(&ld);
+		if (rc == LDAP_SUCCESS) {
+			rc = ldap_add_ext_s(ld, dn, attrs, NULL, NULL);
+			int err = errno;
+			if (rc == LDAP_SUCCESS) {
+				stored = true;
+				break;
+			}
+			if (rc == LDAP_ALREADY_EXISTS) {
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "%ld ldap_add() already exists", trans->notify_id.id);
+				stored = true;
+				break;
+			}
+			if (!(reused && rc == LDAP_SERVER_DOWN))
+				translog_log_failure("ldap_add_ext_s", rc, err, ld);
+		}
+
+		if (ld) {
+			ldap_unbind_ext_s(ld, NULL, NULL);
 			ld = NULL;
-			goto reopen;
-		case LDAP_ALREADY_EXISTS:
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "%ld ldap_add() already exists", trans->notify_id.id);
-			break;
-		default:
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%ld ldap_add(): %s", trans->notify_id.id, ldap_err2string(rc));
+		}
+
+		if (reused && rc == LDAP_SERVER_DOWN) {
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "%lu slapd closed the connection, reconnecting", trans->notify_id.id);
+			continue;
+		}
+
+		if (!translog_error_is_transient(rc)) {
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%lu writing to cn=translog failed, aborting: %s", trans->notify_id.id, ldap_err2string(rc));
 			abort();
+		}
+
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "%lu writing to cn=translog failed (attempt %u): %s; retrying in %u s", trans->notify_id.id, attempt, ldap_err2string(rc), delay);
+		translog_retry_sleep(delay);
+		attempt++;
+		delay *= 2;
+		if (delay > TRANSLOG_RETRY_MAX_DELAY)
+			delay = TRANSLOG_RETRY_MAX_DELAY;
 	}
 
+	if (stored && attempt > 1)
+		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "%lu written to cn=translog after %u attempts", trans->notify_id.id, attempt);
+
 	sigaction(SIGPIPE, &oldact, NULL);
+	return stored;
 }
 
 void notify_init ( Notify_t *notify )
@@ -533,7 +620,13 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "Skipping old Transaction ID %ld before %ld from %s", entry.notify_id.id, notify_last_id.id, FILE_NAME_NOTIFIER_PRIV);
 			continue;
 		}
-		notify_dump_to_ldap(&entry);
+		if (!notify_dump_to_ldap(&entry)) {
+			// Keep listener.priv so the next start replays the transactions not yet in cn=translog.
+			free(entry.dn);
+			free(line);
+			fclose_lock(&file);
+			return;
+		}
 		notify_dump_to_files(&notify, &entry);
 		notifier_cache_add(entry.notify_id.id, entry.dn, entry.command);
 		notify_last_id.id = entry.notify_id.id;
