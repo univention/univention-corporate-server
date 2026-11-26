@@ -10,12 +10,13 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
+# emtpy but present!
 
 [project]
 name = "univention-python-heimdal"
 dynamic = ["version"]
 description = "Heimdal Kerberos Python bindings"
-license = { text = "AGPL-3.0-only" }
+license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 dependencies = []
 authors = [
