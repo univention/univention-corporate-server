@@ -387,7 +387,7 @@ def setup_role(ou, udm):
         _, username = udm.create_user(
             guardianRoles=[role],
             groups=[ucr.get('directory/manager/rest/authorized-groups/test-api-access')],
-            policy_reference=[f'cn=organizational-unit-admins,cn=UMC,cn=policies,{ucr["ldap_base"]}'],
+            policy_reference=[f'cn=organizational-unit-admins,cn=UMC,cn=policies,{ucr["ldap/base"]}'],
         )
 
         _restart_auth_services(USE_CERBOS)
