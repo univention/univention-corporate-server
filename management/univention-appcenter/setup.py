@@ -7,15 +7,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 #
 
-from ucs_packaging import setup
+from setuptools import setup
 
 
-setup(
-    name='univention-appcenter',
-    description='Library for Univention App Center',  # name != binary package name, therefore we need to do it manually...
-    packages=[
-        'univention.appcenter',
-        'univention.appcenter.actions',
-    ],
-    package_dir={'univention.appcenter': 'python/appcenter'},
-)
+setup()
