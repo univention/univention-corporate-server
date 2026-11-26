@@ -188,7 +188,3 @@ univention-newsid (0.1.0) unstable; urgency=low
   * initial release
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Sep 2003 17:10:40 +0200
-
-Local variables:
-mode: debian-changelog
-End:
