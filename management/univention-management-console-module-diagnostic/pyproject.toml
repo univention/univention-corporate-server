@@ -1,0 +1,40 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+# emtpy but present!
+
+[project]
+name = "univention-management-console-module-diagnostic"
+dynamic = ["version"]
+description = "Univention Management Console module for system diagnostic"
+license = { text = "AGPL-3.0-only" }
+requires-python = ">= 3.11"
+dependencies = [
+    "univention-config-registry",
+    "univention-directory-manager-modules",
+    "univention-lib",
+    "univention-management-console",
+]
+authors = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+maintainers = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+
+[project.urls]
+Homepage = "https://www.univention.de/"
+Repository = "https://github.com/univention/univention-corporate-server/"
+Issues = "https://forge.univention.org/bugzilla/"
+
+[tool.setuptools]
+packages = [
+    "univention.management.console.modules.diagnostic",
+    "univention.management.console.modules.diagnostic.plugins",
+]
+package-dir = { "univention.management.console.modules.diagnostic" = "umc/python/diagnostic" }
