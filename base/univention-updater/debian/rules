@@ -9,6 +9,8 @@
 # GNU copyright 1997 to 1999 by Joey Hess.
 
 export DH_VERBOSE=1
+export PYBUILD_SYSTEM=pyproject
+export PYBUILD_TEST_PYTEST = 1
 
 override_dh_install:
 	dh_install
