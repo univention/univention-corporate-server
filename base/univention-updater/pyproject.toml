@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 name = "univention-updater"
 dynamic = ["version"]
 description = "UCS - system upgrading tool"
-license = { text = "AGPL-3.0-only" }
+license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -35,6 +35,7 @@ dependencies = [
     "univention-config-registry",
     "univention-directory-manager-modules",
     "univention-lib",
+    "sqv",
 ]
 authors = [
     { name = "Univention GmbH", email = "packages@univention.de" },

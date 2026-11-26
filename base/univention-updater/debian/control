@@ -9,7 +9,6 @@ Build-Depends:
  dh-python,
  pybuild-plugin-pyproject,
  python3-all,
- python3-debian,
  python3-lazy-object-proxy,
  python3-pytest <!nocheck>,
  python3-pytest-cov,
