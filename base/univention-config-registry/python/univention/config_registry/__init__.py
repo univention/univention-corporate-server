@@ -8,21 +8,49 @@
 
 from lazy_object_proxy import Proxy
 
-from univention.config_registry.backend import (  # noqa: F401
+from univention.config_registry.backend import (
     SCOPE, ConfigRegistry, Load, ReadOnlyConfigRegistry as _RCR, StrictModeException,
 )
-from univention.config_registry.filters import filter_keys_only, filter_shell, filter_sort  # noqa: F401
+from univention.config_registry.filters import filter_keys_only, filter_shell, filter_sort
 from univention.config_registry.frontend import (  # noqa: F401
     REPLOG_FILE, UnknownKeyException, handler_commit, handler_dump, handler_filter, handler_get, handler_register,
     handler_search, handler_set, handler_unregister, handler_unset, handler_update, main,
 )
 # ruff: noqa: A004
-from univention.config_registry.handler import ConfigHandlers as configHandlers, run_filter as filter  # noqa: F401
-from univention.config_registry.misc import (  # noqa: F401
-    INVALID_KEY_CHARS as invalid_key_chars, key_shell_escape, validate_key,
-)
+from univention.config_registry.handler import ConfigHandlers as configHandlers, run_filter as filter
+from univention.config_registry.misc import INVALID_KEY_CHARS as invalid_key_chars, key_shell_escape, validate_key
 from univention.debhelper import parseRfc822  # noqa: F401
 
+
+__all__ = [
+    "REPLOG_FILE",
+    "SCOPE",
+    "ConfigRegistry",
+    "Load",
+    "StrictModeException",
+    "UnknownKeyException",
+    "configHandlers",
+    "filter",
+    "filter_keys_only",
+    "filter_shell",
+    "filter_sort",
+    "handler_commit",
+    "handler_dump",
+    "handler_filter",
+    "handler_get",
+    "handler_register",
+    "handler_search",
+    "handler_set",
+    "handler_unregister",
+    "handler_unset",
+    "handler_update",
+    "invalid_key_chars",
+    "key_shell_escape",
+    "ucr",
+    "ucr_factory",
+    "ucr_live",
+    "validate_key",
+]
 
 ucr: _RCR = Proxy(lambda: _RCR().load(autoload=Load.ONCE))
 ucr_live: _RCR = Proxy(lambda: _RCR().load(autoload=Load.ALWAYS))
