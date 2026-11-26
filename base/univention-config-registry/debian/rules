@@ -7,7 +7,9 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 export PYBUILD_NAME=univention-config-registry
-export PYBUILD_INSTALL_ARGS=--install-scripts=../univention-config/usr/bin/
+export PYBUILD_SYSTEM=pyproject
+export SETUPTOOLS_SCM_PRETEND_VERSION := $(shell dpkg-parsechangelog -SVersion | sed -e 's/^[0-9]*://' -e 's/-[^-]*$$//')
+export PYBUILD_TEST_PYTEST = 1
 export PYBUILD_AFTER_INSTALL=$(RM) '{destdir}/{install_dir}/univention/__init__.py'
 
 include /usr/share/dpkg/architecture.mk
@@ -133,13 +135,16 @@ override_dh_auto_install-arch:
 	# The source package contains C, Python and Rust code. Only retain the
 	# files belonging to the Rust crate in librust-univentionconfig-dev.
 	$(RM) -r \
+		$(CRATE_DIR)/.benchmarks \
 		$(CRATE_DIR)/.pybuild \
 		$(CRATE_DIR)/.pytest_cache \
 		$(CRATE_DIR)/autom4te.cache \
+		$(CRATE_DIR)/build \
 		$(CRATE_DIR)/doc \
 		$(CRATE_DIR)/etc \
 		$(CRATE_DIR)/include \
 		$(CRATE_DIR)/lib \
+		$(CRATE_DIR)/pytest \
 		$(CRATE_DIR)/python \
 		$(CRATE_DIR)/scripts \
 		$(CRATE_DIR)/tests
@@ -159,13 +164,21 @@ override_dh_auto_install-arch:
 			-name '*.pm' -o \
 			-name 'setup.py' -o \
 			-name 'setup.cfg' -o \
+			-name 'pyproject.toml' -o \
 			-name '.coverage' -o \
+			-name '.coverage.*' -o \
+			-name 'coverage.xml' -o \
 			-name 'pytest.xml' \
 		\) -delete
 
 
 override_dh_auto_install-indep:
 	dh_auto_install --buildsystem pybuild
+	install -d debian/univention-config/usr/bin/
+	mv debian/python3-univention-config-registry/usr/bin/ldapsearch-decode64 \
+		debian/python3-univention-config-registry/usr/bin/ldapsearch-wrapper \
+		debian/univention-config/usr/bin/
+	rmdir --ignore-fail-on-non-empty debian/python3-univention-config-registry/usr/bin/
 
 
 override_dh_installinit-indep:
