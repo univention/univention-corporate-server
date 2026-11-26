@@ -213,7 +213,3 @@ pam-runasroot (1.0-1.univention) unstable; urgency=low
   * Initial Release.
 
  -- Peter H. Ganten <ganten@univention.de>  Wed, 19 Dec 2001 14:58:09 +0100
-
-Local variables:
-mode: debian-changelog
-End:
