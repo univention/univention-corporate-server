@@ -25,8 +25,7 @@ TRANSLATIONS = {
     },
 }
 
-USE_CERBOS = Path('/usr/share/univention-guardian-server/docker-compose.yaml').exists()
-# or: ucr.is_true('directory/manager/rest/delegative-administration/guardian', True)
+USE_CERBOS = ucr.is_true('directory/manager/delegative-administration/guardian')
 
 if USE_CERBOS:
     CONFIGURE_AUTH = '/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization'
