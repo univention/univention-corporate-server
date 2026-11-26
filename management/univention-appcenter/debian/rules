@@ -7,6 +7,10 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 export DH_VERBOSE=1
+export PYBUILD_SYSTEM=pyproject
+export PYBUILD_TEST_PYTEST = 1
+# The UCS unit tests use a separate test setup, not pybuild's wheel test tree.
+export PYBUILD_DISABLE = test
 
 %:
 	dh $@ --with python3,univention-l10n,umc,ucr,univention-join --buildsystem=pybuild
@@ -20,9 +24,8 @@ override_dh_auto_clean:
 	make clean
 
 override_dh_auto_build:
-	dh_auto_build
 	make
-	dh_auto_build --buildsystem=pybuild
+	dh_auto_build
 
 override_dh_auto_install:
 	dh_auto_install --buildsystem=pybuild
@@ -30,7 +33,3 @@ override_dh_auto_install:
 	python3 setup_docker.py build --force -b build/python3-univention-appcenter-docker install --force --root=debian/python3-univention-appcenter-docker --install-layout=deb
 	python3 setup_umc.py build --force -b build/univention-appcenter-umc install --force --root=debian/univention-management-console-module-appcenter --install-layout=deb
 	dh_auto_install
-
-override_dh_auto_test:
-	dh_auto_test --buildsystem=pybuild
-	dh_auto_test

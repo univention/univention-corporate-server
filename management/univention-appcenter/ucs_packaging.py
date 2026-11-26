@@ -3,12 +3,14 @@
 
 from debian.changelog import Changelog
 from debian.deb822 import Deb822
-from setuptools import setup as orig_setup
+from setuptools import Distribution, setup as orig_setup
 
 
-def _get_version():
-    changelog = Changelog(open('debian/changelog', encoding='utf-8'))
-    return changelog.full_version.split('A~')[0]
+class BinaryPackageDistribution(Distribution):
+    def parse_config_files(self, filenames=None, ignore_option_errors=False):
+        # These setup scripts describe separate distributions. The root
+        # pyproject.toml describes only the main App Center distribution.
+        super().parse_config_files(filenames=[], ignore_option_errors=ignore_option_errors)
 
 
 def _get_description(name):
@@ -19,6 +21,10 @@ def _get_description(name):
 
 
 def setup(name, **attrs):
+    attrs.setdefault('distclass', BinaryPackageDistribution)
+    if 'version' not in attrs:
+        with open('debian/changelog', encoding='utf-8') as stream:
+            attrs['version'] = Changelog(stream).full_version
     if 'name' not in attrs:
         attrs['name'] = name
     if 'license' not in attrs:
@@ -29,8 +35,6 @@ def setup(name, **attrs):
         attrs['author'] = 'Univention GmbH'
     if 'url' not in attrs:
         attrs['url'] = 'https://www.univention.de/'
-    if 'version' not in attrs:
-        attrs['version'] = _get_version()
     if 'description' not in attrs:
         attrs['description'] = _get_description(name)
     return orig_setup(**attrs)
