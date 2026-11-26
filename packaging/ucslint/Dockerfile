@@ -8,5 +8,8 @@ RUN apt-get -qq update && \
 	apt-get -qq install --no-install-recommends ca-certificates devscripts python3-apt python3-pip python3-setuptools python3-debian python3-junit.xml && \
 	find /var/lib/apt/lists /var/cache/apt/archives -not -name lock -type f -delete
 COPY . /build
-RUN python3 -m pip install --break-system-packages /build
+RUN cd /build && \
+    version="$(dpkg-parsechangelog -SVersion)" && \
+    SETUPTOOLS_SCM_PRETEND_VERSION_FOR_UCSLINT="${version%%A~*}" \
+    python3 -m pip install --break-system-packages .
 ENTRYPOINT ["/usr/local/bin/ucslint"]
