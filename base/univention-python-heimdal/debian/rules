@@ -4,7 +4,34 @@
 
 # Uncomment this to turn on verbose mode.
 # export DH_VERBOSE=1
+
 export PYBUILD_NAME=univention-heimdal
+export PYBUILD_SYSTEM=pyproject
+export SETUPTOOLS_SCM_PRETEND_VERSION := $(shell dpkg-parsechangelog -SVersion | sed -e 's/^[0-9]*://' -e 's/-[^-]*$$//')
+# The pyproject plugin cannot build for the debug interpreter. Build that
+# extension separately, retaining its distinct CPython debug ABI suffix.
+export PYBUILD_DISABLE = test
+# Bypass dh_auto_* interpreter discovery: python3-dbg in Build-Depends would
+# otherwise select the unsupported debug interpreter even for clean/configure.
+
+override_dh_auto_configure:
+	pybuild --configure --interpreter=python{version}
+
+override_dh_auto_build:
+	pybuild --build --interpreter=python{version}
+	python3-dbg setup.py build_ext --force --build-temp=build/debug-temp --build-lib=build/debug
+
+override_dh_auto_test:
+	pybuild --test --interpreter=python{version}
+
+override_dh_auto_install:
+	pybuild --install --interpreter=python{version} --dest-dir=debian/python3-univention-heimdal
+	install -d debian/python3-univention-heimdal/usr/lib/python3/dist-packages/
+	install -m 644 build/debug/heimdal*.so debian/python3-univention-heimdal/usr/lib/python3/dist-packages/
+
+override_dh_auto_clean:
+	pybuild --clean --interpreter=python{version}
+	$(RM) -r build/debug build/debug-temp
 
 %:
 	dh $@ --with python3 --buildsystem=pybuild

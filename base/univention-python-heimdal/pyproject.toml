@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = [
+    "setuptools >= 64",
+    "setuptools-scm",
+    "pkgconfig",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+
+[project]
+name = "univention-python-heimdal"
+dynamic = ["version"]
+description = "Heimdal Kerberos Python bindings"
+license = { text = "AGPL-3.0-only" }
+requires-python = ">= 3.11"
+dependencies = []
+authors = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+maintainers = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+
+[project.urls]
+Homepage = "https://www.univention.de/"
+Repository = "https://github.com/univention/univention-corporate-server/"
+Issues = "https://forge.univention.org/bugzilla/"
