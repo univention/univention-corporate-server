@@ -102,7 +102,7 @@ def kc_master_with_preferred_username_mapper(kc_master_session: KeycloakAdmin) -
 @pytest.fixture
 def kc_ucs_with_preferred_username_mapper(kc_ucs_session: KeycloakAdmin) -> Generator[KeycloakAdmin, None, None]:
     idp_alias = 'oidc'
-    client_id = kc_ucs_session.get_client_id('https://master.ucs.test/univention/oidc/')
+    client_id = kc_ucs_session.get_client_id('https://%(hostname)s.%(domainname)s/univention/oidc/' % ucr)
     idp_mapper = {
         'name': 'nubus_external_username',
         'identityProviderAlias': idp_alias,
