@@ -6,12 +6,14 @@ Build-Depends:
  debhelper-compat (=13),
  devscripts,
  dh-python,
+ pybuild-plugin-pyproject,
  python3-all,
  python3-apt,
  python3-debian,
- python3-pytest,
+ python3-pytest <!nocheck>,
  python3-pytest-cov,
  python3-setuptools,
+ python3-setuptools-scm,
 Standards-Version: 3.6.1
 
 Package: ucslint
