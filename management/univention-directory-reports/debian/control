@@ -8,6 +8,8 @@ Build-Depends:
  dh-python,
  pybuild-plugin-pyproject,
  python3-all,
+ python3-setuptools,
+ python3-setuptools-scm,
  univention-config-dev (>= 15.0.3),
  univention-l10n-dev (>= 7.0.1),
 
