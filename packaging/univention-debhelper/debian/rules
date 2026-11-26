@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 export PYBUILD_NAME=univention-debhelper
+export PYBUILD_SYSTEM=pyproject
 
 override_dh_auto_test:
 	dh_auto_test
