@@ -1,3 +1,10 @@
+univention-ad-connector (16.8.3) unstable; urgency=medium
+
+  * Bug #59219: Fall back to a password history length of 0 if
+    msDS-PasswordHistoryLength or pwdHistoryLength cannot be read from AD
+
+ -- wiesenthal <wiesenthal@univention.de>  Tue, 24 Nov 2026 16:59:45 +0000
+
 univention-ad-connector (16.8.2) unstable; urgency=medium
 
   * Issue univention/dev/ucs#3845: Speed up the AD->UCS group membership sync

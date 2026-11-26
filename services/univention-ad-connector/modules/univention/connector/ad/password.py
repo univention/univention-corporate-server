@@ -473,6 +473,26 @@ def password_sync_kinit(connector, key, ucs_object):
         connector.lo.lo.modify_s(ucs_object['dn'], modlist)
 
 
+def get_ad_password_history_length(connector, msDSResultantPSO: bytes | None) -> int:
+    """
+    Return the AD password history length for a user.
+
+    The value is read from `msDS-PasswordHistoryLength` of the resultant
+    password settings object (PSO) of the user, or from `pwdHistoryLength`
+    of the domain object if no PSO applies. If the attribute is not present
+    (e.g. not readable by the AD account used by the connector), 0 is returned.
+    """
+    if msDSResultantPSO:
+        dn, attr = msDSResultantPSO.decode('UTF-8'), 'msDS-PasswordHistoryLength'
+    else:
+        dn, attr = connector.lo_ad.base, 'pwdHistoryLength'
+    value = connector.lo_ad.get(dn, attr=[attr]).get(attr, [None])[0]
+    if value is None:
+        log.warning("password_sync: Could not read %s from %r. Please check the permissions of the AD connector account. Assuming a password history length of 0.", attr, dn)
+        return 0
+    return int(value.decode('UTF-8'))
+
+
 def password_sync(connector, key, ucs_object):
     # externes Programm zum holen des Hash aufrufen
     # "kerberos_now"
@@ -580,13 +600,7 @@ def password_sync(connector, key, ucs_object):
 
             msDSResultantPSO = res[0][1].get('msDS-ResultantPSO', [None])[0]
 
-            ad_pwhistory_length = 0
-            if msDSResultantPSO:
-                ad_object = connector.lo_ad.get(msDSResultantPSO.decode('UTF-8'), attr=['msDS-PasswordHistoryLength'])
-                ad_pwhistory_length = int(ad_object.get('msDS-PasswordHistoryLength', [0])[0].decode('UTF-8'))
-            else:
-                ad_object = connector.lo_ad.get(connector.lo_ad.base, attr=['pwdHistoryLength'])
-                ad_pwhistory_length = int(ad_object.get('pwdHistoryLength', [0])[0].decode('UTF-8'))
+            ad_pwhistory_length = get_ad_password_history_length(connector, msDSResultantPSO)
             log.debug("password_sync:  UCS pwhistoryPolicylength (%s)  AD pwhistoryPolicylength (%s).", pwhistory_length, ad_pwhistory_length)
 
             if pwhistory_length:
