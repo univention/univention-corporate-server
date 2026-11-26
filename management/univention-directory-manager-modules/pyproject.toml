@@ -1,0 +1,59 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+# emtpy but present!
+
+[project]
+name = "univention-directory-manager-modules"
+dynamic = ["version"]
+description = "Univention Directory Manager modules"
+license = { text = "AGPL-3.0-only" }
+requires-python = ">= 3.11"
+dependencies = [
+    "bcrypt",
+    "dnspython",
+    "email-validator",
+    "lark",
+    "M2Crypto",
+    "passlib",
+    "pillow",
+    "python-dateutil",
+    "python-debian",
+    "python-ldap",
+    "python-magic",
+    "PyYAML",
+    "tzlocal",
+    "unidecode",
+    "univention-admin-diary",
+    "univention-authorization",
+    "univention-python-heimdal",
+    "univention-config-registry",
+    "univention-debug-python",
+    "univention-lib",
+    "univention-licence-python",
+    "univention-python",
+]
+authors = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+maintainers = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+
+[project.urls]
+Homepage = "https://www.univention.de/"
+Repository = "https://github.com/univention/univention-corporate-server/"
+Issues = "https://forge.univention.org/bugzilla/"
+
+[tool.setuptools.packages.find]
+where = ["modules"]
+include = ["univention.admin*", "univention.udm*"]
+
+[tool.pytest.ini_options]
+testpaths = ["unittests"]
+pythonpath = ["modules"]

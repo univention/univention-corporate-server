@@ -9,18 +9,17 @@
 version := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 copyrightyear := $(shell date +%Y)
 
+export PYBUILD_SYSTEM=pyproject
+export SETUPTOOLS_SCM_PRETEND_VERSION := $(shell dpkg-parsechangelog -SVersion | sed -e 's/^[0-9]*://' -e 's/-[^-]*$$//')
+export PYBUILD_TEST_PYTEST = 1
+
 override_dh_auto_clean:
 	dh_auto_clean
 	find modules -name 'de.mo' -delete
-
-override_dh_auto_test:
-	dh_auto_test
-	PYTHONPATH=modules pytest-3
-	# PYTHONPATH=modules:../univention-authorization/modules/ python -m pytest unittests/test_authorization_udm_rules_to_yaml.py
 
 override_dh_install:
 	dh_install
 	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/python3-univention-directory-manager-cli/usr/lib/python3/dist-packages/univention/admincli/admin.py
 
 %:
-	dh $@ --with python3,univention-l10n,ucr
+	dh $@ --with python3,univention-l10n,ucr --buildsystem=pybuild
