@@ -7,6 +7,9 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 export PYBUILD_NAME=univention-license
+export PYBUILD_SYSTEM=pyproject
+export PYBUILD_TEST_PYTEST = 1
+export PYBUILD_DISABLE = test
 export LC_ALL=C.UTF-8
 
 %:

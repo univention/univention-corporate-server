@@ -5,11 +5,13 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper-compat (=13),
  dh-python,
+ pybuild-plugin-pyproject,
  python3-all,
  python3-cryptography,
- python3-debian,
  python3-ldap,
+ python3-pytest <!nocheck>,
  python3-setuptools,
+ python3-setuptools-scm,
  python3-univention,
  python3-univention-debug,
 Standards-Version: 3.8.2
