@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 name = "ucslint"
 dynamic = ["version"]
 description = "Check packaging for UCS"
-license = { text = "AGPL-3.0-only" }
+license = "AGPL-3.0-only"
 requires-python = ">= 3.7"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
