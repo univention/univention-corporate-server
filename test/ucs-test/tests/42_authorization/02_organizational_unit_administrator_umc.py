@@ -361,13 +361,8 @@ def test_query_and_read_mail_domain(udm, ldap_base, ou, position, has_access, ou
         ouadmin_umc_client.umc_command('udm/get', get_option, 'mail/mail')  # type: ignore[call-arg]
 
 
-def test_non_readable_attributes_filtered_in_umc(ou, udm, ouadmin_umc_client):
-    """
-    Test that non-readable attributes (guardianRoles, guardianInheritedRoles, guardianMemberRoles)
-    are filtered out in UMC search and get operations for OU administrators.
-    These attributes should either be empty or not present when accessed by OU admins,
-    even when they have values set.
-    """
+def test_readonly_attributes_readable_in_umc(ou, udm, ouadmin_umc_client):
+    """OU administrators can read guardianRoles, guardianInheritedRoles and guardianMemberRoles in their OU."""
     group_dn, _ = udm.create_group(position=ou.dn, guardianMemberRoles=['foo:bar:grouprole'])
     user_dn, _ = udm.create_user(position=ou.dn, guardianRoles=['foo:bar:userrole'], groups=[group_dn])
 
@@ -389,15 +384,14 @@ def test_non_readable_attributes_filtered_in_umc(ou, udm, ouadmin_umc_client):
     user_result = next((user for user in res if user['$dn$'] == user_dn), None)
     assert user_result is not None
 
-    assert not user_result.get('guardianRoles', [])
-    assert not user_result.get('guardianInheritedRoles', [])
+    assert user_result.get('guardianRoles') == ['foo:bar:userrole']
 
     get_result = ouadmin_umc_client.umc_command('udm/get', [user_dn], 'users/user').result
     assert len(get_result) == 1
     user_obj = get_result[0]
 
-    assert not user_obj.get('guardianRoles', [])
-    assert not user_obj.get('guardianInheritedRoles', [])
+    assert user_obj.get('guardianRoles') == ['foo:bar:userrole']
+    assert user_obj.get('guardianInheritedRoles') == ['foo:bar:grouprole']
 
     properties_result = ouadmin_umc_client.umc_command('udm/properties', [{'objectType': 'users/user'}], 'users/user').result
     assert len(properties_result) == 1
@@ -428,13 +422,13 @@ def test_non_readable_attributes_filtered_in_umc(ou, udm, ouadmin_umc_client):
     group_result = next((group for group in res if group['$dn$'] == group_dn), None)
     assert group_result is not None
 
-    assert not group_result.get('guardianMemberRoles', []), f"guardianMemberRoles should be empty but got: {group_result.get('guardianMemberRoles')}"
+    assert group_result.get('guardianMemberRoles') == ['foo:bar:grouprole']
 
     group_get_result = ouadmin_umc_client.umc_command('udm/get', [group_dn], 'groups/group').result
     assert len(group_get_result) == 1
     group_obj = group_get_result[0]
 
-    assert not group_obj.get('guardianMemberRoles', []), f"guardianMemberRoles should be empty but got: {group_obj.get('guardianMemberRoles')}"
+    assert group_obj.get('guardianMemberRoles') == ['foo:bar:grouprole']
 
     group_properties_result = ouadmin_umc_client.umc_command('udm/properties', [{'objectType': 'groups/group'}], 'groups/group').result
     assert len(group_properties_result) == 1

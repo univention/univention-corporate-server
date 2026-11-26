@@ -145,29 +145,23 @@ def test_get_property_filter(ou, ouadmin_rest_client, udm):
     group_dn, _ = udm.create_group(position=ou.dn, guardianMemberRoles=['foo:bar:grouprole'])
     user_dn, _ = udm.create_user(position=ou.dn, guardianRoles=['foo:bar:userrole'], groups=[group_dn])
     user = ouadmin_rest_client.get_user(user_dn, properties=['username', 'guardianInheritedRoles', 'guardianRoles'])
-    assert 'guardianRoles' not in user.properties
-    assert 'guardianInheritedRoles' not in user.properties
+    assert user.properties['guardianRoles'] == ['foo:bar:userrole']
+    assert user.properties['guardianInheritedRoles'] == ['foo:bar:grouprole']
 
 
-def test_non_readable_attributes_filtered_in_rest(ou, udm, ouadmin_rest_client):
-    """
-    Test that non-readable attributes (guardianRoles, guardianInheritedRoles, guardianMemberRoles)
-    are filtered out in UDM REST API operations for OU administrators.
-    OU administrators have 'none-property' permissions for these attributes, meaning they should
-    not be able to read or modify them on objects within their scope.
-    """
+def test_readonly_attributes_readable_in_rest(ou, udm, ouadmin_rest_client):
+    """OU administrators can read guardianRoles, guardianInheritedRoles and guardianMemberRoles in their OU."""
     group_dn, _ = udm.create_group(position=ou.dn, guardianMemberRoles=['foo:bar:grouprole'])
     user_dn, _ = udm.create_user(position=ou.dn, guardianRoles=['foo:bar:userrole'], groups=[group_dn])
 
     user = ouadmin_rest_client.get_user(user_dn, properties=['*'])
 
-    assert not user.properties.get('guardianRoles', [])
-    assert not user.properties.get('guardianInheritedRoles', [])
+    assert user.properties['guardianRoles'] == ['foo:bar:userrole']
 
     user_explicit = ouadmin_rest_client.get_user(user_dn, properties=['username', 'guardianRoles', 'guardianInheritedRoles'])
 
-    assert not user_explicit.properties.get('guardianRoles', [])
-    assert not user_explicit.properties.get('guardianInheritedRoles', [])
+    assert user_explicit.properties['guardianRoles'] == ['foo:bar:userrole']
+    assert user_explicit.properties['guardianInheritedRoles'] == ['foo:bar:grouprole']
 
     users = ouadmin_rest_client.search_user(f'uid={user_dn.split("=")[1].split(",")[0]}', position=ou.dn)
     assert len(users) >= 1
@@ -176,13 +170,9 @@ def test_non_readable_attributes_filtered_in_rest(ou, udm, ouadmin_rest_client):
     assert found_user is not None
 
     if hasattr(found_user, 'properties'):
-        search_guardian_roles = found_user.properties.get('guardianRoles', [])
-        search_guardian_inherited = found_user.properties.get('guardianInheritedRoles', [])
-
-        assert not search_guardian_roles
-        assert not search_guardian_inherited
+        assert found_user.properties.get('guardianRoles') == ['foo:bar:userrole']
 
     group = ouadmin_rest_client.group_module.get(group_dn)
 
-    assert not group.properties.get('guardianMemberRoles', [])
+    assert group.properties['guardianMemberRoles'] == ['foo:bar:grouprole']
     assert user.properties.get('primaryGroup')
