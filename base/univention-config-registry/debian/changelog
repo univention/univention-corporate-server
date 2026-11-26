@@ -1,3 +1,9 @@
+univention-config-registry (17.7.3) unstable; urgency=medium
+
+  * Bug #60196: mark univention.config_registry as typed (PEP 561)
+
+ -- Jan Gietzel <jan.gietzel@univention.de>  Thu, 26 Nov 2026 15:56:11 +0100
+
 univention-config-registry (17.7.2) unstable; urgency=medium
 
   * Bug #59042: stop using dh-cargo for mixed-language package

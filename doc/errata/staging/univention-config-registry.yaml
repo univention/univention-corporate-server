@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-config-registry
+fix: 17.7.3
+desc: |
+ This update addresses the following issue:
+ * The Python package `univention.config_registry` is now marked as typed
+   according to PEP 561. Type checkers now use its type annotations instead
+   of treating it as untyped.
+bug: [60196]
