@@ -11,8 +11,10 @@ BLANK :=
 SPACE := $(BLANK) $(BLANK)
 COMMA := ,
 
+export PYBUILD_SYSTEM=pyproject
+
 %:
-	dh $@ --with python3,univention-l10n,umc
+	dh $@ --with python3,univention-l10n,umc --buildsystem=pybuild
 
 override_dh_install:
 	dh_install --sourcedir=$(CURDIR) -Xde.po
