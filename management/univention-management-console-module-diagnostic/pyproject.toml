@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 name = "univention-management-console-module-diagnostic"
 dynamic = ["version"]
 description = "Univention Management Console module for system diagnostic"
-license = { text = "AGPL-3.0-only" }
+license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 dependencies = [
     "univention-config-registry",
