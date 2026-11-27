@@ -40,7 +40,7 @@ def get_ldap_connections() -> list[univention.admin.uldap.access]:
     connections = []
     modules = ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave']
     for module in modules:
-        for comp in udm.get(module).search():
+        for comp in udm.get(module).search(filter_s='(!(univentionObjectFlag=docker))'):
             try:
                 lo = univention.admin.uldap.access(host=comp.props.fqdn, base=udm.connection.base, binddn=udm.connection.binddn, bindpw=udm.connection.bindpw)
             except ldap.SERVER_DOWN:
