@@ -254,7 +254,9 @@ access by role="udm:default-roles:linux-ou-client-manager"
     name="allow-context-ou-linux-computer-write" description="Allow management of linux computers in own OU"
 
     grant actions="search,read,create,modify,rename,remove,move"
-    grant properties="*" permission="write"  # FIXME: can put the client into Domain Administrators
+    grant properties="groups" permission="readonly"
+    grant properties="primaryGroup" permission="readonly" values="!V.udm_assignments.exists(a, a.role == 'udm:default-roles:linux-ou-client-manager' && ldapDN(a.position).matchSubtree(ldapDN($newValue$)))"
+    grant properties="*" permission="write"
 
   to objecttype="computers/linux" position.ancestors="context=udm:contexts:position"
     name="allow-search-context-linux-computers-from-parents" description="Allow to start a linux computer search above the own OU"

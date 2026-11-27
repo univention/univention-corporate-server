@@ -234,7 +234,7 @@ resources:
       uuid: null
       search: {base: "dc=ucs,dc=test", scope: sub}
 
-  linux_bremen_primary_group_domain_computers:
+  linux_bremen_primary_group_ou_computers:
     kind: udm:module:computers/linux
     id: cn=client1,cn=computers,ou=bremen,dc=ucs,dc=test
     attr:
@@ -248,7 +248,7 @@ resources:
         dn: cn=client1,cn=computers,ou=bremen,dc=ucs,dc=test
         objectType: computers/linux
         position: cn=computers,ou=bremen,dc=ucs,dc=test
-        properties: {name: client1, primaryGroup: "cn=Domain Computers,cn=groups,dc=ucs,dc=test"}
+        properties: {name: client1, primaryGroup: "cn=bremen-computers,cn=computers,ou=bremen,dc=ucs,dc=test"}
         options: {}
 
   linux_bremen_primary_group_domain_admins:
@@ -258,7 +258,7 @@ resources:
       dn: cn=client1,cn=computers,ou=bremen,dc=ucs,dc=test
       objectType: computers/linux
       position: cn=computers,ou=bremen,dc=ucs,dc=test
-      properties: {name: client1, primaryGroup: "cn=Domain Computers,cn=groups,dc=ucs,dc=test"}
+      properties: {name: client1, primaryGroup: "cn=bremen-computers,cn=computers,ou=bremen,dc=ucs,dc=test"}
       options: {}
       roles: []
       new:

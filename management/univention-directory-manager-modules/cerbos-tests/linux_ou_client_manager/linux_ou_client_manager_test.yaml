@@ -667,29 +667,32 @@ tests:
       resources: [linux_bremen]
       actions:
         - udm:property:groups:read
-        - udm:property:groups:write
+        - udm:property:groups:readonly
     expected:
       - principal: lcm_bremen
         resource: linux_bremen
         actions:
           udm:property:groups:read: EFFECT_ALLOW
-          udm:property:groups:write: EFFECT_DENY
+          udm:property:groups:readonly: EFFECT_ALLOW
 
-  - name: Sets the primary group of linux computers only to Domain Computers
+  - name: Sets the primary group of linux computers only to groups in its own OU
     input:
       principals: [lcm_bremen]
-      resources: [linux_bremen_primary_group_domain_computers, linux_bremen_primary_group_domain_admins]
+      resources: [linux_bremen_primary_group_ou_computers, linux_bremen_primary_group_domain_admins]
       actions:
         - udm:object:modify
         - udm:property:primaryGroup:write
+        - udm:property:primaryGroup:readonly
     expected:
       - principal: lcm_bremen
-        resource: linux_bremen_primary_group_domain_computers
+        resource: linux_bremen_primary_group_ou_computers
         actions:
           udm:object:modify: EFFECT_ALLOW
           udm:property:primaryGroup:write: EFFECT_ALLOW
+          udm:property:primaryGroup:readonly: EFFECT_DENY
       - principal: lcm_bremen
         resource: linux_bremen_primary_group_domain_admins
         actions:
           udm:object:modify: EFFECT_ALLOW
-          udm:property:primaryGroup:write: EFFECT_DENY
+          udm:property:primaryGroup:write: EFFECT_ALLOW
+          udm:property:primaryGroup:readonly: EFFECT_ALLOW
