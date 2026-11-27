@@ -1,3 +1,11 @@
+univention-updater (17.8.0) unstable; urgency=medium
+
+  * Bug #60198: Update the memberOf attribute of LDAP objects in postup on
+    Directory Nodes whose machine account has no memberOf attribute,
+    unless update52/skip/update_memberof is set
+
+ -- Felix Botner <botner@univention.de>  Fri, 27 Nov 2026 11:57:38 +0000
+
 univention-updater (17.7.4) unstable; urgency=medium
 
   * Bug #43613: Reword the message of the release update check for

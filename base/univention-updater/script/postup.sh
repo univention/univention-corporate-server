@@ -41,6 +41,19 @@ is_joined () {
 	[ -f /var/univention-join/joined ]
 }
 
+# Bug #60198: memberOf was optional before UCS 5.2-0, existing entries were never updated
+update_memberof () {
+	local script=/usr/share/univention-ldap-overlay-memberof/univention-update-memberof
+	case "${server_role:-}" in
+	domaincontroller_master|domaincontroller_backup|domaincontroller_slave) ;;
+	*) return 0 ;;
+	esac
+	is_joined && [ -x "$script" ] || return 0
+	univention-ldapsearch -LLL -s base -b "${ldap_hostdn:?}" memberOf 2>&3 | grep -qi '^memberOf:' && return 0
+	echo "Updating memberOf attribute of LDAP objects" >&3
+	"$script" >&3 2>&3 || echo "Warning: univention-update-memberof failed. Please check $UPDATER_LOG."
+}
+
 echo -n "Running postup.sh script:"
 echo >&3
 date >&3 2>&3
@@ -97,6 +110,12 @@ is_joined &&
 		--dn "${ldap_hostdn:?}" \
 		--set operatingSystem="Univention Corporate Server" \
 		--set operatingSystemVersion="$UPDATE_NEXT_VERSION" >&3 2>&3
+
+if is_ucr_true update52/skip/update_memberof; then
+	echo "Skipping the memberOf update as requested by update52/skip/update_memberof" >&3
+else
+	update_memberof
+fi
 
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >&3 2>&3
