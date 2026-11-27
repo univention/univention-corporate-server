@@ -8,6 +8,7 @@
 
 
 import json
+import os
 import sys
 from urllib.parse import quote
 
@@ -17,6 +18,17 @@ from univention.config_registry import handler_set
 
 
 verify = True
+
+
+def write_atomic(filename, content):
+    """
+    Replace `filename` in one step: the UMC server reads these files whenever
+    it (re)starts and must never see them missing or half written.
+    """
+    tmp_filename = '%s.tmp' % (filename,)
+    with open(tmp_filename, 'wb') as fd:
+        fd.write(content)
+    os.replace(tmp_filename, filename)
 
 
 def handler(config_registry, changes):
@@ -41,13 +53,14 @@ def handler(config_registry, changes):
         print('OIDC OP: %r Well-Known: %r' % (oidc_op, well_known), file=sys.stderr)
         raise
 
-    with open('/usr/share/univention-management-console/oidc/%s.json' % (safe_filename,), 'wb') as fd:
-        fd.write(json.dumps(well_known, sort_keys=True, indent=4).encode('ASCII'))
+    write_atomic(
+        '/usr/share/univention-management-console/oidc/%s.json' % (safe_filename,),
+        json.dumps(well_known, sort_keys=True, indent=4).encode('ASCII'),
+    )
 
     cert_response = requests.get(certs_uri, verify=verify)
     cert_response.json()  # validate JSON!
-    with open('/usr/share/univention-management-console/oidc/%s.jwks' % (safe_filename,), 'wb') as fd:
-        fd.write(cert_response.content)
+    write_atomic('/usr/share/univention-management-console/oidc/%s.jwks' % (safe_filename,), cert_response.content)
 
     if oidc_op != well_known['issuer']:
         print('Warning: Issuer different: %r != %r' % (oidc_op, well_known['issuer']), file=sys.stderr)

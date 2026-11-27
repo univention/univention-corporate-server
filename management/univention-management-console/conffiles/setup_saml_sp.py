@@ -29,18 +29,31 @@ def handler(config_registry, changes):
     if workaround:
         return  # Bug #39443
     workaround.add(True)
-    cleanup()
     metadata_download_failed = []
     metadata_validation_failed = []
     saml_idp = config_registry.get('umc/saml/idp-server')
     if not saml_idp:
+        cleanup()
         print('umc/saml/idp-server not set, nothing to do')
         return
-    if not download_idp_metadata(saml_idp):
+    # The UMC server reads the metadata whenever it (re)starts. Download to a
+    # temporary file and replace the metadata in one step, so that a running or
+    # restarting UMC never sees it missing or half written.
+    filename = metadata_filename(saml_idp)
+    tmp_filename = '%s.tmp' % (filename,)
+    if not download_idp_metadata(saml_idp, tmp_filename):
         metadata_download_failed.append(saml_idp)
-    elif not valid_metadata(saml_idp):
+    elif not valid_metadata(tmp_filename):
         metadata_validation_failed.append(saml_idp)
-    remove_saml_logout_soap_binding(config_registry, saml_idp)
+    if metadata_download_failed or metadata_validation_failed:
+        # no usable metadata: remove all, like before, so that callers notice
+        if os.path.exists(tmp_filename):
+            os.remove(tmp_filename)
+        cleanup()
+    else:
+        remove_saml_logout_soap_binding(config_registry, tmp_filename)
+        os.replace(tmp_filename, filename)
+        cleanup(keep=filename)
     reload_webserver()
     if not rewrite_sasl_configuration():
         raise SystemExit('Could not rewrite SASL configuration for UMC.')
@@ -50,12 +63,15 @@ def handler(config_registry, changes):
         raise SystemExit('IDP metadata not valid for %s' % (', '.join(metadata_validation_failed),))
 
 
-def remove_saml_logout_soap_binding(config_registry, saml_idp):
-    """Remove the saml logout SOAP binding from the IDP metadata"""
+def metadata_filename(saml_idp):
+    idp = str(urlparse(saml_idp).netloc)
+    return '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
+
+
+def remove_saml_logout_soap_binding(config_registry, filename):
+    """Remove the saml logout SOAP binding from the IDP metadata file"""
     if not config_registry.is_true("umc/saml/idp-server/remove-soap-logout", True):
         return
-    idp = str(urlparse(saml_idp).netloc)
-    filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
     with open(filename) as xmlfile:
         dom_xml = lxml.fromstring(xmlfile.read())
     slo_endpoints = dom_xml.findall('.//{%s}SingleLogoutService' % NAMESPACE)
@@ -69,25 +85,22 @@ def remove_saml_logout_soap_binding(config_registry, saml_idp):
             xmlfile.write(lxml.tostring(dom_xml))
 
 
-def cleanup():
+def cleanup(keep=None):
+    """Remove the metadata of all IDPs (except the file `keep`)"""
     for metadata in glob('/usr/share/univention-management-console/saml/idp/*.xml'):
-        os.remove(metadata)
+        if metadata != keep:
+            os.remove(metadata)
 
 
-def valid_metadata(saml_idp):
-    idp = str(urlparse(saml_idp).netloc)
-    filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
+def valid_metadata(filename):
     try:
         ElementTree.parse(filename)
     except ElementTree.ParseError:
-        os.remove(filename)
         return False
     return True
 
 
-def download_idp_metadata(metadata):
-    idp = str(urlparse(metadata).netloc)
-    filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
+def download_idp_metadata(metadata, filename):
     for i in range(60):
         print('Try to download idp metadata (%s/60)' % (i + 1))
         rc = call([

@@ -1,3 +1,12 @@
+univention-management-console (14.7.7) unstable; urgency=medium
+
+  * Bug #0000: keep the SAML IdP metadata and the OIDC keys in place when
+    re-running the join script 92univention-management-console-web-server;
+    write them atomically and remove stale ones only after a successful
+    download, so that UMC does not fail to start with FileNotFoundError
+
+ -- Enock kipsang <enock.kipsang@univention.de>  Fri, 27 Nov 2026 13:06:54 +0000
+
 univention-management-console (14.7.6) unstable; urgency=medium
 
   * Bug #59997: check the host name of the Referer HTTP header; enforced

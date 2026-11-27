@@ -1,0 +1,15 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-management-console
+fix: 14.7.7
+desc: |
+ This update addresses the following issue:
+ * When the join script `92univention-management-console-web-server` was run
+   again, for example after changing the FQDN of Keycloak, it removed the
+   SAML identity provider metadata and the OpenID Connect keys before
+   downloading them again. UMC processes starting in the meantime failed with
+   a `FileNotFoundError`. The files are now replaced in one step and stale
+   ones are only removed after a successful download.
+bug: [0000]

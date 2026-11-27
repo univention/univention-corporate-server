@@ -45,7 +45,8 @@ fi
 
 configure_umc_keycloak () {
 	if ! is_ucr_false 'umc/web/sso/enabled'; then
-		rm /usr/share/univention-management-console/saml/idp/*.xml
+		# setup_saml_sp replaces the metadata in place and removes all of it
+		# if the download fails; do not remove it here, a running UMC needs it
 		ucr --debug set umc/saml/idp-server?"$(univention-keycloak get-keycloak-base-url)/realms/ucs/protocol/saml/descriptor" || return 1
 		# Execute UCR module to download metadata if umc/saml/idp-server has been set via LDAP layer (e.g. for keycloak)
 		python3 /etc/univention/templates/modules/setup_saml_sp.py
@@ -73,13 +74,20 @@ _setup_oidc () {
 		return 0
 	fi
 
+	local oidc_dir=/usr/share/univention-management-console/oidc oidc_marker
+	oidc_marker="$(mktemp)"
 	_cleanup_oidc_die () {
+		rm -f "$oidc_marker"
 		ucr unset umc/oidc/issuer; exit 3
 	}
-	rm /usr/share/univention-management-console/oidc/*.jwks
 	oidc_issuer="$(univention-keycloak get-keycloak-base-url)/realms/ucs" || _cleanup_oidc_die
+	# the UCR module setup_oidc_rp downloads the keys of the issuer and replaces
+	# them in place; do not remove them beforehand, a running UMC needs them
 	ucr --debug set umc/oidc/issuer="${oidc_issuer,,}" || _cleanup_oidc_die
-	[ "$(ls -A /usr/share/univention-management-console/oidc/*.jwks)" ] || _cleanup_oidc_die
+	[ -n "$(find "$oidc_dir" -maxdepth 1 -name '*.jwks' -newer "$oidc_marker")" ] || _cleanup_oidc_die
+	# remove the keys of previous issuers
+	find "$oidc_dir" -maxdepth 1 -name '*.jwks' ! -newer "$oidc_marker" -delete
+	rm -f "$oidc_marker"
 
 	ucr set \
 		"ldap/server/sasl/oauthbearer/trusted-audience/$domainname?ldaps://$domainname/" \
