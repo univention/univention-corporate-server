@@ -189,11 +189,31 @@ def test_main_not_enough_arguments():
 def test_server_down(ucr, udm, readudm, capsys):
     mod = readudm.get('computers/%s' % (ucr.get('server/role'),))
     comp = mod.get_by_id(ucr.get('hostname'))
-    slave = udm.create_object('computers/domaincontroller_slave', name=uts.random_name(), dnsEntryZoneForward=comp.props.dnsEntryZoneForward[0][0])
+    slave = udm.create_object('computers/domaincontroller_slave', name=uts.random_name(), dnsEntryZoneForward=comp.props.dnsEntryZoneForward[0][0], objectFlag=object_flags)
     slave = readudm.obj_by_dn(slave)
+    fqdn = slave.props.fqdn
+
+    def connect(*, host, **kwargs):
+        if host == fqdn:
+            raise ldap.SERVER_DOWN
+        return connection
+
+    connection = Mock()
+    access = Mock(side_effect=connect)
+    monkeypatch.setattr(univention_lastbind, 'univention', SimpleNamespace(admin=SimpleNamespace(uldap=SimpleNamespace(access=access))))
+
     capsys.readouterr()  # flush
-    univention_lastbind.get_ldap_connections()
-    assert 'Server "%s" is not reachable. The "authTimestamp" will not be read from it. Continuing.' % (slave.props.fqdn,) in capsys.readouterr()[1]
+        assert connection in univention_lastbind.get_ldap_connections()
+    contacted_hosts = {call.kwargs['host'] for call in access.call_args_list}
+    assert comp.props.fqdn in contacted_hosts
+    warning = 'Server "%s" is not reachable. The "authTimestamp" will not be read from it. Continuing.' % (fqdn,)
+    stderr = capsys.readouterr().err
+    if object_flags:
+        assert fqdn not in contacted_hosts
+        assert warning not in stderr
+    else:
+        assert fqdn in contacted_hosts
+        assert warning in stderr
 
 
 def test_invalid_user(binddn, bindpwdfile):
