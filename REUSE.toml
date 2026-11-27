@@ -23,6 +23,7 @@ path = [
   "doc/changelog/staged/*.rst",
   "doc/errata/erratum.schema.json",
   "doc/extended-docs/ucr-deprecated.schema.json",
+  "docker/uv.lock",
   "pyproject.toml",
   "test/**.cfg",
   "test/**matrix.job",

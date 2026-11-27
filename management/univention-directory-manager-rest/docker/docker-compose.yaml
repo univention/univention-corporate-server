@@ -1,0 +1,81 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+#
+# Bring-up for the source-based UDM REST API container with a real LDAP
+# backend (the prebuilt nubus ldap-server image).
+#
+# Usage (from repo root):
+#   docker compose -f management/univention-directory-manager-rest/docker/docker-compose.yaml up --build
+#
+# Then:
+#   curl -u 'cn=admin,dc=univention-organization,dc=intranet:univention' \
+#        http://localhost:9979/udm/users/user/
+
+services:
+  udm-rest-api:
+    build:
+      # Build context is the repo root so the Dockerfile can COPY base/, management/, etc.
+      context: ../../../
+      dockerfile: management/univention-directory-manager-rest/docker/Dockerfile
+    image: ${UDM_REST_IMAGE:-gitregistry.knut.univention.de/univention/dev/ucs/udm-rest-api:mmeschter-udm-rest-docker}
+    ports:
+      - "9979:9979"
+    # The REST API returns 503 with Retry-After for a few seconds after start
+    # while internal state boots. `docker compose up --wait` needs an API-level
+    # probe, not just "process running", to know real readiness.
+    healthcheck:
+      test:
+        - CMD
+        - /app/docker/.venv/bin/python3
+        - -c
+        - |
+          import http.client, sys
+          c = http.client.HTTPConnection("127.0.0.1", 9979, timeout=3)
+          c.request("GET", "/udm/")
+          r = c.getresponse()
+          sys.exit(0 if r.status == 401 else 1)
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      start_period: 5s
+    environment:
+      LDAP_HOST: ldap-server
+      LDAP_PORT: "389"
+      LDAP_BASE_DN: dc=univention-organization,dc=intranet
+      LDAP_HOST_DN: cn=admin,dc=univention-organization,dc=intranet
+      TLS_MODE: "off"
+      MACHINE_SECRET: univention
+      LDAP_SECRET: univention
+      AUTHORIZED_DOMAIN_ADMINS: "cn=Domain Admins,cn=groups,dc=univention-organization,dc=intranet"
+    depends_on:
+      - ldap-server
+
+  ldap-server:
+    image: gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/ldap/ldap-server:latest
+    environment:
+      DOMAIN_NAME: univention-organization.intranet
+      LDAP_BASEDN: dc=univention-organization,dc=intranet
+      LDAP_CN_ADMIN_PW: univention
+      TLS_MODE: "off"
+      PYTHON_LOG_LEVEL: DEBUG
+      UPDATE_INDEX_ON_STARTUP: "true"
+    # FIXME: slapd won't work on linux kernel 6.6
+    ulimits:
+      nofile:
+        soft: 1024
+        hard: 1024
+    ports:
+      - "389:389"
+    volumes:
+      - ../tests/base.conf:/etc/univention/base.conf:ro
+      - ../tests/init-internal-database.sh:/entrypoint.d/91-init-internal-database.sh
+
+  test:
+    profiles: ["test"]
+    image: gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/udm-rest-api/testrunner:latest
+    environment:
+      PYTEST_ADDOPTS: --udm-rest-url=http://udm-rest-api:9979/udm/
+    volumes:
+      - ../tests:/app
+    depends_on:
+      - udm-rest-api
