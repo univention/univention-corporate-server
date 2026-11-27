@@ -57,12 +57,6 @@ you need to know the following definitions for some of the used terms in this do
             --dn "$LDAP_DN" \
             --append guardianRoles="udm:default-roles:domain-administrator"
 
-.. seealso::
-
-   :external+guardian-doc:ref:`guardian-terminology`
-      in :cite:t:`guardian-doc`
-      for more background information about concepts and ideas behind this concept.
-
 .. _da-concepts-context:
 
 Basic idea

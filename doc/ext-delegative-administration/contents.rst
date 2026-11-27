@@ -15,6 +15,7 @@ Univention Corporate Server - Delegative administration documentation
    concepts
    setup
    configuration
+   migration-univention-guardian
    object-dependencies
    troubleshooting
    federated-admin-authentication/index
