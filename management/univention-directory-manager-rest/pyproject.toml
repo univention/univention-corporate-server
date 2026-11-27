@@ -69,6 +69,3 @@ include-package-data = true
 where = ["src"]
 include = ["univention.*"]
 namespaces = true
-
-[tool.setuptools.package-data]
-"univention.admin.rest" = ["templates/**/*", "www/**/*"]
