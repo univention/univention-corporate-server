@@ -1,3 +1,9 @@
+univention-s4-connector (16.7.1) unstable; urgency=medium
+
+  * Bug #58445: Ignore CLAIMS_VALID group when syncing.
+
+ -- Marc Lehmann <marc.lehmann@univention.de>  Fri, 27 Nov 2026 15:34:30 +0100
+
 univention-s4-connector (16.7.0) unstable; urgency=medium
 
   [ Rehema Owino ]

@@ -1,8 +1,12 @@
-univention-samba4 (11.7.0) UNRELEASED; urgency=medium
+univention-samba4 (11.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:51 +0300
+  [ Marc Lehmann ]
+  * Bug #58445: Explicitly map CLAIMS_VALID SID
+
+ -- Marc Lehmann <marc.lehmann@univention.de>  Fri, 27 Nov 2026 15:32:25 +0100
 
 univention-samba4 (11.6.1) unstable; urgency=medium
 

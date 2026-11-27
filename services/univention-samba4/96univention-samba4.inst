@@ -630,7 +630,7 @@ create_pseudo_groups()
 	_create_group_with_special_sid "Pre-Windows 2000 Compatible Access" "S-1-5-32-554" "cn=Builtin" "$@"
 	_create_group_with_special_sid "Windows Authorization Access Group" "S-1-5-32-560" "cn=Builtin" "$@"
 	_create_group_with_special_sid "IIS_IUSRS" "S-1-5-32-568" "cn=Builtin" "$@"
-
+	_create_group_with_special_sid "CLAIMS_VALID" "S-1-5-21-0-0-0-497" "cn=Builtin" "$@"
 }
 
 _update_pseudo_group()
@@ -731,6 +731,8 @@ create_pseudo_groups "$@"
 if [ $JS_LAST_EXECUTED_VERSION -gt 0 ] && [ $JS_LAST_EXECUTED_VERSION -lt 6 ]; then
 	update_pseudo_groups "$@"
 fi
+
+net cache flush
 
 if [ -r '/var/lib/samba/private/.adtakeover' ]; then
 	adtakeover_state=$(</var/lib/samba/private/.adtakeover)
