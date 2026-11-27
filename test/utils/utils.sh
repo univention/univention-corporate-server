@@ -1049,6 +1049,11 @@ _run_tests () {
 		return 0
 	fi
 
+	# Systems started from joined templates register their new IP addresses
+	# one after the other; nscd may still cache the template address of a
+	# system that was looked up before it re-registered (for up to an hour).
+	nscd -i hosts || :
+
 	# shellcheck disable=SC2086
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" $GENERATE_COVERAGE_REPORT "$@"
 }
