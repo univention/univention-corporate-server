@@ -56,6 +56,7 @@ from univention.admin.rest.ldap_connection import (
     get_user_ldap_write_connection, reset_cache,
 )
 from univention.admin.rest.openapi import OpenAPIBase, RelationsBase, _OpenAPIBase
+from univention.admin.rest.resources import get_data_path
 from univention.admin.rest.sanitizer import (
     Base64EncodingSanitizer, Body, BooleanSanitizer, BoolSanitizer, ChoicesSanitizer, DictSanitizer, DNSanitizer,
     EmailSanitizer, IntegerSanitizer, JSONPayload, LDAPFilterSanitizer, LDAPSearchSanitizer, ListSanitizer,
@@ -3389,7 +3390,7 @@ class Application(tornado.web.Application):
             (f"{root_path}/udm/(networks/network)/{dn}/next-free-ip-address", NextFreeIpAddress),
             (f"{root_path}/udm/(users/user)/{dn}/service-specific-password", ServiceSpecificPassword),
             (f"{root_path}/udm/progress/([a-z0-9]{{8}}-[a-z0-9]{{4}}-[a-z0-9]{{4}}-[a-z0-9]{{4}}-[a-z0-9]{{12}})", Operations),
-            (rf"{root_path}/udm/((?:css|js|img|schema|swaggerui)/.*)", tornado.web.StaticFileHandler, {"path": "/var/www/univention/udm", "default_filename": "index.html"}),
+            (rf"{root_path}/udm/((?:css|js|img|schema|swaggerui)/.*)", tornado.web.StaticFileHandler, {"path": get_data_path('www', '/var/www/univention/udm'), "default_filename": "index.html"}),
             (rf"{root_path}/udm/-/metrics", Metrics),
             (rf"{root_path}/udm/-/reload", ReloadAPI),
             # TODO: decorator for dn argument, which makes sure no invalid dn syntax is used

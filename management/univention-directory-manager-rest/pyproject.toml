@@ -64,12 +64,21 @@ async-client = [
 ]
 
 [tool.setuptools]
-include-package-data = true
+include-package-data = false
+license-files = ["debian/copyright"]
+packages = [
+    "univention.admin.rest",
+    "univention.admin.rest.client",
+    "univention.admin.rest.server",
+    "univention.admin.rest.templates",
+    "univention.admin.rest.www",
+]
 
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["univention.*"]
-namespaces = true
+[tool.setuptools.package-dir]
+"" = "src"
+"univention.admin.rest.templates" = "templates"
+"univention.admin.rest.www" = "var/www/univention/udm"
 
 [tool.setuptools.package-data]
-"univention.admin.rest" = ["templates/**/*", "www/**/*"]
+"univention.admin.rest.templates" = ["*.html", "*.js"]
+"univention.admin.rest.www" = ["css/*", "js/*", "img/*", "schema/*", "swaggerui/*"]
