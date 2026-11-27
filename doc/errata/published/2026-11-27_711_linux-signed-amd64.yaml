@@ -12,3 +12,6 @@ bug: [60199]
 cve:
 - CVE-2026-99362
 note: This is the 2nd of two parts.
+erratum: 711
+announced: 2026-11-27
+support: core
