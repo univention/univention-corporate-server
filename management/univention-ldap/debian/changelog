@@ -1,3 +1,9 @@
+univention-ldap (18.8.0) unstable; urgency=medium
+
+  * Bug #60198: install univention-update-memberof
+
+ -- Felix Botner <botner@univention.de>  Fri, 27 Nov 2026 12:46:05 +0100
+
 univention-ldap (18.7.4) unstable; urgency=medium
 
   * Bug #60153: assign `univentionObjectIdentifier` to initial core

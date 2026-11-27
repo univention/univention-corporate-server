@@ -1,3 +1,4 @@
+usr/share/univention-ldap-overlay-memberof
 var/lib/univention-ldap/fake
 var/lib/univention-ldap/internal
 var/lib/univention-ldap/ldap
