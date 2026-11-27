@@ -573,7 +573,14 @@ class OIDCBackchannelLogout(OIDCResource):
 
         for session in Session.sessions.get_oidc_sessions(claims):
             if session.session_id in Session.sessions.sessions:
-                Session.sessions[session.session_id].logout()
+                try:
+                    Session.sessions[session.session_id].logout()
+                except KeyError:
+                    # Several logout tokens can refer to the same session (if no
+                    # session matches the sid, all sessions of the user are
+                    # returned), and other UMC processes handle them in parallel.
+                    # One of them has already removed this session.
+                    CORE.debug('OIDC backchannel logout: session %s has already been logged out', session.session_id)
             else:
                 try:
                     with get_session() as db_session:

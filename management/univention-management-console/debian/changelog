@@ -4,6 +4,10 @@ univention-management-console (14.7.7) unstable; urgency=medium
     re-running the join script 92univention-management-console-web-server;
     write them atomically and remove stale ones only after a successful
     download, so that UMC does not fail to start with FileNotFoundError
+  * Bug #0000: ignore sessions which another UMC process has already
+    removed during an OIDC backchannel logout instead of failing with
+    HTTP 500 and a KeyError; this happens when several logout requests
+    refer to the same session, e.g. parallel logouts of the same user
 
  -- Enock kipsang <enock.kipsang@univention.de>  Fri, 27 Nov 2026 13:06:54 +0000
 
