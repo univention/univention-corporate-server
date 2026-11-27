@@ -60,7 +60,6 @@ Depends:
  python3-univention-license,
  python3-yaml,
  shell-univention-lib,
- univention-guardian-server,
  ${misc:Depends},
  ${python3:Depends},
 Breaks:
