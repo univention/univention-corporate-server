@@ -11,3 +11,4 @@ desc: |
 bug: [60199]
 cve:
 - CVE-2026-99362
+note: This is the 1st of two parts.
