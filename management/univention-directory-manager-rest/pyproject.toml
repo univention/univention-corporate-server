@@ -49,7 +49,6 @@ Issues = "https://forge.univention.org/bugzilla/"
 dev = [
     "requests",
     "pytest",
-    "udm-rest-api-client"
 ]
 
 [project.optional-dependencies]
