@@ -9,12 +9,12 @@
 import json
 import re
 import xml.etree.ElementTree as ET  # noqa: S405
-from pathlib import Path
 
 import defusedxml.minidom
 from genshi import XML
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
+from univention.admin.rest.resources import get_data_path
 from univention.lib.i18n import Translation
 
 
@@ -364,7 +364,8 @@ class HTML:
         return ('udm:object-modules', 'udm:object-module', 'type', 'up', 'self')
 
     def render_template(self, template_path, data):
-        env = Environment(loader=FileSystemLoader(str(Path(__file__).parent / 'templates')), autoescape=True, undefined=StrictUndefined)
+        template_dir = get_data_path('templates', '/usr/share/univention-directory-manager-rest/templates/')
+        env = Environment(loader=FileSystemLoader(template_dir), autoescape=True, undefined=StrictUndefined)
         template = env.get_template(template_path)
         env.filters['translate'] = self.locale.translate
         env.globals['self'] = self

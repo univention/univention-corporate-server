@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 [build-system]
-requires = ["setuptools >= 64", "setuptools-scm"]
+requires = ["setuptools >= 77", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
@@ -13,6 +13,7 @@ name = "univention-directory-manager-rest"
 dynamic = ["version"]
 description = "REST service for UCS Directory Manager"
 license = "AGPL-3.0-only"
+license-files = ["debian/copyright"]
 requires-python = ">= 3.11"
 dependencies = [
     "tornado",
@@ -55,7 +56,7 @@ async-client = [
 ]
 
 [tool.setuptools]
-include-package-data = true
+include-package-data = false
 packages = [
     "univention.admin.rest",
     "univention.admin.rest.client",
