@@ -97,6 +97,7 @@ def session_users(ldap_base, udm_session, ou, session_roles, webadmin_policy):
                 'users/user', username=user_name, lastname=user_name, password='univention', position=ou.user_default_container,
                 guardianRoles=user_guardian_roles,
                 policy_reference=[str(webadmin_policy)],
+                umcProperty=['ucs-test 1'],  # makes UDM add objectClass univentionPerson, see Bug #46516
             )
             cache_key = f'{property_set_key}'
             _session_cache['users'][cache_key] = user_name

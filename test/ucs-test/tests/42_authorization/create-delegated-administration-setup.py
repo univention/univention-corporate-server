@@ -95,13 +95,21 @@ def ldap_acls_to_deny_access(user_dns):
         fh.write(f'''@!@
 user_dns = {user_dns!r}
 print('# 59-authz-udm-test-acl')
+for dn in user_dns:
+    # UMC saves the user preferences with the user's own LDAP connection
+    print('access to dn.base="%s" attrs="univentionUMCProperty"' % (dn,))
+    print('     by self write')
+    print('     by * +0 break')
+    print('access to dn.base="%s" attrs="entry,objectClass"' % (dn,))
+    print('     by self read')
+    print('     by * +0 break')
 print('access to *')
 for dn in user_dns:
     print('     by dn.base="%s" none stop' % (dn,))
 print('     by * +0 break')
 @!@''')
 
-    check_call([f'. /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension --packagename ucs-test --packageversion 3 --ucsversionstart 5.2-2 --ucsversionend 5.99-0 --acl {aclfile}'], shell=True)
+    check_call([f'. /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension --packagename ucs-test --packageversion 4 --ucsversionstart 5.2-2 --ucsversionend 5.99-0 --acl {aclfile}'], shell=True)
 
 
 def restart_services():
@@ -155,6 +163,8 @@ def create_user(name, position, policy=None, **props):
     )
     if policy:
         user.policies.setdefault('policies/umc', []).append(policy.dn)
+    if not user.props.umcProperty:
+        user.props.umcProperty = [['ucs-test', '1']]  # makes UDM add objectClass univentionPerson, see Bug #46516
     user.save()
     return user
 
