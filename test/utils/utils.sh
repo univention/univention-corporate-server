@@ -1796,7 +1796,9 @@ basic_setup_ucs_role () {
 
 	printf '%s' "$admin_password" > /tmp/univention.txt
 	ucr set nameserver1="$masterip"
-	univention-join -dcaccount Administrator -dcpwd /tmp/univention.txt
+	univention-join -dcaccount Administrator -dcpwd /tmp/univention.txt || return 1
+	# disabled in the joined templates, see template_disable_network_common
+	systemctl enable univention-network-common.service
 }
 
 ucs-winrm () {
@@ -2056,6 +2058,25 @@ update_keycloak_sso_dns_record () {
 	return $rv
 }
 
+# Systems cloned from a joined template boot with the template's view of the
+# network: univention-network-common.service cannot reach the primary, which
+# has a new address as well, and fails. The non-primary templates therefore
+# ship with the service disabled (call this before they are shut down), and
+# basic_setup_ucs_joined / basic_setup_ucs_role enable it again once the
+# primary is reachable. The primary keeps it: it can always reach itself.
+template_disable_network_common () {
+	[ "$(ucr get server/role)" = "domaincontroller_master" ] && return 0
+	systemctl disable univention-network-common.service
+}
+
+# enable univention-network-common.service and let it register the address;
+# also works with templates built before it was disabled there
+enable_network_common () {
+	systemctl enable univention-network-common.service
+	systemctl restart univention-network-common.service ||
+		systemctl status --no-pager univention-network-common.service
+}
+
 basic_setup_ucs_joined () {
 	local masterip="${1:?missing master ip}"
 	local admin_password="${2:-univention}"
@@ -2097,6 +2118,8 @@ basic_setup_ucs_joined () {
 		systemctl restart nscd.service || rv=1
 		# wait until the master fqdn actually resolves to the new IP
 		wait_for_dns_value "$master_fqdn" "$masterip" || rv=1
+		# the primary is reachable now: let the service register the address
+		enable_network_common
 		;;
 	esac
 
