@@ -9,29 +9,8 @@
 export PYBUILD_NAME=univention-license
 export PYBUILD_SYSTEM=pyproject
 export PYBUILD_TEST_PYTEST = 1
-export PYBUILD_DISABLE = test
 export LC_ALL=C.UTF-8
 
-# The pyproject plugin does not support the debug interpreter. Build the
-# debug ABI separately while keeping both extensions in the binary package.
-override_dh_auto_configure:
-	pybuild --configure --interpreter=python{version}
-
-override_dh_auto_build:
-	pybuild --build --interpreter=python{version}
-	python3-dbg setup.py build_ext --force --build-temp=build/debug-temp --build-lib=build/debug
-
-override_dh_auto_test:
-	pybuild --test --interpreter=python{version}
-
-override_dh_auto_install:
-	pybuild --install --interpreter=python{version} --dest-dir=debian/python3-univention-license
-	install -d debian/python3-univention-license/usr/lib/python3/dist-packages/univention/
-	install -m 644 build/debug/univention/license*.so debian/python3-univention-license/usr/lib/python3/dist-packages/univention/
-
-override_dh_auto_clean:
-	pybuild --clean --interpreter=python{version}
-	$(RM) -r build/debug build/debug-temp
 
 %:
 	dh $@ --with python3 --buildsystem=pybuild
