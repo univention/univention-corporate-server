@@ -186,7 +186,8 @@ def test_main_not_enough_arguments():
 
 
 @pytest.mark.slow
-def test_server_down(ucr, udm, readudm, capsys):
+@pytest.mark.parametrize('object_flags', [[], ['docker']], ids=['directory-node', 'app-center-identity'])
+def test_server_down(ucr, udm, readudm, capsys, monkeypatch, object_flags):
     mod = readudm.get('computers/%s' % (ucr.get('server/role'),))
     comp = mod.get_by_id(ucr.get('hostname'))
     slave = udm.create_object('computers/domaincontroller_slave', name=uts.random_name(), dnsEntryZoneForward=comp.props.dnsEntryZoneForward[0][0], objectFlag=object_flags)
@@ -203,7 +204,7 @@ def test_server_down(ucr, udm, readudm, capsys):
     monkeypatch.setattr(univention_lastbind, 'univention', SimpleNamespace(admin=SimpleNamespace(uldap=SimpleNamespace(access=access))))
 
     capsys.readouterr()  # flush
-        assert connection in univention_lastbind.get_ldap_connections()
+    assert connection in univention_lastbind.get_ldap_connections()
     contacted_hosts = {call.kwargs['host'] for call in access.call_args_list}
     assert comp.props.fqdn in contacted_hosts
     warning = 'Server "%s" is not reachable. The "authTimestamp" will not be read from it. Continuing.' % (fqdn,)
