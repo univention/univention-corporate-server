@@ -1,1 +1,3 @@
 usr/lib/python3/dist-packages/univention/admin/rest/client/__main__.py usr/sbin/__udm
+usr/lib/python3/dist-packages/univention/admin/rest/templates usr/share/univention-directory-manager-rest/templates
+usr/lib/python3/dist-packages/univention/admin/rest/www var/www/univention/udm

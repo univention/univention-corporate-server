@@ -23,6 +23,7 @@ path = [
   "doc/changelog/staged/*.rst",
   "doc/errata/erratum.schema.json",
   "doc/extended-docs/ucr-deprecated.schema.json",
+  "docker/uv.lock",
   "pyproject.toml",
   "test/**.cfg",
   "test/**matrix.job",
@@ -501,13 +502,13 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2019-2026 Univention GmbH"
 
 [[annotations]]
-path = "management/univention-directory-manager-rest/var/www/univention/udm/swaggerui/**"
+path = "management/univention-directory-manager-rest/src/univention/admin/rest/www/swaggerui/**"
 precedence = "override"
 SPDX-License-Identifier = "Apache-2.0"
 SPDX-FileCopyrightText = "2020 SmartBear Software Inc."
 
 [[annotations]]
-path = [ "management/univention-directory-manager-rest/var/www/univention/udm/js/htmx**.js", "management/univention-directory-manager-rest/var/www/univention/udm/js/response-targets.js",]
+path = [ "management/univention-directory-manager-rest/src/univention/admin/rest/www/js/htmx**.js", "management/univention-directory-manager-rest/src/univention/admin/rest/www/js/response-targets.js",]
 precedence = "override"
 SPDX-License-Identifier = "BSD-2-Clause"
 SPDX-FileCopyrightText = "2020 Big Sky Software"

@@ -1,0 +1,76 @@
+## Now
+- Current udm-rest-api container: installs debian packages
+    - has to fake various scripts
+    - post install patches
+    - dpkg --force-depends
+- long feedback loop
+    - no easy possibility for developers to test their changes in nubus for kubernetes
+    - container broke after a base image update, investigating failing tests due to upstream changes
+    - releasing new features in nubus for kubernetes in one sprint is hard due to packages needing to be released first
+
+## What I built
+- source based, multi-stage Dockerfile in the UCS repo
+- uv workspace, resolving all internal dependencies through the workspace
+- added a `pyproject.toml` to internal dependencies, allowing them to get resolved from the uv workspace
+- POC integration into the udm-rest-api helm chart
+
+## Does it work?
+- Integrated into the udm-rest-api helm chart with minimal changes
+- Tested against nubus for kubernetes end-to-end tests
+    - 3 initial failed tests
+        - 2 flaky
+        - 1 test caught during testing. Present in both containers, would've surfaced in the old one on the next base-image rebuild.
+- docker compose based tests from the nubus for kubernetes repo in CI
+
+## Metrics
+
+|                 | Debian based | Source based                                             |
+| --------------- | ------------ | -------------------------------------------------------- |
+| Image Size      | 644 MB       | 364 MB                                                   |
+| SBOM components | 284          | 196 (further reduction possible with smaller base-image) |
+| Dockerfile size | 268 lines    | ~76 lines                                                |
+Plus:
+- No faked postinst scripts
+- No dpkg force-depends
+
+## Feedback loop
+- source based container means developers can run full e2e against their own changes in nubus for kubernetes
+- one real bug already found during the spike.
+    - appears in both containers, however was not found during development
+    - would cost a lot of time during a base image update
+    - could've been caught earlier
+- release with more confidence: test against both platforms at the same time
+## What I also did
+- Moving the udm-rest-api to a source buildable container required to make the UCS repo more like a real python monorepo
+- Created `pyproject.toml` for various projects which are needed by the udm-rest-api
+    - partly new, written from scratch
+    - partly migrated `setup.py`s
+- create a uv workspace with the dependencies declared
+    - gives up monorepo atomicity for all UCS packages
+    - workspace can declare dependency versions
+- declared cross project internal dependencies in pyproject.toml
+    - installing the udm-rest-api is a `uv-sync` in the dockerfile
+    - enable modern PEP517 builds
+
+## More work needed
+- debian packages which had a pyproject.toml added need some work
+    - for simple projects: just an additional flag in `debian/rules`
+    - some more complicated projects may need to be restructured a bit, e.g. when one src tree builds multiple debian python packages.
+    - polish pyproject.toml in various projects (e.g. version information)
+- Dockerfile improvements
+    - current runs as root
+    - Translations files missing (can be solved via setup.py similar to UMC)
+
+## How to continue from here:
+1. Fix pyproject.toml in UCS repo.
+    - proper versoning
+    - make all debian packages build
+    - make sure there's no changes in debian packages
+2. polish Dockerfile
+3. split up udm-rest-api repo
+    * move helm chart into ums-stack
+    * consolidate extra containers
+4. integrate into nubus-helm
+
+- at some point: local dev env with a proper venv and proper LSP support (currently blocked by native deps)
+
