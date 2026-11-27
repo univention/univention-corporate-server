@@ -2101,7 +2101,6 @@ requires-dist = [
 
 [[package]]
 name = "univention-directory-manager-rest"
-version = "0.0.0"
 source = { editable = "../management/univention-directory-manager-rest" }
 dependencies = [
     { name = "defusedxml" },

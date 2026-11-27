@@ -2,14 +2,17 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 [build-system]
-requires = ["setuptools >= 64"]
+requires = ["setuptools >= 64", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+# empty but present!
 
 [project]
 name = "univention-directory-manager-rest"
-version = "0.0.0"
+dynamic = ["version"]
 description = "REST service for UCS Directory Manager"
-license = {text = "AGPL-3.0-only" }
+license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 dependencies = [
     "tornado",
