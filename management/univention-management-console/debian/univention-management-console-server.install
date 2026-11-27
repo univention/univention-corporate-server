@@ -4,3 +4,4 @@ systemd/system/univention-management-console-server-multiprocessing.target lib/s
 systemd/system/univention-management-console-server.service.d	lib/systemd/system/
 systemd/system/univention-management-console-server@.service	lib/systemd/system/
 umc-service-providers.py	usr/lib/univention-directory-listener/system/
+usr/bin/univention-management-console-*	usr/sbin/

@@ -1,0 +1,4 @@
+usr/lib/python3*/dist-packages/univention/__init__.py
+usr/share/univention-management-console/categories/
+usr/lib/python3*/dist-packages/.pytest_cache/
+usr/lib/python3*/dist-packages/univention/__pycache__/
