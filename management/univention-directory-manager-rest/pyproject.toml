@@ -13,7 +13,7 @@ name = "univention-directory-manager-rest"
 dynamic = ["version"]
 description = "REST service for UCS Directory Manager"
 readme = "README.md"
-license = { text = "AGPL-3.0-only" }
+license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 dependencies = [
     "tornado",
@@ -25,12 +25,12 @@ dependencies = [
     "python-ldap",
     "prometheus_client",
     "univention-config-registry",
-    "univention-debug-python>=14.3.0",
-    "univention-directory-manager-modules>=17.7.4",
+    "univention-debug-python",
+    "univention-directory-manager-modules",
     "univention-directory-reports",
-    "univention-lib>=9.0.12",
-    "univention-management-console>=14.6.0",
-    "univention-management-console-module-udm>=12.6.4",
+    "univention-lib",
+    "univention-management-console",
+    "univention-management-console-module-udm",
     "univention-python",
 ]
 authors = [
