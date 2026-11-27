@@ -57,6 +57,8 @@ class CerbosAuthorizationClient:
 
         try:
             response = self.client.check_resources(principal=principal, resources=batch_resources)
+        except httpx.ConnectError:
+            raise CerbosError('Connection refused')
         except httpx.ReadTimeout:
             raise CerbosError('Read timeout')
         return CerbosCheckResult(resource.id, frozenset(self._allowed_actions(response, resource, actions)))
@@ -74,6 +76,8 @@ class CerbosAuthorizationClient:
 
         try:
             response = self.client.check_resources(principal=principal, resources=batch_resources)
+        except httpx.ConnectError:
+            raise CerbosError('Connection refused')
         except httpx.ReadTimeout:
             raise CerbosError('Read timeout')
         return [
