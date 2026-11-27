@@ -16,8 +16,10 @@ requires-python = ">= 3.11"
 
 [tool.uv.workspace]
 members = [
-    "../packaging/univention-build-version",
     "../packaging/univention-debhelper",
+    "../packaging/univention-l10n",
+    "../packaging/univention-unittests",
+    "../base/univention-ipcalc",
     "../base/univention-lib",
     "../base/univention-config-registry",
     "../base/univention-python",
@@ -25,10 +27,15 @@ members = [
     "../base/univention-debug-python",
     "../base/univention-licence-python",
     "../services/univention-admin-diary",
+    "../management/univention-appcenter",
     "../management/univention-authorization",
+    "../management/univention-directory-listener",
     "../management/univention-directory-manager-modules",
     "../management/univention-directory-manager-rest",
     "../management/univention-management-console",
     "../management/univention-management-console-module-udm",
+    "../management/univention-management-console-module-diagnostic",
+    "../management/univention-portal",
     "../management/univention-directory-reports",
+    "../test/ucs-test",
 ]

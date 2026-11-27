@@ -26,6 +26,9 @@ RUN apt-get --yes --no-install-recommends install \
 
 COPY . .
 
+# .dockerignore drops .git, so setuptools-scm can't derive a version
+ENV SETUPTOOLS_SCM_PRETEND_VERSION=0.0.0
+
 RUN uv sync --project /app/docker \
     --package univention-directory-manager-rest \
     --frozen \

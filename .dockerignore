@@ -11,8 +11,9 @@
 !base
 !management
 !services/univention-admin-diary
-!packaging/univention-build-version
 !packaging/univention-debhelper
+!packaging/univention-l10n
+!packaging/univention-unittests
 
 # Exclude stuff that isn't needed for building/running
 **/__pycache__
@@ -22,3 +23,7 @@
 **/*.egg-info
 **/.git
 **/.claude
+
+# Re-include after the **/test rule above
+!test/ucs-test
+test/ucs-test/tests
