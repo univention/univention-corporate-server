@@ -63,9 +63,13 @@ async-client = [
 ]
 
 [tool.setuptools]
-include-package-data = true
+include-package-data = false
+license-files = ["debian/copyright"]
+packages = [
+    "univention.admin.rest",
+    "univention.admin.rest.client",
+    "univention.admin.rest.server",
+]
 
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["univention.*"]
-namespaces = true
+[tool.setuptools.package-dir]
+"" = "src"
