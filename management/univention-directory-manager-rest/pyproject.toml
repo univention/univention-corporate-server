@@ -1,0 +1,75 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+# empty but present!
+
+[project]
+name = "univention-directory-manager-rest"
+dynamic = ["version"]
+description = "REST service for UCS Directory Manager"
+readme = "README.md"
+license = { text = "AGPL-3.0-only" }
+requires-python = ">= 3.11"
+dependencies = [
+    "tornado",
+    "Genshi",
+    "pycurl",
+    "defusedxml",
+    "Jinja2",
+    "setproctitle",
+    "python-ldap",
+    "prometheus_client",
+    "univention-config-registry",
+    "univention-debug-python>=14.3.0",
+    "univention-directory-manager-modules>=17.7.4",
+    "univention-directory-reports",
+    "univention-lib>=9.0.12",
+    "univention-management-console>=14.6.0",
+    "univention-management-console-module-udm>=12.6.4",
+    "univention-python",
+]
+authors = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+maintainers = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+
+[project.urls]
+Homepage = "https://www.univention.de/"
+Repository = "https://github.com/univention/univention-corporate-server/"
+Issues = "https://forge.univention.org/bugzilla/"
+
+[dependency-groups]
+dev = [
+    "requests",
+    "pytest",
+    "udm-rest-api-client"
+]
+
+[project.optional-dependencies]
+client = [
+    "python-ldap",
+    "requests",
+    "uritemplate",
+]
+async-client = [
+    "aiohttp",
+    "uritemplate",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["univention.*"]
+namespaces = true
+
+[tool.setuptools.package-data]
+"univention.admin.rest" = ["templates/**/*", "www/**/*"]
