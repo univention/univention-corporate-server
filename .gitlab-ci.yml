@@ -21,6 +21,8 @@ include:
   - project: univention/infrastructure/docker-services
     file: kaniko.yml
   - project: univention/infrastructure/docker-services
+    file: buildkit.yml
+  - project: univention/infrastructure/docker-services
     file: dind.yml
   - local: '.gitlab-ci/base.yml'
   - project: univention/infrastructure/docker-services
@@ -114,10 +116,9 @@ select ucslint:
 
 build udm-rest-api docker:
   stage: build
-  extends: .kaniko
+  extends: .buildkit_exec
   variables:
     IMAGE_TAG: $CI_REGISTRY_IMAGE/udm-rest-api:$CI_COMMIT_REF_SLUG
-    KANIKO_BUILD_CONTEXT: "."
     DOCKERFILE_PATH: "./management/univention-directory-manager-rest/docker/Dockerfile"
   needs: []
 
